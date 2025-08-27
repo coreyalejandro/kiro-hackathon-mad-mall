@@ -16,7 +16,7 @@ The plan aligns to **Kiro Devpost requirements**: a working application built wi
 * **Rules link:** “Please check the Official Rules for full details.” ([Code with Kiro Hackathon][1])
 * **Eligibility and submission requirements** repeated under the Rules tab. ([Code with Kiro Hackathon][2])
 
-**Matrix: criteria → features → evidence**
+### Matrix: criteria → features → evidence
 
 | Kiro criterion      | MADMall feature mapped                                                                                                                                          | Evidence linkage                                                                                                                                                     |
 | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -33,13 +33,13 @@ The plan aligns to **Kiro Devpost requirements**: a working application built wi
 
 ## 4) User Segments and Jobs-To-Be-Done
 
-**Segments**
+### Segments
 
 * Newly diagnosed Black women seeking clarity, community, and relief
 * Long-time patients seeking identity-affirming spaces and practical tips
 * Caregivers seeking understanding and supportive culture
 
-**JTBD with acceptance tests**
+### JTBD with acceptance tests
 
 * **JTBD-001:** When diagnosis feels isolating, I want a safe space to **connect with peers** so I can **feel seen and understood**.
   **Acceptance test:** user completes onboarding, joins one peer circle, posts once, and receives one supportive reply within 48 hours measured via events table.
@@ -50,7 +50,7 @@ The plan aligns to **Kiro Devpost requirements**: a working application built wi
 
 ## 5) Market Landscape and Differentiation
 
-**Evidence**
+### Evidence
 
 * **Peer communities benefit:** “emotional support… improve coping skills… enhance empowerment.”
 * **Third places create belonging:** malls function as “everyday third places” that encourage social participation. ([PMC][4])
@@ -67,12 +67,12 @@ The plan aligns to **Kiro Devpost requirements**: a working application built wi
 
 ## 6) Technical Feasibility and Risk
 
-**Feasibility**
+### Feasibility
 
 * Cloudscape + React for UI; Node service + SQLite in dev; DynamoDB + S3 in prod; event ingestion at ≥ 10k events/min target for growth.
 * Titan Data Engine: rules + contextual bandit at v1; upgrade path to supervised ranking using SageMaker later.
 
-**Key risks**
+### Key risks
 
 * **Community trust risk:** cultural harm from tone-deaf content. **Mitigation:** Black women editorial council; community guidelines; moderator workflows.
 * **Engagement risk:** insufficient content momentum. **Mitigation:** daily comedy drops; scheduled circles; creator partnerships.
@@ -111,9 +111,9 @@ Each KPI maps to Kiro **Potential Value** and **Implementation** scoring. ([Code
 
 ---
 
-# Prompt-Product-Plan.md
+## Prompt-Product-Plan.md
 
-## Title Page
+### Title Page
 
 **Prompt-Product-Plan.md**
 Version: **v1.0.0**
@@ -200,20 +200,20 @@ Maximize judging scores by delivering:
 * Provide JSON schemas in API docs.
 * Provide CSV seeds in `/seeds`.
 
-**Halt and Request conditions**
+### Halt and Request conditions
 
 * If OSI license not selected, halt and request license selection (MIT, Apache-2.0, BSD-3-Clause).
 * If any secret missing, halt and request `.env` values.
 
-**No Ambiguity Guardrail**
+### No Ambiguity Guardrail
 
 * Reject vague directives; require measurable thresholds.
 
-**Citation Discipline**
+### Citation Discipline
 
 * Any external claim in docs must include a citation reference to the Research Report.
 
-**Compliance Gate**
+### Compliance Gate
 
 * Parse Devpost requirements before submit; block release when any required artifact missing. ([Code with Kiro Hackathon][1])
 
@@ -278,7 +278,7 @@ Users experience isolation and identity strain after diagnosis, which reduces he
 29. Backup and restore scripts for SQLite dev.
 30. Seed data loader for deterministic demos.
 
-**Value-added components (20) — P1 roadmap**
+#### Value-added components (20) — P1 roadmap
 
 1. VR Chill links and kiosk integration.
 2. AR guide inside “Your Body” tour.
@@ -340,21 +340,21 @@ Users experience isolation and identity strain after diagnosis, which reduces he
 Request:
 
 ```json
-{"type":"circle.join","target_id":"<uuid>","props":{"source":"concourse"}}
+{"type":"circle.join","target_id":"user-uuid-123","props":{"source":"concourse"}}
 ```
 
 Response:
 
 ```json
-{"status":"ok","id":"<uuid>","ts":"2025-08-27T00:00:00Z"}
+{"status":"ok","id":"event-uuid-456","ts":"2025-08-27T00:00:00Z"}
 ```
 
-**GET /v1/recommendations?user\_id=<uuid>**
+**GET /v1/recommendations?user_id=user-uuid-123**
 Response:
 
 ```json
 {
-  "user_id":"<uuid>",
+  "user_id":"user-uuid-123",
   "modules":[
     {"slot":"concourse.hero","component":"peer_circles","reason":"cold-start-rules"},
     {"slot":"concourse.row1","component":"comedy","reason":"recent-anxiety-signal"}
@@ -426,7 +426,7 @@ git --version
 
 ### Repository Structure
 
-```
+```text
 madmall/
   /.kiro/               # Kiro specs and hooks
   /apps/web/            # Cloudscape React app
