@@ -24,7 +24,7 @@
   - Add Story Booth interface with audio/text input areas
   - _Requirements: 3.1, 4.1, 5.1, 6.1, early visual validation_
 
-- [ ] 4. Set up minimal backend for UI data
+- [x] 4. Set up minimal backend for UI data
   - Create simple Express/Fastify server with mock API endpoints
   - Return realistic JSON data for all UI components
   - Set up CORS for local development between frontend and backend

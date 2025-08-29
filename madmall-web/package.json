@@ -9,7 +9,13 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "inventory:update": "node scripts/update-inventory.js",
-    "inventory:view": "open docs/component-dashboard.html"
+    "inventory:view": "open docs/component-dashboard.html",
+    "server:install": "cd server && npm install",
+    "server:dev": "cd server && npm run dev",
+    "server:start": "cd server && npm start",
+    "dev:full": "concurrently \"npm run dev\" \"npm run server:dev\"",
+    "setup": "npm install && npm run server:install",
+    "demo:data": "node scripts/demo-data-generation.js"
   },
   "dependencies": {
     "@cloudscape-design/components": "^3.0.1074",
@@ -23,6 +29,7 @@
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",
+    "concurrently": "^8.2.2",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
