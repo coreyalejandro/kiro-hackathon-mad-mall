@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Header,
@@ -9,55 +9,60 @@ import {
   Box,
   Input,
   Icon,
-  Grid
+  Grid,
+  Alert,
+  Spinner
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
+import LoadingCard from '../components/LoadingCard';
+import ToastNotification from '../components/ToastNotification';
+import { useFeaturedResources, useResourceContent, useContentInteraction } from '../hooks/useApiData';
 
-
-const resources = [
-  {
-    id: '1',
-    title: 'Understanding Graves Disease: A Beginner\'s Guide',
-    description: 'Comprehensive overview of symptoms, causes, and treatment options written specifically for Black women.',
-    category: 'Education',
-    readTime: '8 min read',
-    saved: false,
-    helpful: 89,
-    author: 'Dr. Keisha Williams, MD'
-  },
-  {
-    id: '2',
-    title: 'Managing Anxiety with Graves Disease',
-    description: 'Practical strategies for dealing with anxiety symptoms and finding calm during flare-ups.',
-    category: 'Mental Health',
-    readTime: '5 min read',
-    saved: true,
-    helpful: 156,
-    author: 'Licensed Therapist Maya Johnson'
-  },
-  {
-    id: '3',
-    title: 'Nutrition Guide for Thyroid Health',
-    description: 'Foods that support thyroid function and recipes that are both delicious and healing.',
-    category: 'Nutrition',
-    readTime: '12 min read',
-    saved: false,
-    helpful: 203,
-    author: 'Nutritionist Sarah Davis, RD'
-  },
-  {
-    id: '4',
-    title: 'Building Your Support Network',
-    description: 'How to communicate with family and friends about your condition and build understanding.',
-    category: 'Relationships',
-    readTime: '6 min read',
-    saved: true,
-    helpful: 134,
-    author: 'Community Health Advocate'
-  }
-];
 
 export default function ResourceHub() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [toast, setToast] = useState({ show: false, message: '', type: 'info' as const });
+  
+  // API data hooks
+  const { data: featuredResources, loading: featuredLoading, error: featuredError } = useFeaturedResources(4);
+  const { data: allResources, loading: resourcesLoading, error: resourcesError } = useResourceContent(selectedCategory, 20);
+  const { saveContent, likeContent, interacting } = useContentInteraction();
+
+  const showToast = (message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info') => {
+    setToast({ show: true, message, type });
+  };
+
+  const handleSave = async (resourceId: string, resourceTitle: string) => {
+    try {
+      await saveContent(resourceId, 'resource');
+      showToast(`"${resourceTitle}" saved to your library! 📚`, 'success');
+    } catch (error) {
+      showToast('Failed to save resource', 'error');
+    }
+  };
+
+  const handleLike = async (resourceId: string) => {
+    try {
+      await likeContent(resourceId, 'resource');
+      showToast('Marked as helpful! 👍', 'success');
+    } catch (error) {
+      showToast('Failed to mark as helpful', 'error');
+    }
+  };
+
+  const handleRead = (resourceTitle: string) => {
+    showToast(`Opening "${resourceTitle}"... 📖`, 'info');
+  };
+
+  const filteredResources = allResources?.filter(resource => {
+    const matchesSearch = !searchQuery || 
+      resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      resource.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      resource.author.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    return matchesSearch;
+  }) || [];
   const floatingElements = [
     <div style={{ fontSize: '2rem', opacity: 0.6 }}>📚</div>,
     <div style={{ fontSize: '1.5rem', opacity: 0.7 }}>💡</div>,
@@ -95,210 +100,258 @@ export default function ResourceHub() {
       
       <SpaceBetween size="l">
 
+      <ToastNotification
+        message={toast.message}
+        type={toast.type}
+        show={toast.show}
+        onClose={() => setToast({ ...toast, show: false })}
+      />
+
       <Container>
         <Header variant="h2">Search Resources</Header>
-        <Box padding="l" className="kadir-nelson-secondary">
-          <SpaceBetween size="s">
+        <SpaceBetween size="m">
+          <Grid gridDefinition={[{ colspan: 8 }, { colspan: 4 }]}>
             <Input
               placeholder="Search for articles, guides, tips..."
               type="search"
-              value=""
-              onChange={() => console.log('Search')}
+              value={searchQuery}
+              onChange={({ detail }) => setSearchQuery(detail.value)}
             />
-            <SpaceBetween direction="horizontal" size="s">
-              <Button variant="normal" iconName="filter">📚 Education</Button>
-              <Button variant="normal" iconName="filter">🧠 Mental Health</Button>
-              <Button variant="normal" iconName="filter">🥗 Nutrition</Button>
-              <Button variant="normal" iconName="filter">💕 Relationships</Button>
-              <Button variant="normal" iconName="filter">💊 Treatment</Button>
-            </SpaceBetween>
+            <select 
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              style={{
+                padding: '8px 12px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                fontSize: '14px'
+              }}
+            >
+              <option value="">All Categories</option>
+              <option value="education">📚 Education</option>
+              <option value="mental_health">🧠 Mental Health</option>
+              <option value="nutrition">🥗 Nutrition</option>
+              <option value="relationships">💕 Relationships</option>
+              <option value="treatment">💊 Treatment</option>
+            </select>
+          </Grid>
+          <SpaceBetween direction="horizontal" size="s">
+            <Badge color="blue">{filteredResources.length} resources found</Badge>
+            {searchQuery && (
+              <Badge color="green">Searching: "{searchQuery}"</Badge>
+            )}
+            {selectedCategory && (
+              <Badge color="purple">Category: {selectedCategory}</Badge>
+            )}
           </SpaceBetween>
-        </Box>
+        </SpaceBetween>
       </Container>
 
 
 
       <Container>
         <Header variant="h2" id="featured-resources">Featured Resources</Header>
-        <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
-          {/* Understanding Graves Disease */}
-          <Box padding="l" className="kadir-nelson-gradient-warm">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">📚</Box>
-                <Header variant="h4">Understanding Graves Disease: A Beginner's Guide</Header>
-              </SpaceBetween>
-              <Box>
-                Comprehensive overview of symptoms, causes, and treatment options written specifically for Black women.
-              </Box>
-              <Box fontSize="body-s">
-                By Dr. Keisha Williams, MD
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="blue">Education</Badge>
-                <Badge color="grey">8 min read</Badge>
-                <Badge color="green">👍 89 found helpful</Badge>
-              </SpaceBetween>
-              <SpaceBetween direction="horizontal" size="s">
-                <Button 
-                  variant="primary"
-                  iconName="external"
-                  onClick={() => console.log('Read Understanding Graves Disease')}
-                >
-                  Read Article
-                </Button>
-                <Button 
-                  variant="normal"
-                  iconName="heart"
-                  onClick={() => console.log('Save article')}
-                >
-                  Save
-                </Button>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Box>
-
-          {/* Managing Anxiety */}
-          <Box padding="l" className="kadir-nelson-gradient-sage">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">🧠</Box>
-                <Header variant="h4">Managing Anxiety with Graves Disease</Header>
-                <Badge color="green">Saved</Badge>
-              </SpaceBetween>
-              <Box>
-                Practical strategies for dealing with anxiety symptoms and finding calm during flare-ups.
-              </Box>
-              <Box fontSize="body-s">
-                By Licensed Therapist Maya Johnson
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="blue">Mental Health</Badge>
-                <Badge color="grey">5 min read</Badge>
-                <Badge color="green">👍 156 found helpful</Badge>
-              </SpaceBetween>
-              <SpaceBetween direction="horizontal" size="s">
-                <Button 
-                  variant="primary"
-                  iconName="external"
-                  onClick={() => console.log('Read Managing Anxiety')}
-                >
-                  Read Article
-                </Button>
-                <Button 
-                  variant="normal"
-                  iconName="heart"
-                  onClick={() => console.log('Save article')}
-                >
-                  Saved
-                </Button>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Box>
-        </Grid>
-
-        <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
-          {/* Nutrition Guide */}
-          <Box padding="l" className="kadir-nelson-gradient-earth">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">🥗</Box>
-                <Header variant="h4">Nutrition Guide for Thyroid Health</Header>
-              </SpaceBetween>
-              <Box>
-                Foods that support thyroid function and recipes that are both delicious and healing.
-              </Box>
-              <Box fontSize="body-s">
-                By Nutritionist Sarah Davis, RD
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="blue">Nutrition</Badge>
-                <Badge color="grey">12 min read</Badge>
-                <Badge color="green">👍 203 found helpful</Badge>
-              </SpaceBetween>
-              <SpaceBetween direction="horizontal" size="s">
-                <Button 
-                  variant="primary"
-                  iconName="external"
-                  onClick={() => console.log('Read Nutrition Guide')}
-                >
-                  Read Article
-                </Button>
-                <Button 
-                  variant="normal"
-                  iconName="heart"
-                  onClick={() => console.log('Save article')}
-                >
-                  Save
-                </Button>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Box>
-
-          {/* Building Support Network */}
-          <Box padding="l" className="kadir-nelson-accent">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">💕</Box>
-                <Header variant="h4">Building Your Support Network</Header>
-                <Badge color="green">Saved</Badge>
-              </SpaceBetween>
-              <Box>
-                How to communicate with family and friends about your condition and build understanding.
-              </Box>
-              <Box fontSize="body-s">
-                By Community Health Advocate
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="blue">Relationships</Badge>
-                <Badge color="grey">6 min read</Badge>
-                <Badge color="green">👍 134 found helpful</Badge>
-              </SpaceBetween>
-              <SpaceBetween direction="horizontal" size="s">
-                <Button 
-                  variant="primary"
-                  iconName="external"
-                  onClick={() => console.log('Read Building Support Network')}
-                >
-                  Read Article
-                </Button>
-                <Button 
-                  variant="normal"
-                  iconName="heart"
-                  onClick={() => console.log('Save article')}
-                >
-                  Saved
-                </Button>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Box>
-        </Grid>
+        {featuredError && (
+          <Alert type="error">
+            Failed to load featured resources. Please try again later.
+          </Alert>
+        )}
+        {featuredLoading ? (
+          <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
+            <LoadingCard height="300px" />
+            <LoadingCard height="300px" />
+            <LoadingCard height="300px" />
+            <LoadingCard height="300px" />
+          </Grid>
+        ) : (
+          <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
+            {featuredResources?.map((resource, index) => {
+              const gradients = ['kadir-nelson-gradient-warm', 'kadir-nelson-gradient-sage', 'kadir-nelson-gradient-earth', 'kadir-nelson-accent'];
+              const icons = {
+                'education': '📚',
+                'mental_health': '🧠',
+                'nutrition': '🥗',
+                'relationships': '💕',
+                'treatment': '💊'
+              };
+              
+              return (
+                <Box key={resource.id} padding="l" className={gradients[index % 4]}>
+                  <SpaceBetween size="m">
+                    <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                      <Box fontSize="heading-l">{icons[resource.category] || '📚'}</Box>
+                      <Header variant="h3">{resource.title}</Header>
+                    </SpaceBetween>
+                    <Box>
+                      {resource.content.substring(0, 120)}...
+                    </Box>
+                    <Box fontSize="body-s">
+                      By {resource.author}
+                    </Box>
+                    <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                      <Badge color="blue">{resource.category.replace('_', ' ')}</Badge>
+                      <Badge color="grey">{resource.readTime}</Badge>
+                      <Badge color="green">👍 {resource.helpfulCount} found helpful</Badge>
+                    </SpaceBetween>
+                    <SpaceBetween direction="horizontal" size="s">
+                      <Button 
+                        variant="primary"
+                        iconName="external"
+                        onClick={() => handleRead(resource.title)}
+                      >
+                        Read Article
+                      </Button>
+                      <Button 
+                        variant="normal"
+                        loading={interacting}
+                        onClick={() => handleSave(resource.id, resource.title)}
+                      >
+                        Save 📚
+                      </Button>
+                      <Button 
+                        variant="normal"
+                        loading={interacting}
+                        onClick={() => handleLike(resource.id)}
+                      >
+                        Helpful 👍
+                      </Button>
+                    </SpaceBetween>
+                  </SpaceBetween>
+                </Box>
+              );
+            })}
+          </Grid>
+        )}
       </Container>
 
       <Container>
-        <Header variant="h2">Quick Access</Header>
+        <Header variant="h2">Resource Library</Header>
+        {resourcesError && (
+          <Alert type="error">
+            Failed to load resources. Please try again later.
+          </Alert>
+        )}
+        {resourcesLoading ? (
+          <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
+            {[1, 2, 3, 4, 5, 6].map(i => (
+              <LoadingCard key={i} height="250px" />
+            ))}
+          </Grid>
+        ) : filteredResources.length === 0 ? (
+          <Box textAlign="center" padding="xl">
+            <SpaceBetween size="m">
+              <Box fontSize="heading-xl">📚</Box>
+              <Header variant="h3">No resources found</Header>
+              <Box>
+                {searchQuery || selectedCategory 
+                  ? 'Try adjusting your search or filter criteria.'
+                  : 'No resources available at the moment.'}
+              </Box>
+              <Button 
+                variant="primary"
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedCategory('');
+                }}
+              >
+                Clear Filters
+              </Button>
+            </SpaceBetween>
+          </Box>
+        ) : (
+          <Cards
+            cardDefinition={{
+              header: item => (
+                <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                  <Box fontSize="heading-m">
+                    {item.category === 'education' ? '📚' :
+                     item.category === 'mental_health' ? '🧠' :
+                     item.category === 'nutrition' ? '🥗' :
+                     item.category === 'relationships' ? '💕' :
+                     item.category === 'treatment' ? '💊' : '📖'}
+                  </Box>
+                  <Header variant="h3">{item.title}</Header>
+                </SpaceBetween>
+              ),
+              sections: [
+                {
+                  content: item => (
+                    <SpaceBetween size="s">
+                      <Box>{item.content.substring(0, 150)}...</Box>
+                      <Box fontSize="body-s">By {item.author}</Box>
+                      <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                        <Badge color="blue">{item.category.replace('_', ' ')}</Badge>
+                        <Badge color="grey">{item.readTime}</Badge>
+                        <Badge color="green">👍 {item.helpfulCount}</Badge>
+                      </SpaceBetween>
+                      <SpaceBetween direction="horizontal" size="s">
+                        <Button 
+                          variant="primary"
+                          iconName="external"
+                          onClick={() => handleRead(item.title)}
+                        >
+                          Read Article
+                        </Button>
+                        <Button 
+                          variant="normal"
+                          loading={interacting}
+                          onClick={() => handleSave(item.id, item.title)}
+                        >
+                          Save 📚
+                        </Button>
+                        <Button 
+                          variant="normal"
+                          loading={interacting}
+                          onClick={() => handleLike(item.id)}
+                        >
+                          Helpful 👍
+                        </Button>
+                      </SpaceBetween>
+                    </SpaceBetween>
+                  )
+                }
+              ]
+            }}
+            items={filteredResources}
+            cardsPerRow={[
+              { cards: 1 },
+              { minWidth: 500, cards: 2 },
+              { minWidth: 800, cards: 3 }
+            ]}
+          />
+        )}
+      </Container>
+
+      <Container>
+        <Header variant="h2">Quick Access Tools</Header>
         <SpaceBetween direction="horizontal" size="m">
           <Box padding="l" className="kadir-nelson-gradient-warm">
             <SpaceBetween size="s">
-              <Header variant="h4">📋 Symptom Tracker</Header>
+              <Header variant="h3">📋 Symptom Tracker</Header>
               <Box>Keep track of your symptoms and patterns</Box>
-              <Button size="small">Open Tracker</Button>
+              <Button onClick={() => showToast('Symptom Tracker opening... 📋', 'info')}>
+                Open Tracker
+              </Button>
             </SpaceBetween>
           </Box>
           
           <Box padding="l" className="kadir-nelson-gradient-sage">
             <SpaceBetween size="s">
-              <Header variant="h4">💊 Medication Reminders</Header>
+              <Header variant="h3">💊 Medication Reminders</Header>
               <Box>Set up reminders for your medications</Box>
-              <Button size="small">Set Reminders</Button>
+              <Button onClick={() => showToast('Medication Reminders setup opening... 💊', 'info')}>
+                Set Reminders
+              </Button>
             </SpaceBetween>
           </Box>
           
           <Box padding="l" className="kadir-nelson-secondary">
             <SpaceBetween size="s">
-              <Header variant="h4">🏥 Find Doctors</Header>
+              <Header variant="h3">🏥 Find Doctors</Header>
               <Box>Locate thyroid specialists in your area</Box>
-              <Button size="small">Search Doctors</Button>
+              <Button onClick={() => showToast('Doctor search opening... 🏥', 'info')}>
+                Search Doctors
+              </Button>
             </SpaceBetween>
           </Box>
         </SpaceBetween>

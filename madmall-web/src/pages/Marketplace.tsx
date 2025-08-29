@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Header,
@@ -9,13 +9,53 @@ import {
   Box,
   Icon,
   Grid,
-  Input
+  Input,
+  Alert,
+  Spinner
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
+import LoadingCard from '../components/LoadingCard';
+import ToastNotification from '../components/ToastNotification';
+import { useFeaturedProducts, useProductReviews, useContentInteraction } from '../hooks/useApiData';
 
 
 
 export default function Marketplace() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [toast, setToast] = useState({ show: false, message: '', type: 'info' as const });
+  
+  // API data hooks
+  const { data: featuredProducts, loading: featuredLoading, error: featuredError } = useFeaturedProducts(6);
+  const { data: allProducts, loading: productsLoading, error: productsError } = useProductReviews(selectedCategory, 20);
+  const { saveContent, interacting } = useContentInteraction();
+
+  const showToast = (message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info') => {
+    setToast({ show: true, message, type });
+  };
+
+  const handleSave = async (productId: string, productName: string) => {
+    try {
+      await saveContent(productId, 'product');
+      showToast(`${productName} saved to wishlist! 💝`, 'success');
+    } catch (error) {
+      showToast('Failed to save product', 'error');
+    }
+  };
+
+  const handleShop = (productName: string, brand: string) => {
+    showToast(`Redirecting to ${brand} for ${productName}... 🛒`, 'info');
+  };
+
+  const filteredProducts = allProducts?.filter(product => {
+    const matchesSearch = !searchQuery || 
+      product.productName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.reviewContent.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    return matchesSearch;
+  }) || [];
+
   const floatingElements = [
     <div style={{ fontSize: '2rem', opacity: 0.6 }}>🛍️</div>,
     <div style={{ fontSize: '1.5rem', opacity: 0.7 }}>💜</div>,
@@ -53,198 +93,241 @@ export default function Marketplace() {
       
       <SpaceBetween size="l">
 
+      <ToastNotification
+        message={toast.message}
+        type={toast.type}
+        show={toast.show}
+        onClose={() => setToast({ ...toast, show: false })}
+      />
+
       <Container>
         <Header variant="h2">Search Products</Header>
-        <Box padding="l" className="kadir-nelson-secondary">
-          <SpaceBetween size="s">
+        <SpaceBetween size="m">
+          <Grid gridDefinition={[{ colspan: 8 }, { colspan: 4 }]}>
             <Input
               placeholder="Search for products, brands, wellness items..."
               type="search"
-              value=""
-              onChange={() => console.log('Search')}
+              value={searchQuery}
+              onChange={({ detail }) => setSearchQuery(detail.value)}
             />
-            <SpaceBetween direction="horizontal" size="s">
-              <Button variant="normal" iconName="filter">💊 Supplements</Button>
-              <Button variant="normal" iconName="filter">🍵 Wellness</Button>
-              <Button variant="normal" iconName="filter">✨ Beauty</Button>
-              <Button variant="normal" iconName="filter">🏃‍♀️ Fitness</Button>
-              <Button variant="normal" iconName="filter">🛁 Self-Care</Button>
-              <Button variant="normal" iconName="filter">🥗 Nutrition</Button>
-            </SpaceBetween>
+            <select 
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              style={{
+                padding: '8px 12px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                fontSize: '14px'
+              }}
+            >
+              <option value="">All Categories</option>
+              <option value="Supplements">💊 Supplements</option>
+              <option value="Wellness">🍵 Wellness</option>
+              <option value="Skincare">✨ Beauty</option>
+              <option value="Fitness">🏃‍♀️ Fitness</option>
+              <option value="Self-Care">🛁 Self-Care</option>
+              <option value="Nutrition">🥗 Nutrition</option>
+            </select>
+          </Grid>
+          <SpaceBetween direction="horizontal" size="s">
+            <Badge color="blue">{filteredProducts.length} products found</Badge>
+            {searchQuery && (
+              <Badge color="green">Searching: "{searchQuery}"</Badge>
+            )}
+            {selectedCategory && (
+              <Badge color="purple">Category: {selectedCategory}</Badge>
+            )}
           </SpaceBetween>
-        </Box>
+        </SpaceBetween>
       </Container>
 
       <Container>
         <Header variant="h2">Featured Products</Header>
-        <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
-          {/* Supplements */}
-          <Box padding="l" className="kadir-nelson-gradient-warm">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">💊</Box>
-                <Header variant="h4">Thyroid Support Supplement</Header>
-              </SpaceBetween>
-              <Box>
-                Natural supplements specifically formulated for Black women with thyroid conditions.
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="blue">Supplements</Badge>
-                <Badge color="green">⭐ 4.9</Badge>
-                <Badge color="grey">$29.99</Badge>
-              </SpaceBetween>
-              <Button 
-                variant="primary"
-                iconName="external"
-                onClick={() => console.log('Shop Thyroid Support')}
-              >
-                Shop Now
-              </Button>
-            </SpaceBetween>
-          </Box>
+        {featuredError && (
+          <Alert type="error">
+            Failed to load featured products. Please try again later.
+          </Alert>
+        )}
+        {featuredLoading ? (
+          <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }, { colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
+            {[1, 2, 3, 4, 5, 6].map(i => (
+              <LoadingCard key={i} height="280px" />
+            ))}
+          </Grid>
+        ) : (
+          <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }, { colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
+            {featuredProducts?.map((product, index) => {
+              const gradients = [
+                'kadir-nelson-gradient-warm', 'kadir-nelson-gradient-sage', 'kadir-nelson-gradient-earth',
+                'kadir-nelson-accent', 'kadir-nelson-secondary', 'kadir-nelson-gradient-warm'
+              ];
+              const icons = {
+                'Supplements': '💊',
+                'Skincare': '✨',
+                'Wellness': '🍵',
+                'Self-Care': '🛁',
+                'Fitness': '🏃‍♀️',
+                'Nutrition': '🥗'
+              };
+              
+              return (
+                <Box key={product.id} padding="l" className={gradients[index % 6]}>
+                  <SpaceBetween size="m">
+                    <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                      <Box fontSize="heading-l">{icons[product.category] || '✨'}</Box>
+                      <Header variant="h3">{product.productName}</Header>
+                    </SpaceBetween>
+                    <Box>
+                      {product.brand} - {product.reviewContent.substring(0, 80)}...
+                    </Box>
+                    <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                      <Badge color="grey">⭐ {product.rating}/5</Badge>
+                      <Badge color="grey">{product.price}</Badge>
+                      {product.culturalRelevance?.includes('black_owned') && (
+                        <Badge color="blue">Black-owned</Badge>
+                      )}
+                      {product.verifiedPurchase && (
+                        <Badge color="green">Verified</Badge>
+                      )}
+                    </SpaceBetween>
+                    <SpaceBetween direction="horizontal" size="s">
+                      <Button 
+                        variant="primary"
+                        iconName="external"
+                        onClick={() => handleShop(product.productName, product.brand)}
+                      >
+                        Shop Now
+                      </Button>
+                      <Button 
+                        variant="normal"
+                        loading={interacting}
+                        onClick={() => handleSave(product.id, product.productName)}
+                      >
+                        Save 💝
+                      </Button>
+                    </SpaceBetween>
+                  </SpaceBetween>
+                </Box>
+              );
+            })}
+          </Grid>
+        )}
+      </Container>
 
-          {/* Wellness */}
-          <Box padding="l" className="kadir-nelson-gradient-sage">
+      <Container>
+        <Header variant="h2">Product Collection</Header>
+        {productsError && (
+          <Alert type="error">
+            Failed to load products. Please try again later.
+          </Alert>
+        )}
+        {productsLoading ? (
+          <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
+            {[1, 2, 3, 4, 5, 6].map(i => (
+              <LoadingCard key={i} height="250px" />
+            ))}
+          </Grid>
+        ) : filteredProducts.length === 0 ? (
+          <Box textAlign="center" padding="xl">
             <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">🍵</Box>
-                <Header variant="h4">Calm Evening Tea Blend</Header>
-              </SpaceBetween>
+              <Box fontSize="heading-xl">🛍️</Box>
+              <Header variant="h3">No products found</Header>
               <Box>
-                Herbal tea blends designed to support thyroid health and reduce stress naturally.
+                {searchQuery || selectedCategory 
+                  ? 'Try adjusting your search or filter criteria.'
+                  : 'No products available at the moment.'}
               </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="blue">Wellness</Badge>
-                <Badge color="green">⭐ 4.8</Badge>
-                <Badge color="grey">$19.99</Badge>
-              </SpaceBetween>
               <Button 
                 variant="primary"
-                iconName="external"
-                onClick={() => console.log('Shop Tea Blend')}
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedCategory('');
+                }}
               >
-                Shop Now
+                Clear Filters
               </Button>
             </SpaceBetween>
           </Box>
-
-          {/* Beauty */}
-          <Box padding="l" className="kadir-nelson-gradient-earth">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">✨</Box>
-                <Header variant="h4">Gentle Skincare Set</Header>
-              </SpaceBetween>
-              <Box>
-                Gentle skincare products for sensitive skin affected by thyroid medication.
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="blue">Beauty</Badge>
-                <Badge color="green">⭐ 4.7</Badge>
-                <Badge color="grey">$45.99</Badge>
-              </SpaceBetween>
-              <Button 
-                variant="primary"
-                iconName="external"
-                onClick={() => console.log('Shop Skincare Set')}
-              >
-                Shop Now
-              </Button>
-            </SpaceBetween>
-          </Box>
-        </Grid>
-
-        <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
-          {/* Fitness */}
-          <Box padding="l" className="kadir-nelson-gradient-sage">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">🏃‍♀️</Box>
-                <Header variant="h4">Low-Impact Workout Kit</Header>
-              </SpaceBetween>
-              <Box>
-                Gentle fitness equipment designed for women managing chronic conditions.
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="blue">Fitness</Badge>
-                <Badge color="green">⭐ 4.6</Badge>
-                <Badge color="grey">$39.99</Badge>
-              </SpaceBetween>
-              <Button 
-                variant="primary"
-                iconName="external"
-                onClick={() => console.log('Shop Workout Kit')}
-              >
-                Shop Now
-              </Button>
-            </SpaceBetween>
-          </Box>
-
-          {/* Self-Care */}
-          <Box padding="l" className="kadir-nelson-secondary">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">🛁</Box>
-                <Header variant="h4">Relaxation Bath Set</Header>
-              </SpaceBetween>
-              <Box>
-                Luxurious bath products infused with calming essential oils for stress relief.
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="blue">Self-Care</Badge>
-                <Badge color="green">⭐ 4.8</Badge>
-                <Badge color="grey">$34.99</Badge>
-              </SpaceBetween>
-              <Button 
-                variant="primary"
-                iconName="external"
-                onClick={() => console.log('Shop Bath Set')}
-              >
-                Shop Now
-              </Button>
-            </SpaceBetween>
-          </Box>
-
-          {/* Nutrition */}
-          <Box padding="l" className="kadir-nelson-accent">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">🥗</Box>
-                <Header variant="h4">Thyroid-Friendly Meal Kit</Header>
-              </SpaceBetween>
-              <Box>
-                Nutritious meal ingredients specifically chosen to support thyroid health.
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="blue">Nutrition</Badge>
-                <Badge color="green">⭐ 4.5</Badge>
-                <Badge color="grey">$49.99</Badge>
-              </SpaceBetween>
-              <Button 
-                variant="primary"
-                iconName="external"
-                onClick={() => console.log('Shop Meal Kit')}
-              >
-                Shop Now
-              </Button>
-            </SpaceBetween>
-          </Box>
-        </Grid>
+        ) : (
+          <Cards
+            cardDefinition={{
+              header: item => (
+                <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                  <Box fontSize="heading-m">
+                    {item.category === 'Supplements' ? '💊' :
+                     item.category === 'Skincare' ? '✨' :
+                     item.category === 'Wellness' ? '🍵' :
+                     item.category === 'Self-Care' ? '🛁' :
+                     item.category === 'Fitness' ? '🏃‍♀️' :
+                     item.category === 'Nutrition' ? '🥗' : '🛍️'}
+                  </Box>
+                  <Header variant="h3">{item.productName}</Header>
+                </SpaceBetween>
+              ),
+              sections: [
+                {
+                  content: item => (
+                    <SpaceBetween size="s">
+                      <Box><strong>{item.brand}</strong></Box>
+                      <Box>{item.reviewContent.substring(0, 120)}...</Box>
+                      <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                        <Badge color="grey">⭐ {item.rating}/5</Badge>
+                        <Badge color="grey">{item.price}</Badge>
+                        <Badge color="blue">{item.category}</Badge>
+                        {item.culturalRelevance?.includes('black_owned') && (
+                          <Badge color="green">Black-owned</Badge>
+                        )}
+                      </SpaceBetween>
+                      <SpaceBetween direction="horizontal" size="s">
+                        <Button 
+                          variant="primary"
+                          iconName="external"
+                          onClick={() => handleShop(item.productName, item.brand)}
+                        >
+                          Shop Now
+                        </Button>
+                        <Button 
+                          variant="normal"
+                          loading={interacting}
+                          onClick={() => handleSave(item.id, item.productName)}
+                        >
+                          Save 💝
+                        </Button>
+                      </SpaceBetween>
+                    </SpaceBetween>
+                  )
+                }
+              ]
+            }}
+            items={filteredProducts}
+            cardsPerRow={[
+              { cards: 1 },
+              { minWidth: 500, cards: 2 },
+              { minWidth: 800, cards: 3 }
+            ]}
+          />
+        )}
       </Container>
 
       <Container>
         <Header variant="h2">Retail Therapy Corner</Header>
         <Box padding="l" className="kadir-nelson-secondary">
           <SpaceBetween size="s">
-            <Header variant="h4">💜 Treat Yourself Today</Header>
+            <Header variant="h3">💜 Treat Yourself Today</Header>
             <Box>
               Sometimes a little retail therapy is exactly what we need. These carefully curated items 
               are perfect for those "I deserve something nice" moments.
             </Box>
             <SpaceBetween direction="horizontal" size="s">
-              <Button size="small" variant="primary">Self-Care Sunday Kit</Button>
-              <Button size="small">Comfort Collection</Button>
-              <Button size="small">Energy Boost Bundle</Button>
+              <Button variant="primary" onClick={() => showToast('Self-Care Sunday Kit added to cart! 🛒', 'success')}>
+                Self-Care Sunday Kit
+              </Button>
+              <Button onClick={() => showToast('Comfort Collection added to cart! 🛒', 'success')}>
+                Comfort Collection
+              </Button>
+              <Button onClick={() => showToast('Energy Boost Bundle added to cart! 🛒', 'success')}>
+                Energy Boost Bundle
+              </Button>
             </SpaceBetween>
           </SpaceBetween>
         </Box>

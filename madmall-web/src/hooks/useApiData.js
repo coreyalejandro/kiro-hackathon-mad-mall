@@ -110,6 +110,13 @@ export function useFeaturedResources(limit = 4) {
 }
 
 /**
+ * Hook for resource content (alias for resource articles)
+ */
+export function useResourceContent(category = null, limit = 10) {
+  return useApiData(() => apiService.getResourceArticles(category, limit), [category, limit]);
+}
+
+/**
  * Hook for product reviews
  */
 export function useProductReviews(category = null, limit = 10) {

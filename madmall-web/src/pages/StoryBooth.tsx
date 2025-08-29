@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Header,
@@ -9,51 +9,78 @@ import {
   Box,
   Textarea,
   Icon,
-  Grid
+  Grid,
+  Input,
+  Alert
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
-
-
-const stories = [
-  {
-    id: '1',
-    title: 'My Diagnosis Journey',
-    author: 'Maya K.',
-    type: 'audio',
-    duration: '4:32',
-    likes: 23,
-    preview: 'The day I got my diagnosis, I felt like my world turned upside down. But finding this community changed everything...'
-  },
-  {
-    id: '2',
-    title: 'Finding Strength in Sisterhood',
-    author: 'Keisha R.',
-    type: 'text',
-    duration: '3 min read',
-    likes: 45,
-    preview: 'I never thought I would find people who truly understood what I was going through until I joined my first peer circle...'
-  },
-  {
-    id: '3',
-    title: 'Laughing Through the Hard Days',
-    author: 'Sarah J.',
-    type: 'audio',
-    duration: '2:15',
-    likes: 67,
-    preview: 'Sometimes you have to laugh to keep from crying. Here\'s how humor became my secret weapon against Graves...'
-  },
-  {
-    id: '4',
-    title: 'My Self-Care Revolution',
-    author: 'Tasha M.',
-    type: 'text',
-    duration: '5 min read',
-    likes: 34,
-    preview: 'Learning to put myself first wasn\'t selfish - it was survival. Here\'s how I built a self-care routine that actually works...'
-  }
-];
+import LoadingCard from '../components/LoadingCard';
+import ToastNotification from '../components/ToastNotification';
+import { useFeaturedStories, useUserStories, useContentInteraction } from '../hooks/useApiData';
+import { formatTimeAgo } from '../utils/timeUtils';
 
 export default function StoryBooth() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [toast, setToast] = useState({ show: false, message: '', type: 'info' as const });
+  const [newStory, setNewStory] = useState('');
+  
+  const { data: featuredStories, loading: featuredLoading, error: featuredError } = useFeaturedStories(3);
+  const { data: allStories, loading: storiesLoading, error: storiesError } = useUserStories(20);
+  const { likeContent, shareContent, saveContent, interacting } = useContentInteraction();
+
+  const showToast = (message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info') => {
+    setToast({ show: true, message, type });
+  };
+
+  const handleLike = async (contentId: string) => {
+    try {
+      await likeContent(contentId, 'story');
+      showToast('Story liked! ❤️', 'success');
+    } catch (error) {
+      showToast('Unable to like story right now', 'error');
+    }
+  };
+
+  const handleShare = async (contentId: string) => {
+    try {
+      await shareContent(contentId, 'story');
+      showToast('Story shared with your circles! 🔗', 'success');
+    } catch (error) {
+      showToast('Unable to share right now', 'error');
+    }
+  };
+
+  const handleSave = async (contentId: string) => {
+    try {
+      await saveContent(contentId, 'story');
+      showToast('Story saved! 📚', 'success');
+    } catch (error) {
+      showToast('Unable to save story right now', 'error');
+    }
+  };
+
+  const handlePublishStory = () => {
+    if (newStory.trim()) {
+      showToast('Story published! Thank you for sharing. 📖', 'success');
+      setNewStory('');
+    } else {
+      showToast('Please write your story first', 'warning');
+    }
+  };
+
+  const filteredStories = allStories?.filter(story => {
+    const matchesSearch = !searchQuery || 
+      story.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      story.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      story.author.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesCategory = selectedCategory === 'all' || 
+      story.themes?.includes(selectedCategory);
+    
+    return matchesSearch && matchesCategory;
+  }) || [];
+
   const floatingElements = [
     <div style={{ fontSize: '2rem', opacity: 0.6 }}>🎤</div>,
     <div style={{ fontSize: '1.5rem', opacity: 0.7 }}>📝</div>,
@@ -90,339 +117,267 @@ export default function StoryBooth() {
       />
       
       <SpaceBetween size="l">
+        <ToastNotification
+          message={toast.message}
+          type={toast.type}
+          show={toast.show}
+          onClose={() => setToast({ ...toast, show: false })}
+        />
 
-      <Container>
-        <Header variant="h2">Featured Stories</Header>
-        <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
-          {/* My Diagnosis Journey */}
-          <Box padding="l" className="kadir-nelson-gradient-warm">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">🎤</Box>
-                <Header variant="h4">My Diagnosis Journey</Header>
-              </SpaceBetween>
-              <Box>
-                The day I got my diagnosis, I felt like my world turned upside down. But finding this community changed everything...
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="grey">4:32</Badge>
-                <Badge color="blue">Audio Story</Badge>
-                <Badge color="green">❤️ 23 likes</Badge>
-              </SpaceBetween>
-              <SpaceBetween direction="horizontal" size="s">
-                <Button 
-                  variant="primary"
-                  iconName="play"
-                  onClick={() => console.log('Listen to My Diagnosis Journey')}
-                >
-                  Listen
-                </Button>
-                <Button 
-                  variant="normal"
-                  iconName="heart"
-                  onClick={() => console.log('Like story')}
-                >
-                  Like
-                </Button>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Box>
-
-          {/* Finding Strength in Sisterhood */}
-          <Box padding="l" className="kadir-nelson-gradient-sage">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">📝</Box>
-                <Header variant="h4">Finding Strength in Sisterhood</Header>
-              </SpaceBetween>
-              <Box>
-                I never thought I would find people who truly understood what I was going through until I joined my first peer circle...
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="grey">3 min read</Badge>
-                <Badge color="blue">Text Story</Badge>
-                <Badge color="green">❤️ 45 likes</Badge>
-              </SpaceBetween>
-              <SpaceBetween direction="horizontal" size="s">
-                <Button 
-                  variant="primary"
-                  iconName="external"
-                  onClick={() => console.log('Read Finding Strength in Sisterhood')}
-                >
-                  Read
-                </Button>
-                <Button 
-                  variant="normal"
-                  iconName="heart"
-                  onClick={() => console.log('Like story')}
-                >
-                  Like
-                </Button>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Box>
-
-          {/* Laughing Through the Hard Days */}
-          <Box padding="l" className="kadir-nelson-gradient-earth">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">😂</Box>
-                <Header variant="h4">Laughing Through the Hard Days</Header>
-              </SpaceBetween>
-              <Box>
-                Sometimes you have to laugh to keep from crying. Here's how humor became my secret weapon against Graves...
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="grey">2:15</Badge>
-                <Badge color="blue">Audio Story</Badge>
-                <Badge color="green">❤️ 67 likes</Badge>
-              </SpaceBetween>
-              <SpaceBetween direction="horizontal" size="s">
-                <Button 
-                  variant="primary"
-                  iconName="play"
-                  onClick={() => console.log('Listen to Laughing Through the Hard Days')}
-                >
-                  Listen
-                </Button>
-                <Button 
-                  variant="normal"
-                  iconName="heart"
-                  onClick={() => console.log('Like story')}
-                >
-                  Like
-                </Button>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Box>
-        </Grid>
-      </Container>
-
-      <Container>
-        <Header variant="h2" id="community-stories">Community Stories</Header>
-        <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
-          {/* My Diagnosis Journey */}
-          <Box padding="l" className="kadir-nelson-gradient-warm">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">🎤</Box>
-                <Header variant="h4">My Diagnosis Journey</Header>
-                <Badge color="blue">Audio</Badge>
-              </SpaceBetween>
-              <Box>
-                "The day I got my diagnosis, I felt like my world turned upside down. But finding this community changed everything..."
-              </Box>
-              <Box fontSize="body-s">
-                By Maya K.
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="grey">4:32</Badge>
-                <Badge color="green">❤️ 23 likes</Badge>
-              </SpaceBetween>
-              <SpaceBetween direction="horizontal" size="s">
-                <Button 
-                  variant="primary"
-                  iconName="play"
-                  onClick={() => console.log('Listen to My Diagnosis Journey')}
-                >
-                  Listen
-                </Button>
-                <Button 
-                  variant="normal"
-                  iconName="heart"
-                  onClick={() => console.log('Like story')}
-                >
-                  Like
-                </Button>
-                <Button 
-                  variant="normal"
-                  iconName="share"
-                  onClick={() => console.log('Share story')}
-                >
-                  Share
-                </Button>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Box>
-
-          {/* Finding Strength in Sisterhood */}
-          <Box padding="l" className="kadir-nelson-gradient-sage">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">📝</Box>
-                <Header variant="h4">Finding Strength in Sisterhood</Header>
-                <Badge color="green">Text</Badge>
-              </SpaceBetween>
-              <Box>
-                "I never thought I would find people who truly understood what I was going through until I joined my first peer circle..."
-              </Box>
-              <Box fontSize="body-s">
-                By Keisha R.
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="grey">3 min read</Badge>
-                <Badge color="green">❤️ 45 likes</Badge>
-              </SpaceBetween>
-              <SpaceBetween direction="horizontal" size="s">
-                <Button 
-                  variant="primary"
-                  iconName="external"
-                  onClick={() => console.log('Read Finding Strength in Sisterhood')}
-                >
-                  Read
-                </Button>
-                <Button 
-                  variant="normal"
-                  iconName="heart"
-                  onClick={() => console.log('Like story')}
-                >
-                  Like
-                </Button>
-                <Button 
-                  variant="normal"
-                  iconName="share"
-                  onClick={() => console.log('Share story')}
-                >
-                  Share
-                </Button>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Box>
-        </Grid>
-
-        <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
-          {/* Laughing Through the Hard Days */}
-          <Box padding="l" className="kadir-nelson-gradient-earth">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">😂</Box>
-                <Header variant="h4">Laughing Through the Hard Days</Header>
-                <Badge color="blue">Audio</Badge>
-              </SpaceBetween>
-              <Box>
-                "Sometimes you have to laugh to keep from crying. Here's how humor became my secret weapon against Graves..."
-              </Box>
-              <Box fontSize="body-s">
-                By Sarah J.
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="grey">2:15</Badge>
-                <Badge color="green">❤️ 67 likes</Badge>
-              </SpaceBetween>
-              <SpaceBetween direction="horizontal" size="s">
-                <Button 
-                  variant="primary"
-                  iconName="play"
-                  onClick={() => console.log('Listen to Laughing Through the Hard Days')}
-                >
-                  Listen
-                </Button>
-                <Button 
-                  variant="normal"
-                  iconName="heart"
-                  onClick={() => console.log('Like story')}
-                >
-                  Like
-                </Button>
-                <Button 
-                  variant="normal"
-                  iconName="share"
-                  onClick={() => console.log('Share story')}
-                >
-                  Share
-                </Button>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Box>
-
-          {/* My Self-Care Revolution */}
-          <Box padding="l" className="kadir-nelson-secondary">
-            <SpaceBetween size="m">
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Box fontSize="heading-l">💪</Box>
-                <Header variant="h4">My Self-Care Revolution</Header>
-                <Badge color="green">Text</Badge>
-              </SpaceBetween>
-              <Box>
-                "Learning to put myself first wasn't selfish - it was survival. Here's how I built a self-care routine that actually works..."
-              </Box>
-              <Box fontSize="body-s">
-                By Tasha M.
-              </Box>
-              <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Badge color="grey">5 min read</Badge>
-                <Badge color="green">❤️ 34 likes</Badge>
-              </SpaceBetween>
-              <SpaceBetween direction="horizontal" size="s">
-                <Button 
-                  variant="primary"
-                  iconName="external"
-                  onClick={() => console.log('Read My Self-Care Revolution')}
-                >
-                  Read
-                </Button>
-                <Button 
-                  variant="normal"
-                  iconName="heart"
-                  onClick={() => console.log('Like story')}
-                >
-                  Like
-                </Button>
-                <Button 
-                  variant="normal"
-                  iconName="share"
-                  onClick={() => console.log('Share story')}
-                >
-                  Share
-                </Button>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Box>
-        </Grid>
-      </Container>
-
-      <Container>
-        <Header variant="h2" id="share-story">Share Your Story</Header>
-        <SpaceBetween size="m">
-          <Box padding="l" className="kadir-nelson-secondary">
-            <SpaceBetween size="s">
-              <Header variant="h4">Need inspiration? Try these prompts:</Header>
-              <Box>You can record or write your story using one of these prompts:</Box>
-              <SpaceBetween size="xs">
-                <Box>• What would you tell someone newly diagnosed?</Box>
-                <Box>• Describe a moment when you felt truly supported</Box>
-                <Box>• Share a coping strategy that works for you</Box>
-                <Box>• What has Graves Disease taught you about yourself?</Box>
-                <Box>• Describe your ideal support system</Box>
-              </SpaceBetween>
-            </SpaceBetween>
-          </Box>
-
-          <Box padding="l" className="kadir-nelson-gradient-sage">
-            <SpaceBetween size="s">
-              <Header variant="h4">✍️ Write Your Story</Header>
-              <Textarea
-                placeholder="Share your journey, insights, or words of encouragement..."
-                rows={4}
+        <Container>
+          <Header variant="h2">Search Stories</Header>
+          <SpaceBetween size="m">
+            <Grid gridDefinition={[{ colspan: 8 }, { colspan: 4 }]}>
+              <Input
+                placeholder="Search stories by title, author, or theme..."
+                value={searchQuery}
+                onChange={({ detail }) => setSearchQuery(detail.value)}
+                type="search"
               />
-              <SpaceBetween direction="horizontal" size="s">
-                <Button variant="primary" onClick={() => console.log('Publish story')}>Publish Story</Button>
-                <Button variant="normal" onClick={() => console.log('Save draft')}>Save Draft</Button>
+              <select 
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                style={{
+                  padding: '8px 12px',
+                  borderRadius: '4px',
+                  border: '1px solid #ccc',
+                  fontSize: '14px'
+                }}
+              >
+                <option value="all">All Categories</option>
+                <option value="diagnosis">Diagnosis Journey</option>
+                <option value="self_care">Self Care</option>
+                <option value="advocacy">Medical Advocacy</option>
+                <option value="workplace">Workplace</option>
+                <option value="family">Family & Relationships</option>
+              </select>
+            </Grid>
+            <SpaceBetween direction="horizontal" size="s">
+              <Badge color="blue">{filteredStories.length} stories found</Badge>
+              {searchQuery && (
+                <Badge color="green">Searching: "{searchQuery}"</Badge>
+              )}
+              {selectedCategory !== 'all' && (
+                <Badge color="purple">Category: {selectedCategory}</Badge>
+              )}
+            </SpaceBetween>
+          </SpaceBetween>
+        </Container>
+
+        <Container>
+          <Header variant="h2">Featured Stories</Header>
+          {featuredError && (
+            <Alert type="error">
+              Failed to load featured stories. Please try again later.
+            </Alert>
+          )}
+          {featuredLoading ? (
+            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
+              <LoadingCard height="250px" />
+              <LoadingCard height="250px" />
+              <LoadingCard height="250px" />
+            </Grid>
+          ) : (
+            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
+              {featuredStories?.map((story, index) => {
+                const gradients = ['kadir-nelson-gradient-warm', 'kadir-nelson-gradient-sage', 'kadir-nelson-gradient-earth'];
+                const icons = ['🎤', '📖', '✨'];
+                
+                return (
+                  <Box key={story.id} padding="l" className={gradients[index % 3]}>
+                    <SpaceBetween size="m">
+                      <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                        <Box fontSize="heading-l">{icons[index % 3]}</Box>
+                        <Header variant="h3">"{story.title}"</Header>
+                      </SpaceBetween>
+                      <Box>
+                        {story.content.substring(0, 120)}...
+                      </Box>
+                      <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                        <Badge color="grey">{story.author}</Badge>
+                        <Badge color="grey">{story.duration}</Badge>
+                        <Badge color="grey">❤️ {story.likes}</Badge>
+                        <Badge color="grey">{formatTimeAgo(story.timestamp)}</Badge>
+                      </SpaceBetween>
+                      <SpaceBetween direction="horizontal" size="s">
+                        <Button 
+                          variant="primary"
+                          onClick={() => console.log('Read story:', story.id)}
+                        >
+                          Read Story
+                        </Button>
+                        <Button 
+                          variant="normal"
+                          loading={interacting}
+                          onClick={() => handleLike(story.id)}
+                        >
+                          Like ❤️
+                        </Button>
+                        <Button 
+                          variant="normal"
+                          loading={interacting}
+                          onClick={() => handleSave(story.id)}
+                        >
+                          Save 📚
+                        </Button>
+                      </SpaceBetween>
+                    </SpaceBetween>
+                  </Box>
+                );
+              })}
+            </Grid>
+          )}
+        </Container>
+
+        <Container>
+          <Header variant="h2" id="community-stories">Story Collection ({filteredStories.length} stories)</Header>
+          {storiesError && (
+            <Alert type="error">
+              Failed to load stories. Please try again later.
+            </Alert>
+          )}
+          {storiesLoading ? (
+            <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
+              {[1, 2, 3, 4, 5, 6].map(i => (
+                <LoadingCard key={i} height="200px" />
+              ))}
+            </Grid>
+          ) : filteredStories.length === 0 ? (
+            <Box textAlign="center" padding="xl">
+              <SpaceBetween size="m">
+                <Box fontSize="heading-xl">📖</Box>
+                <Header variant="h3">No stories found</Header>
+                <Box>
+                  {searchQuery || selectedCategory !== 'all' 
+                    ? 'Try adjusting your search or filter criteria.'
+                    : 'Be the first to share your story with the community!'}
+                </Box>
+                <Button 
+                  variant="primary"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setSelectedCategory('all');
+                  }}
+                >
+                  Clear Filters
+                </Button>
               </SpaceBetween>
-            </SpaceBetween>
-          </Box>
+            </Box>
+          ) : (
+            <Cards
+              cardDefinition={{
+                header: item => (
+                  <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                    <Box fontSize="heading-m">
+                      {item.themes?.includes('diagnosis') ? '🎯' :
+                       item.themes?.includes('self_care') ? '🌱' :
+                       item.themes?.includes('advocacy') ? '👩‍⚕️' :
+                       item.themes?.includes('workplace') ? '💼' :
+                       item.themes?.includes('family') ? '🏠' : '💪'}
+                    </Box>
+                    <Header variant="h3">{item.title}</Header>
+                  </SpaceBetween>
+                ),
+                sections: [
+                  {
+                    content: item => (
+                      <SpaceBetween size="s">
+                        <Box>{item.content.substring(0, 150)}...</Box>
+                        <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                          <Badge color="grey">{item.author}</Badge>
+                          <Badge color="grey">{item.duration}</Badge>
+                          <Badge color="grey">❤️ {item.likes}</Badge>
+                          <Badge color="grey">{formatTimeAgo(item.timestamp)}</Badge>
+                        </SpaceBetween>
+                        <SpaceBetween direction="horizontal" size="s">
+                          <Button 
+                            variant="primary"
+                            onClick={() => console.log('Read story:', item.id)}
+                          >
+                            Read Story
+                          </Button>
+                          <Button 
+                            variant="normal"
+                            loading={interacting}
+                            onClick={() => handleLike(item.id)}
+                          >
+                            Like ❤️
+                          </Button>
+                          <Button 
+                            variant="normal"
+                            loading={interacting}
+                            onClick={() => handleSave(item.id)}
+                          >
+                            Save 📚
+                          </Button>
+                        </SpaceBetween>
+                      </SpaceBetween>
+                    )
+                  }
+                ]
+              }}
+              items={filteredStories}
+              cardsPerRow={[
+                { cards: 1 },
+                { minWidth: 500, cards: 2 },
+                { minWidth: 800, cards: 3 }
+              ]}
+            />
+          )}
+        </Container>
 
-          <Box padding="l" className="kadir-nelson-gradient-warm">
-            <SpaceBetween size="s">
-              <Header variant="h4">🎤 Record Audio Story</Header>
-              <Box>Share your experience through voice - sometimes speaking feels more natural than writing.</Box>
-              <Button variant="primary" iconName="microphone" onClick={() => console.log('Start recording')}>Start Recording</Button>
-            </SpaceBetween>
-          </Box>
-        </SpaceBetween>
-      </Container>
+        <Container>
+          <Header variant="h2" id="share-story">Share Your Story</Header>
+          <SpaceBetween size="m">
+            <Box padding="l" className="kadir-nelson-secondary">
+              <SpaceBetween size="s">
+                <Header variant="h3">Need inspiration? Try these prompts:</Header>
+                <Box>You can record or write your story using one of these prompts:</Box>
+                <SpaceBetween size="xs">
+                  <Box>• What would you tell someone newly diagnosed?</Box>
+                  <Box>• Describe a moment when you felt truly supported</Box>
+                  <Box>• Share a coping strategy that works for you</Box>
+                  <Box>• What has Graves Disease taught you about yourself?</Box>
+                  <Box>• Describe your ideal support system</Box>
+                </SpaceBetween>
+              </SpaceBetween>
+            </Box>
 
+            <Box padding="l" className="kadir-nelson-gradient-sage">
+              <SpaceBetween size="s">
+                <Header variant="h3">✍️ Write Your Story</Header>
+                <Textarea
+                  placeholder="Share your journey, insights, or words of encouragement..."
+                  rows={4}
+                  value={newStory}
+                  onChange={({ detail }) => setNewStory(detail.value)}
+                />
+                <SpaceBetween direction="horizontal" size="s">
+                  <Button variant="primary" onClick={handlePublishStory}>
+                    Publish Story
+                  </Button>
+                  <Button variant="normal" onClick={() => showToast('Draft saved! 💾', 'success')}>
+                    Save Draft
+                  </Button>
+                </SpaceBetween>
+              </SpaceBetween>
+            </Box>
 
+            <Box padding="l" className="kadir-nelson-gradient-warm">
+              <SpaceBetween size="s">
+                <Header variant="h3">🎤 Record Audio Story</Header>
+                <Box>Share your experience through voice - sometimes speaking feels more natural than writing.</Box>
+                <Button 
+                  variant="primary" 
+                  iconName="microphone" 
+                  onClick={() => showToast('Recording feature coming soon! 🎤', 'info')}
+                >
+                  Start Recording
+                </Button>
+              </SpaceBetween>
+            </Box>
+          </SpaceBetween>
+        </Container>
       </SpaceBetween>
     </div>
   );
