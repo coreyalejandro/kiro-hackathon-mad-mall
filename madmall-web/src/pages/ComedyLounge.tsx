@@ -11,6 +11,7 @@ import {
   Icon
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
+import FeaturedBrands from '../components/FeaturedBrands';
 
 const comedyClips = [
   {
@@ -61,6 +62,7 @@ export default function ComedyLounge() {
   return (
     <div>
       <HeroSection
+        pageName="Comedy Lounge"
         title="Laughter is the Best Medicine"
         subtitle="Find relief through joy and humor. Our curated comedy content is designed specifically to lift your spirits and provide therapeutic relief during challenging moments."
         primaryCTA={{
@@ -87,6 +89,8 @@ export default function ComedyLounge() {
       />
       
       <SpaceBetween size="l">
+
+      <FeaturedBrands />
 
       <Container>
         <Header variant="h2" id="featured-comedy">Featured Comedy</Header>
@@ -137,7 +141,7 @@ export default function ComedyLounge() {
       </Container>
 
       <Container>
-        <Header variant="h2">Comedy Collection</Header>
+        <Header variant="h2">Featured Comedy</Header>
         <Cards
           cardDefinition={{
             header: item => (

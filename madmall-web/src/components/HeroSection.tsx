@@ -3,6 +3,7 @@ import { Button } from '@cloudscape-design/components';
 import '../styles/hero-sections.css';
 
 interface HeroSectionProps {
+  pageName?: string;
   title: string;
   subtitle: string;
   primaryCTA?: {
@@ -21,6 +22,7 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({
+  pageName,
   title,
   subtitle,
   primaryCTA,
@@ -56,6 +58,7 @@ export default function HeroSection({
       <div className="hero-container">
         <div className="hero-bento-grid">
           <div className="hero-content">
+            {pageName && <div className="hero-page-name">{pageName}</div>}
             <h1 className="hero-title">{title}</h1>
             <p className="hero-subtitle">{subtitle}</p>
             

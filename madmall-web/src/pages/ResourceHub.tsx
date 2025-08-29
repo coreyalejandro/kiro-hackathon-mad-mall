@@ -11,6 +11,7 @@ import {
   Icon
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
+import FeaturedBrands from '../components/FeaturedBrands';
 
 const resources = [
   {
@@ -65,6 +66,7 @@ export default function ResourceHub() {
   return (
     <div>
       <HeroSection
+        pageName="Resource Hub"
         title="Your Wellness Knowledge Hub"
         subtitle="Access curated health information, evidence-based wellness tips, and educational content from trusted sources. Knowledge is power on your healing journey."
         primaryCTA={{
@@ -91,6 +93,8 @@ export default function ResourceHub() {
       />
       
       <SpaceBetween size="l">
+
+      <FeaturedBrands />
 
       <Container>
         <Header variant="h2">Search Resources</Header>

@@ -11,6 +11,7 @@ import {
   Icon
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
+import FeaturedBrands from '../components/FeaturedBrands';
 
 const mallSections = [
   {
@@ -70,6 +71,7 @@ export default function Concourse() {
   return (
     <div>
       <HeroSection
+        pageName="Concourse"
         title="Welcome to Your Wellness Sanctuary"
         subtitle="A digital mall designed by and for Black women living with Graves' Disease. Find sisterhood, healing, and joy in our culturally safe community space."
         primaryCTA={{
@@ -87,6 +89,8 @@ export default function Concourse() {
       />
       
       <SpaceBetween size="l">
+
+      <FeaturedBrands />
 
       <Container>
         <Header variant="h2" id="mall-sections" className="text-rich-umber">

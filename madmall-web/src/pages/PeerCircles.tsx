@@ -10,6 +10,7 @@ import {
   Icon
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
+import FeaturedBrands from '../components/FeaturedBrands';
 
 const sampleCircles = [
   {
@@ -56,6 +57,7 @@ export default function PeerCircles() {
   return (
     <div>
       <HeroSection
+        pageName="Peer Circles"
         title="Find Your Circle of Sisters"
         subtitle="Connect with Black women who truly understand your Graves' Disease journey. Share experiences, find support, and build lasting friendships in our safe community spaces."
         primaryCTA={{
@@ -82,6 +84,8 @@ export default function PeerCircles() {
       />
       
       <SpaceBetween size="l">
+
+      <FeaturedBrands />
 
       <Container>
         <Header variant="h2" id="available-circles">Available Circles</Header>

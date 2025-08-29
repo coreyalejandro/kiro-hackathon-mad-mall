@@ -11,6 +11,7 @@ import {
   Icon
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
+import FeaturedBrands from '../components/FeaturedBrands';
 
 const stories = [
   {
@@ -61,6 +62,7 @@ export default function StoryBooth() {
   return (
     <div>
       <HeroSection
+        pageName="Story Booth"
         title="Share Your Voice, Inspire Others"
         subtitle="Every story matters. Share your journey, wisdom, and experiences to help build our supportive community. Your voice has the power to heal and inspire."
         primaryCTA={{
@@ -87,6 +89,8 @@ export default function StoryBooth() {
       />
       
       <SpaceBetween size="l">
+
+      <FeaturedBrands />
 
       <Container>
         <Header variant="h2" id="share-story">Share Your Story</Header>
