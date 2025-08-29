@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MADMall Component Inventory</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #B85450, #D4A574);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        .filters {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .filter-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .filter-group:last-child {
+            margin-bottom: 0;
+        }
+        input, select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #87A96B;
+        }
+        .card.component { border-left-color: #87A96B; }
+        .card.page { border-left-color: #B85450; }
+        .card.stylesheet { border-left-color: #D4A574; }
+        .card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        .card-type {
+            background: #f0f0f0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        .card-meta {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .tag {
+            background: #e8f4f8;
+            color: #2c5282;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>MADMall Component Inventory</h1>
+        <p>Track and manage all components, pages, and styles in the Social Wellness Hub</p>
+    </div>
+
+    <div class="filters">
+        <div class="filter-group">
+            <label>Search:</label>
+            <input type="text" id="searchInput" placeholder="Search by name, code name, or description...">
+        </div>
+        <div class="filter-group">
+            <label>Type:</label>
+            <select id="typeFilter">
+                <option value="">All Types</option>
+                <option value="component">Components</option>
+                <option value="page">Pages</option>
+                <option value="stylesheet">Stylesheets</option>
+            </select>
+            
+            <label>Status:</label>
+            <select id="statusFilter">
+                <option value="">All Status</option>
+                <option value="active">Active</option>
+                <option value="deprecated">Deprecated</option>
+                <option value="development">In Development</option>
+            </select>
+            
+            <label>Used On:</label>
+            <select id="pageFilter">
+                <option value="">All Pages</option>
+                <option value="Concourse">Concourse</option>
+                <option value="PeerCircles">Peer Circles</option>
+                <option value="ComedyLounge">Comedy Lounge</option>
+                <option value="StoryBooth">Story Booth</option>
+                <option value="Marketplace">Marketplace</option>
+                <option value="ResourceHub">Resource Hub</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="grid" id="inventoryGrid">
+        <!-- Items will be populated by JavaScript -->
+    </div>
+
+    <script>
+        // Load inventory data (in real implementation, this would fetch from the JSON file)
+        const inventoryData = {
+            components: [
+                {
+                    id: "hero-section",
+                    name: "HeroSection",
+                    codeName: "HeroSection",
+                    type: "component",
+                    filePath: "src/components/HeroSection.tsx",
+                    usedOn: ["Concourse", "PeerCircles", "ComedyLounge", "StoryBooth", "Marketplace", "ResourceHub"],
+                    description: "Main hero banner with page name, title, subtitle, and CTAs",
+                    status: "active",
+                    lastModified: "2025-01-27"
+                },
+                {
+                    id: "featured-brands",
+                    name: "FeaturedBrands", 
+                    codeName: "FeaturedBrands",
+                    type: "component",
+                    filePath: "src/components/FeaturedBrands.tsx",
+                    usedOn: ["Concourse", "PeerCircles", "ComedyLounge", "StoryBooth", "Marketplace", "ResourceHub"],
+                    description: "Displays featured Black-owned wellness brands",
+                    status: "active",
+                    lastModified: "2025-01-27"
+                }
+            ],
+            pages: [
+                {
+                    id: "concourse",
+                    name: "Concourse",
+                    codeName: "Concourse", 
+                    type: "page",
+                    filePath: "src/pages/Concourse.tsx",
+                    description: "Main landing page - wellness mall overview",
+                    status: "active",
+                    lastModified: "2025-01-27"
+                }
+                // Add other pages...
+            ],
+            styles: [
+                {
+                    id: "hero-sections-css",
+                    name: "Hero Sections CSS",
+                    codeName: "hero-sections.css",
+                    type: "stylesheet", 
+                    filePath: "src/styles/hero-sections.css",
+                    description: "AWS-style hero sections with neural depth motion effects",
+                    status: "active",
+                    lastModified: "2025-01-27"
+                }
+            ]
+        };
+
+        function renderInventory(items) {
+            const grid = document.getElementById('inventoryGrid');
+            grid.innerHTML = '';
+            
+            const allItems = [...items.components, ...items.pages, ...items.styles];
+            
+            allItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = `card ${item.type}`;
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h3 class="card-title">${item.name}</h3>
+                        <span class="card-type">${item.type}</span>
+                    </div>
+                    <div class="card-meta">
+                        <strong>Code Name:</strong> ${item.codeName}<br>
+                        <strong>File:</strong> ${item.filePath}<br>
+                        <strong>Status:</strong> ${item.status}<br>
+                        <strong>Modified:</strong> ${item.lastModified}
+                    </div>
+                    <p>${item.description}</p>
+                    ${item.usedOn ? `
+                        <div class="tags">
+                            ${item.usedOn.map(page => `<span class="tag">${page}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Initialize
+        renderInventory(inventoryData);
+
+        // Add filter functionality
+        document.getElementById('searchInput').addEventListener('input', filterItems);
+        document.getElementById('typeFilter').addEventListener('change', filterItems);
+        document.getElementById('statusFilter').addEventListener('change', filterItems);
+        document.getElementById('pageFilter').addEventListener('change', filterItems);
+
+        function filterItems() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const typeFilter = document.getElementById('typeFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const pageFilter = document.getElementById('pageFilter').value;
+
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                const type = card.classList[1];
+                
+                const matchesSearch = !search || text.includes(search);
+                const matchesType = !typeFilter || type === typeFilter;
+                const matchesStatus = !statusFilter || text.includes(statusFilter);
+                const matchesPage = !pageFilter || text.includes(pageFilter);
+                
+                if (matchesSearch && matchesType && matchesStatus && matchesPage) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

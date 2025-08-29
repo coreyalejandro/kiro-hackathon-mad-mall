@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "inventory:update": "node scripts/update-inventory.js",
+    "inventory:view": "open docs/component-dashboard.html"
   },
   "dependencies": {
     "@cloudscape-design/components": "^3.0.1074",

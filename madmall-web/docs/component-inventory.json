@@ -1,0 +1,159 @@
+{
+  "components": [
+    {
+      "id": "hero-section",
+      "name": "HeroSection",
+      "codeName": "HeroSection",
+      "type": "component",
+      "filePath": "src/components/HeroSection.tsx",
+      "usedOn": [
+        "Concourse",
+        "PeerCircles", 
+        "ComedyLounge",
+        "StoryBooth",
+        "Marketplace",
+        "ResourceHub"
+      ],
+      "description": "Main hero banner with page name, title, subtitle, and CTAs",
+      "props": ["pageName", "title", "subtitle", "primaryCTA", "secondaryCTA", "backgroundGradient", "floatingElements"],
+      "status": "active",
+      "lastModified": "2025-01-27",
+      "issues": [],
+      "dependencies": ["hero-sections.css"]
+    },
+    {
+      "id": "featured-brands",
+      "name": "FeaturedBrands",
+      "codeName": "FeaturedBrands",
+      "type": "component",
+      "filePath": "src/components/FeaturedBrands.tsx",
+      "usedOn": [
+        "Concourse",
+        "PeerCircles",
+        "ComedyLounge", 
+        "StoryBooth",
+        "Marketplace",
+        "ResourceHub"
+      ],
+      "description": "Displays featured Black-owned wellness brands",
+      "props": [],
+      "status": "active",
+      "lastModified": "2025-01-27",
+      "issues": [],
+      "dependencies": []
+    }
+  ],
+  "pages": [
+    {
+      "id": "concourse",
+      "name": "Concourse",
+      "codeName": "Concourse",
+      "type": "page",
+      "filePath": "src/pages/Concourse.tsx",
+      "route": "/",
+      "description": "Main landing page - wellness mall overview",
+      "components": ["HeroSection", "FeaturedBrands"],
+      "status": "active",
+      "lastModified": "2025-01-27",
+      "issues": []
+    },
+    {
+      "id": "peer-circles",
+      "name": "Peer Circles",
+      "codeName": "PeerCircles",
+      "type": "page",
+      "filePath": "src/pages/PeerCircles.tsx",
+      "route": "/circles",
+      "description": "Community support groups and peer connections",
+      "components": ["HeroSection", "FeaturedBrands"],
+      "status": "active",
+      "lastModified": "2025-01-27",
+      "issues": []
+    },
+    {
+      "id": "comedy-lounge",
+      "name": "Comedy Lounge",
+      "codeName": "ComedyLounge",
+      "type": "page",
+      "filePath": "src/pages/ComedyLounge.tsx",
+      "route": "/comedy",
+      "description": "Therapeutic comedy content and mood tracking",
+      "components": ["HeroSection", "FeaturedBrands"],
+      "status": "active",
+      "lastModified": "2025-01-27",
+      "issues": []
+    },
+    {
+      "id": "story-booth",
+      "name": "Story Booth",
+      "codeName": "StoryBooth",
+      "type": "page",
+      "filePath": "src/pages/StoryBooth.tsx",
+      "route": "/stories",
+      "description": "Community storytelling and experience sharing",
+      "components": ["HeroSection", "FeaturedBrands"],
+      "status": "active",
+      "lastModified": "2025-01-27",
+      "issues": []
+    },
+    {
+      "id": "marketplace",
+      "name": "Marketplace",
+      "codeName": "Marketplace",
+      "type": "page",
+      "filePath": "src/pages/Marketplace.tsx",
+      "route": "/marketplace",
+      "description": "Black-owned wellness brands and products",
+      "components": ["HeroSection", "FeaturedBrands"],
+      "status": "active",
+      "lastModified": "2025-01-27",
+      "issues": []
+    },
+    {
+      "id": "resource-hub",
+      "name": "Resource Hub",
+      "codeName": "ResourceHub",
+      "type": "page",
+      "filePath": "src/pages/ResourceHub.tsx",
+      "route": "/resources",
+      "description": "Educational content and wellness resources",
+      "components": ["HeroSection", "FeaturedBrands"],
+      "status": "active",
+      "lastModified": "2025-01-27",
+      "issues": []
+    }
+  ],
+  "styles": [
+    {
+      "id": "hero-sections-css",
+      "name": "Hero Sections CSS",
+      "codeName": "hero-sections.css",
+      "type": "stylesheet",
+      "filePath": "src/styles/hero-sections.css",
+      "usedBy": ["HeroSection"],
+      "description": "AWS-style hero sections with neural depth motion effects",
+      "status": "active",
+      "lastModified": "2025-01-27",
+      "issues": []
+    },
+    {
+      "id": "kadir-nelson-theme",
+      "name": "Kadir Nelson Theme",
+      "codeName": "kadir-nelson-theme.css",
+      "type": "stylesheet",
+      "filePath": "src/styles/kadir-nelson-theme.css",
+      "usedBy": ["All pages"],
+      "description": "Kadir Nelson-inspired color palette and theme variables",
+      "status": "active",
+      "lastModified": "2025-01-27",
+      "issues": []
+    }
+  ],
+  "metadata": {
+    "lastUpdated": "2025-01-27",
+    "version": "1.0.0",
+    "totalComponents": 2,
+    "totalPages": 6,
+    "totalStyles": 2
+  }
+}

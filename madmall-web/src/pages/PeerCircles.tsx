@@ -2,15 +2,14 @@ import React from 'react';
 import {
   Container,
   Header,
-  Cards,
+  Grid,
   Button,
   SpaceBetween,
   Badge,
-  Box,
-  Icon
+  Box
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
-import FeaturedBrands from '../components/FeaturedBrands';
+import FeaturedCircles from '../components/FeaturedCircles';
 
 const sampleCircles = [
   {
@@ -85,66 +84,167 @@ export default function PeerCircles() {
       
       <SpaceBetween size="l">
 
-      <FeaturedBrands />
+      <FeaturedCircles />
 
       <Container>
         <Header variant="h2" id="available-circles">Available Circles</Header>
-        <Cards
-          cardDefinition={{
-            header: item => (
+        <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
+          {/* Newly Diagnosed Support */}
+          <Box padding="l" className="kadir-nelson-gradient-warm">
+            <SpaceBetween size="m">
               <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Icon name="user-profile" size="medium" />
-                <Header variant="h3">{item.name}</Header>
-                {item.isJoined && <Badge color="green">Joined</Badge>}
+                <Box fontSize="heading-xl">👥</Box>
+                <Header variant="h3">Newly Diagnosed Support</Header>
               </SpaceBetween>
-            ),
-            sections: [
-              {
-                content: item => (
-                  <SpaceBetween size="s">
-                    <Box>{item.description}</Box>
-                    <SpaceBetween direction="horizontal" size="s">
-                      <Badge>{item.memberCount} members</Badge>
-                      <Badge color="blue">Active {item.recentActivity}</Badge>
-                    </SpaceBetween>
-                    <SpaceBetween direction="horizontal" size="s">
-                      <Button 
-                        variant={item.isJoined ? "normal" : "primary"}
-                        iconName={item.isJoined ? "external" : "add-plus"}
-                      >
-                        {item.isJoined ? "View Circle" : "Join Circle"}
-                      </Button>
-                      {item.isJoined && (
-                        <Button variant="normal" iconName="edit">
-                          Post Update
-                        </Button>
-                      )}
-                    </SpaceBetween>
-                  </SpaceBetween>
-                )
-              }
-            ]
-          }}
-          items={sampleCircles}
-          loadingText="Loading circles..."
-        />
+              <Box>
+                A safe space for those recently diagnosed with Graves Disease to ask questions and find support.
+              </Box>
+              <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                <Badge color="grey">45 members</Badge>
+                <Badge color="grey">Active 2 hours ago</Badge>
+              </SpaceBetween>
+              <Button 
+                variant="primary"
+                onClick={() => console.log('Join Newly Diagnosed Support')}
+              >
+                Join Circle
+              </Button>
+            </SpaceBetween>
+          </Box>
+
+          {/* Managing Anxiety Together */}
+          <Box padding="l" className="kadir-nelson-gradient-sage">
+            <SpaceBetween size="m">
+              <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                <Box fontSize="heading-xl">🧘‍♀️</Box>
+                <Header variant="h3">Managing Anxiety Together</Header>
+                <Badge color="green">Joined</Badge>
+              </SpaceBetween>
+              <Box>
+                Share coping strategies and support each other through anxiety and stress management.
+              </Box>
+              <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                <Badge color="grey">67 members</Badge>
+                <Badge color="grey">Active 30 minutes ago</Badge>
+              </SpaceBetween>
+              <SpaceBetween direction="horizontal" size="s">
+                <Button 
+                  variant="normal"
+                  onClick={() => console.log('View Managing Anxiety Together')}
+                >
+                  View Circle
+                </Button>
+                <Button 
+                  variant="normal"
+                  onClick={() => console.log('Post update')}
+                >
+                  Post Update
+                </Button>
+              </SpaceBetween>
+            </SpaceBetween>
+          </Box>
+        </Grid>
+
+        <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
+          {/* Thyroid Warriors */}
+          <Box padding="l" className="kadir-nelson-gradient-earth">
+            <SpaceBetween size="m">
+              <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                <Box fontSize="heading-xl">💪</Box>
+                <Header variant="h3">Thyroid Warriors</Header>
+              </SpaceBetween>
+              <Box>
+                For the strong women who have been fighting this battle and want to share their wisdom.
+              </Box>
+              <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                <Badge color="grey">89 members</Badge>
+                <Badge color="grey">Active 1 hour ago</Badge>
+              </SpaceBetween>
+              <Button 
+                variant="primary"
+                onClick={() => console.log('Join Thyroid Warriors')}
+              >
+                Join Circle
+              </Button>
+            </SpaceBetween>
+          </Box>
+
+          {/* Self-Care Sunday */}
+          <Box padding="l" className="kadir-nelson-accent">
+            <SpaceBetween size="m">
+              <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                <Box fontSize="heading-xl">🌸</Box>
+                <Header variant="h3">Self-Care Sunday</Header>
+                <Badge color="green">Joined</Badge>
+              </SpaceBetween>
+              <Box>
+                Weekly discussions about self-care practices, wellness routines, and treating ourselves with love.
+              </Box>
+              <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                <Badge color="grey">34 members</Badge>
+                <Badge color="grey">Active 4 hours ago</Badge>
+              </SpaceBetween>
+              <SpaceBetween direction="horizontal" size="s">
+                <Button 
+                  variant="normal"
+                  onClick={() => console.log('View Self-Care Sunday')}
+                >
+                  View Circle
+                </Button>
+                <Button 
+                  variant="normal"
+                  onClick={() => console.log('Post update')}
+                >
+                  Post Update
+                </Button>
+              </SpaceBetween>
+            </SpaceBetween>
+          </Box>
+        </Grid>
       </Container>
 
       <Container>
         <Header variant="h2">Recent Activity</Header>
-        <Box padding="s">
-          <SpaceBetween size="s">
-            <Box>
-              <strong>Sarah J.</strong> posted in <em>Managing Anxiety Together</em>: "Just tried the breathing technique we discussed - it really works! 💙"
-            </Box>
-            <Box>
-              <strong>Maya K.</strong> joined <em>Newly Diagnosed Support</em> and introduced herself
-            </Box>
-            <Box>
-              <strong>Keisha R.</strong> shared a resource in <em>Thyroid Warriors</em>: "Great article about nutrition and thyroid health"
-            </Box>
-          </SpaceBetween>
-        </Box>
+        <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
+          <Box padding="l" className="kadir-nelson-gradient-warm">
+            <SpaceBetween size="s">
+              <Header variant="h4">💬 New Discussion</Header>
+              <Box><strong>Sarah J.</strong> posted in <em>Managing Anxiety Together</em>: "Just tried the breathing technique we discussed - it really works! 💙"</Box>
+              <Button 
+                variant="normal"
+                onClick={() => console.log('View discussion')}
+              >
+                View Discussion
+              </Button>
+            </SpaceBetween>
+          </Box>
+          
+          <Box padding="l" className="kadir-nelson-gradient-sage">
+            <SpaceBetween size="s">
+              <Header variant="h4">👋 New Member</Header>
+              <Box><strong>Maya K.</strong> joined <em>Newly Diagnosed Support</em> and introduced herself</Box>
+              <Button 
+                variant="normal"
+                onClick={() => console.log('Welcome member')}
+              >
+                Welcome Maya
+              </Button>
+            </SpaceBetween>
+          </Box>
+          
+          <Box padding="l" className="kadir-nelson-gradient-earth">
+            <SpaceBetween size="s">
+              <Header variant="h4">📚 Resource Shared</Header>
+              <Box><strong>Keisha R.</strong> shared a resource in <em>Thyroid Warriors</em>: "Great article about nutrition and thyroid health"</Box>
+              <Button 
+                variant="normal"
+                onClick={() => console.log('View resource')}
+              >
+                View Resource
+              </Button>
+            </SpaceBetween>
+          </Box>
+        </Grid>
       </Container>
       </SpaceBetween>
     </div>

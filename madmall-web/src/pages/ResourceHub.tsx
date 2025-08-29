@@ -8,10 +8,11 @@ import {
   Badge,
   Box,
   Input,
-  Icon
+  Icon,
+  Grid
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
-import FeaturedBrands from '../components/FeaturedBrands';
+
 
 const resources = [
   {
@@ -94,71 +95,184 @@ export default function ResourceHub() {
       
       <SpaceBetween size="l">
 
-      <FeaturedBrands />
-
       <Container>
         <Header variant="h2">Search Resources</Header>
-        <SpaceBetween size="s">
-          <Input
-            placeholder="Search for articles, guides, tips..."
-            type="search"
-          />
-          <SpaceBetween direction="horizontal" size="s">
-            <Button variant="normal" iconName="filter">Education</Button>
-            <Button variant="normal" iconName="filter">Mental Health</Button>
-            <Button variant="normal" iconName="filter">Nutrition</Button>
-            <Button variant="normal" iconName="filter">Relationships</Button>
-            <Button variant="normal" iconName="filter">Treatment</Button>
+        <Box padding="l" className="kadir-nelson-secondary">
+          <SpaceBetween size="s">
+            <Input
+              placeholder="Search for articles, guides, tips..."
+              type="search"
+              value=""
+              onChange={() => console.log('Search')}
+            />
+            <SpaceBetween direction="horizontal" size="s">
+              <Button variant="normal" iconName="filter">📚 Education</Button>
+              <Button variant="normal" iconName="filter">🧠 Mental Health</Button>
+              <Button variant="normal" iconName="filter">🥗 Nutrition</Button>
+              <Button variant="normal" iconName="filter">💕 Relationships</Button>
+              <Button variant="normal" iconName="filter">💊 Treatment</Button>
+            </SpaceBetween>
           </SpaceBetween>
-        </SpaceBetween>
+        </Box>
       </Container>
+
+
 
       <Container>
         <Header variant="h2" id="featured-resources">Featured Resources</Header>
-        <Cards
-          cardDefinition={{
-            header: item => (
+        <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
+          {/* Understanding Graves Disease */}
+          <Box padding="l" className="kadir-nelson-gradient-warm">
+            <SpaceBetween size="m">
               <SpaceBetween direction="horizontal" size="s" alignItems="center">
-                <Icon name="book" size="medium" />
-                <Header variant="h3">{item.title}</Header>
-                {item.saved && <Badge color="green">Saved</Badge>}
+                <Box fontSize="heading-l">📚</Box>
+                <Header variant="h4">Understanding Graves Disease: A Beginner's Guide</Header>
               </SpaceBetween>
-            ),
-            sections: [
-              {
-                content: item => (
-                  <SpaceBetween size="s">
-                    <Box>{item.description}</Box>
-                    <Box fontSize="body-s" color="text-body-secondary">
-                      By {item.author}
-                    </Box>
-                    <SpaceBetween direction="horizontal" size="s">
-                      <Badge color="blue">{item.category}</Badge>
-                      <Badge>{item.readTime}</Badge>
-                      <Badge color="green">👍 {item.helpful} found helpful</Badge>
-                    </SpaceBetween>
-                    <SpaceBetween direction="horizontal" size="s">
-                      <Button variant="primary" iconName="external">
-                        Read Article
-                      </Button>
-                      <Button 
-                        variant="normal" 
-                        iconName={item.saved ? "bookmark-filled" : "bookmark"}
-                      >
-                        {item.saved ? "Saved" : "Save"}
-                      </Button>
-                      <Button variant="normal" iconName="share">
-                        Share
-                      </Button>
-                    </SpaceBetween>
-                  </SpaceBetween>
-                )
-              }
-            ]
-          }}
-          items={resources}
-          loadingText="Loading resources..."
-        />
+              <Box>
+                Comprehensive overview of symptoms, causes, and treatment options written specifically for Black women.
+              </Box>
+              <Box fontSize="body-s">
+                By Dr. Keisha Williams, MD
+              </Box>
+              <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                <Badge color="blue">Education</Badge>
+                <Badge color="grey">8 min read</Badge>
+                <Badge color="green">👍 89 found helpful</Badge>
+              </SpaceBetween>
+              <SpaceBetween direction="horizontal" size="s">
+                <Button 
+                  variant="primary"
+                  iconName="external"
+                  onClick={() => console.log('Read Understanding Graves Disease')}
+                >
+                  Read Article
+                </Button>
+                <Button 
+                  variant="normal"
+                  iconName="heart"
+                  onClick={() => console.log('Save article')}
+                >
+                  Save
+                </Button>
+              </SpaceBetween>
+            </SpaceBetween>
+          </Box>
+
+          {/* Managing Anxiety */}
+          <Box padding="l" className="kadir-nelson-gradient-sage">
+            <SpaceBetween size="m">
+              <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                <Box fontSize="heading-l">🧠</Box>
+                <Header variant="h4">Managing Anxiety with Graves Disease</Header>
+                <Badge color="green">Saved</Badge>
+              </SpaceBetween>
+              <Box>
+                Practical strategies for dealing with anxiety symptoms and finding calm during flare-ups.
+              </Box>
+              <Box fontSize="body-s">
+                By Licensed Therapist Maya Johnson
+              </Box>
+              <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                <Badge color="blue">Mental Health</Badge>
+                <Badge color="grey">5 min read</Badge>
+                <Badge color="green">👍 156 found helpful</Badge>
+              </SpaceBetween>
+              <SpaceBetween direction="horizontal" size="s">
+                <Button 
+                  variant="primary"
+                  iconName="external"
+                  onClick={() => console.log('Read Managing Anxiety')}
+                >
+                  Read Article
+                </Button>
+                <Button 
+                  variant="normal"
+                  iconName="heart"
+                  onClick={() => console.log('Save article')}
+                >
+                  Saved
+                </Button>
+              </SpaceBetween>
+            </SpaceBetween>
+          </Box>
+        </Grid>
+
+        <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
+          {/* Nutrition Guide */}
+          <Box padding="l" className="kadir-nelson-gradient-earth">
+            <SpaceBetween size="m">
+              <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                <Box fontSize="heading-l">🥗</Box>
+                <Header variant="h4">Nutrition Guide for Thyroid Health</Header>
+              </SpaceBetween>
+              <Box>
+                Foods that support thyroid function and recipes that are both delicious and healing.
+              </Box>
+              <Box fontSize="body-s">
+                By Nutritionist Sarah Davis, RD
+              </Box>
+              <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                <Badge color="blue">Nutrition</Badge>
+                <Badge color="grey">12 min read</Badge>
+                <Badge color="green">👍 203 found helpful</Badge>
+              </SpaceBetween>
+              <SpaceBetween direction="horizontal" size="s">
+                <Button 
+                  variant="primary"
+                  iconName="external"
+                  onClick={() => console.log('Read Nutrition Guide')}
+                >
+                  Read Article
+                </Button>
+                <Button 
+                  variant="normal"
+                  iconName="heart"
+                  onClick={() => console.log('Save article')}
+                >
+                  Save
+                </Button>
+              </SpaceBetween>
+            </SpaceBetween>
+          </Box>
+
+          {/* Building Support Network */}
+          <Box padding="l" className="kadir-nelson-accent">
+            <SpaceBetween size="m">
+              <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                <Box fontSize="heading-l">💕</Box>
+                <Header variant="h4">Building Your Support Network</Header>
+                <Badge color="green">Saved</Badge>
+              </SpaceBetween>
+              <Box>
+                How to communicate with family and friends about your condition and build understanding.
+              </Box>
+              <Box fontSize="body-s">
+                By Community Health Advocate
+              </Box>
+              <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                <Badge color="blue">Relationships</Badge>
+                <Badge color="grey">6 min read</Badge>
+                <Badge color="green">👍 134 found helpful</Badge>
+              </SpaceBetween>
+              <SpaceBetween direction="horizontal" size="s">
+                <Button 
+                  variant="primary"
+                  iconName="external"
+                  onClick={() => console.log('Read Building Support Network')}
+                >
+                  Read Article
+                </Button>
+                <Button 
+                  variant="normal"
+                  iconName="heart"
+                  onClick={() => console.log('Save article')}
+                >
+                  Saved
+                </Button>
+              </SpaceBetween>
+            </SpaceBetween>
+          </Box>
+        </Grid>
       </Container>
 
       <Container>

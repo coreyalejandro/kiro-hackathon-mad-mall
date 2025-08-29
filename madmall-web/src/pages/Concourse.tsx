@@ -11,7 +11,6 @@ import {
   Icon
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
-import FeaturedBrands from '../components/FeaturedBrands';
 
 const mallSections = [
   {
@@ -90,8 +89,6 @@ export default function Concourse() {
       
       <SpaceBetween size="l">
 
-      <FeaturedBrands />
-
       <Container>
         <Header variant="h2" id="mall-sections" className="text-rich-umber">
           Explore Your Wellness Mall
@@ -116,8 +113,8 @@ export default function Concourse() {
                 </Badge>
               </SpaceBetween>
               <Button 
-                variant="primary" 
-                href="/circles"
+                variant="primary"
+                onClick={() => window.location.href = '/circles'}
               >
                 Visit Peer Circles
               </Button>
@@ -143,8 +140,8 @@ export default function Concourse() {
                 </Badge>
               </SpaceBetween>
               <Button 
-                variant="primary" 
-                href="/comedy"
+                variant="primary"
+                onClick={() => window.location.href = '/comedy'}
               >
                 Visit Comedy Lounge
               </Button>
@@ -167,8 +164,8 @@ export default function Concourse() {
                 23 stories today
               </Badge>
               <Button 
-                size="small"
-                href="/stories"
+                variant="primary"
+                onClick={() => window.location.href = '/stories'}
               >
                 Visit Story Booth
               </Button>
@@ -189,8 +186,8 @@ export default function Concourse() {
                 89 featured brands
               </Badge>
               <Button 
-                size="small"
-                href="/marketplace"
+                variant="primary"
+                onClick={() => window.location.href = '/marketplace'}
               >
                 Visit Marketplace
               </Button>
@@ -211,8 +208,8 @@ export default function Concourse() {
                 156 articles available
               </Badge>
               <Button 
-                size="small"
-                href="/resources"
+                variant="primary"
+                onClick={() => window.location.href = '/resources'}
               >
                 Visit Resource Hub
               </Button>
@@ -231,7 +228,8 @@ export default function Concourse() {
               <Header variant="h4">💬 Active Discussions</Header>
               <Box>Join the conversation in "Managing Anxiety Together" - 12 new messages</Box>
               <Button 
-                size="small"
+                variant="normal"
+                onClick={() => console.log('Join discussion')}
               >
                 Join Discussion
               </Button>
@@ -243,7 +241,8 @@ export default function Concourse() {
               <Header variant="h4">😂 Comedy Relief</Header>
               <Box>New "Graves Giggles" collection just dropped - 5 minutes of pure joy</Box>
               <Button 
-                size="small"
+                variant="normal"
+                onClick={() => window.location.href = '/comedy'}
               >
                 Watch Now
               </Button>
@@ -255,7 +254,8 @@ export default function Concourse() {
               <Header variant="h4">🛍️ Featured Brand</Header>
               <Box>Discover "Melanin Wellness Co." - Natural supplements for thyroid support</Box>
               <Button 
-                size="small"
+                variant="normal"
+                onClick={() => window.location.href = '/marketplace'}
               >
                 Shop Now
               </Button>
