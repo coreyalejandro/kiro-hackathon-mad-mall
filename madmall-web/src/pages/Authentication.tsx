@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Container,
   Header,
   SpaceBetween,
-  Box,
-  Alert
+  Box
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
-import AuthForm, { AuthFormData } from '../components/AuthForm';
+import AuthForm, { type AuthFormData } from '../components/AuthForm';
 import OnboardingFlow from '../components/OnboardingFlow';
 import ToastNotification from '../components/ToastNotification';
 
@@ -18,8 +17,8 @@ export default function Authentication() {
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [toast, setToast] = useState({ show: false, message: '', type: 'info' as const });
-  const [userEmail, setUserEmail] = useState('');
+  const [toast, setToast] = useState<{ show: boolean; message: string; type: 'success' | 'error' | 'info' | 'warning' }>({ show: false, message: '', type: 'info' });
+  const [, setUserEmail] = useState('');
 
   const showToast = (message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info') => {
     setToast({ show: true, message, type });
@@ -62,7 +61,7 @@ export default function Authentication() {
     }
   };
 
-  const handleOnboardingComplete = async (data: any) => {
+  const handleOnboardingComplete = async (_data: any) => {
     setLoading(true);
     setError('');
 

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Container,
   Header,
-  Form,
   FormField,
   Input,
   Button,
@@ -10,8 +9,7 @@ import {
   Box,
   Alert,
   Link,
-  Checkbox,
-  Textarea
+  Checkbox
 } from '@cloudscape-design/components';
 
 interface AuthFormProps {
@@ -134,7 +132,7 @@ export default function AuthForm({ mode, onSubmit, onModeChange, loading = false
           </Alert>
         )}
 
-        <Form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <SpaceBetween size="m">
             {mode === 'register' && (
               <>
@@ -229,7 +227,6 @@ export default function AuthForm({ mode, onSubmit, onModeChange, loading = false
             <SpaceBetween direction="horizontal" size="s">
               <Button
                 variant="primary"
-                formAction="submit"
                 loading={loading}
                 disabled={loading}
               >
@@ -246,7 +243,7 @@ export default function AuthForm({ mode, onSubmit, onModeChange, loading = false
               )}
             </SpaceBetween>
           </SpaceBetween>
-        </Form>
+        </form>
 
         <Box textAlign="center">
           <SpaceBetween size="s">

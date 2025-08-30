@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import '@cloudscape-design/global-styles/index.css';
 import './styles/kadir-nelson-theme.css';
@@ -14,14 +13,14 @@ import Authentication from './pages/Authentication';
 import UserProfile from './components/UserProfile';
 
 const navigationItems = [
-  { type: 'link', text: 'Concourse', href: '/' },
-  { type: 'divider' },
-  { type: 'link', text: 'Peer Circles', href: '/circles' },
-  { type: 'link', text: 'Comedy Lounge', href: '/comedy' },
-  { type: 'link', text: 'Story Booth', href: '/stories' },
-  { type: 'divider' },
-  { type: 'link', text: 'Marketplace', href: '/marketplace' },
-  { type: 'link', text: 'Resource Hub', href: '/resources' },
+  { type: 'link' as const, text: 'Concourse', href: '/' },
+  { type: 'divider' as const },
+  { type: 'link' as const, text: 'Peer Circles', href: '/circles' },
+  { type: 'link' as const, text: 'Comedy Lounge', href: '/comedy' },
+  { type: 'link' as const, text: 'Story Booth', href: '/stories' },
+  { type: 'divider' as const },
+  { type: 'link' as const, text: 'Marketplace', href: '/marketplace' },
+  { type: 'link' as const, text: 'Resource Hub', href: '/resources' },
 ];
 
 function App() {
