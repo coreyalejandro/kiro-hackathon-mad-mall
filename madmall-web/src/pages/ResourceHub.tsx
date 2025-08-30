@@ -90,6 +90,7 @@ export default function ResourceHub() {
         pageName="Resource Hub"
         title="Your Wellness Knowledge Hub"
         subtitle="Access curated health information, evidence-based wellness tips, and educational content from trusted sources. Knowledge is power on your healing journey."
+        variant="contained"
         primaryCTA={{
           text: "Explore Resources",
           onClick: () => document.getElementById('featured-resources')?.scrollIntoView({ behavior: 'smooth' }),
@@ -111,6 +112,22 @@ export default function ResourceHub() {
             </div>
           </div>
         }
+        bentoBoxes={[
+          {
+            title: "156 Articles Available",
+            content: "Curated health information from trusted sources",
+            icon: "📚",
+            action: () => document.getElementById('featured-resources')?.scrollIntoView({ behavior: 'smooth' }),
+            size: 'medium'
+          },
+          {
+            title: "Quick Tools",
+            content: "Symptom tracker, medication reminders, doctor finder",
+            icon: "🛠️",
+            action: () => console.log('Open tools'),
+            size: 'medium'
+          }
+        ]}
       />
       
       <SpaceBetween size="l">

@@ -103,6 +103,7 @@ export default function StoryBooth() {
         pageName="Story Booth"
         title="Share Your Voice, Inspire Others"
         subtitle="Every story matters. Share your journey, wisdom, and experiences to help build our supportive community. Your voice has the power to heal and inspire."
+        variant="contained"
         primaryCTA={{
           text: "Record Story",
           onClick: () => document.getElementById('share-story')?.scrollIntoView({ behavior: 'smooth' }),
@@ -124,6 +125,22 @@ export default function StoryBooth() {
             </div>
           </div>
         }
+        bentoBoxes={[
+          {
+            title: "23 Stories Today",
+            content: "Community members sharing their journeys",
+            icon: "📖",
+            action: () => document.getElementById('community-stories')?.scrollIntoView({ behavior: 'smooth' }),
+            size: 'medium'
+          },
+          {
+            title: "Share Your Experience",
+            content: "Write or record your story to inspire others",
+            icon: "✍️",
+            action: () => document.getElementById('share-story')?.scrollIntoView({ behavior: 'smooth' }),
+            size: 'medium'
+          }
+        ]}
       />
       
       <SpaceBetween size="l">

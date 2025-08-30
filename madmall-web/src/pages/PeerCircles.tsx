@@ -59,6 +59,7 @@ export default function PeerCircles() {
         pageName="Peer Circles"
         title="Find Your Circle of Sisters"
         subtitle="Connect with Black women who truly understand your Graves' Disease journey. Share experiences, find support, and build lasting friendships in our safe community spaces."
+        variant="contained"
         primaryCTA={{
           text: "Join a Circle",
           onClick: () => document.getElementById('available-circles')?.scrollIntoView({ behavior: 'smooth' }),
@@ -80,6 +81,22 @@ export default function PeerCircles() {
             </div>
           </div>
         }
+        bentoBoxes={[
+          {
+            title: "67 Members Active",
+            content: "Join 'Managing Anxiety Together' - most active circle",
+            icon: "🧘‍♀️",
+            action: () => console.log('Join anxiety circle'),
+            size: 'medium'
+          },
+          {
+            title: "New Discussion",
+            content: "Sarah J. shared breathing techniques that work",
+            icon: "💬",
+            action: () => console.log('View discussion'),
+            size: 'medium'
+          }
+        ]}
       />
       
       <SpaceBetween size="l">

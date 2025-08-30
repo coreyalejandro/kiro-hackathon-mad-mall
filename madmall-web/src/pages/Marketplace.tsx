@@ -85,6 +85,7 @@ export default function Marketplace() {
         pageName="Marketplace"
         title="Support Black-Owned Wellness"
         subtitle="Discover and support Black-owned wellness brands that understand your journey and celebrate your culture. Every purchase supports sisterhood and healing."
+        variant="contained"
         primaryCTA={{
           text: "Shop Brands",
           onClick: () => document.getElementById('featured-brands')?.scrollIntoView({ behavior: 'smooth' }),
@@ -106,6 +107,22 @@ export default function Marketplace() {
             </div>
           </div>
         }
+        bentoBoxes={[
+          {
+            title: "89 Featured Brands",
+            content: "Curated Black-owned wellness businesses",
+            icon: "🏪",
+            action: () => document.getElementById('featured-brands')?.scrollIntoView({ behavior: 'smooth' }),
+            size: 'medium'
+          },
+          {
+            title: "Melanin Wellness Co.",
+            content: "Featured brand: Natural thyroid support supplements",
+            icon: "💊",
+            action: () => console.log('View featured brand'),
+            size: 'large'
+          }
+        ]}
       />
       
       <SpaceBetween size="l">

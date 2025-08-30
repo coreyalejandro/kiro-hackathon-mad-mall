@@ -141,6 +141,44 @@ import { useState, useEffect } from 'react';
 
 ---
 
+### Issue #6: Hook Parameter Type Errors
+**Date:** 2025-08-30  
+**Error Code:** `TS2345`  
+**Full Error:**
+```
+Argument of type 'string | null' is not assignable to parameter of type 'null | undefined'.
+Type 'string' is not assignable to type 'null | undefined'.
+```
+
+**Location:** Various hook calls in components  
+**Root Cause:** 
+Hook functions lacked explicit TypeScript parameter types, causing type inference issues.
+
+**Solution:**
+```typescript
+// ❌ WRONG - No explicit types
+export function useComedyContent(category = null, limit = 10) {
+
+// ✅ CORRECT - Explicit parameter types
+export function useComedyContent(category: string | null = null, limit: number = 10) {
+```
+
+**Pattern for All Hooks:**
+```typescript
+// For hooks with optional category/filter parameters
+export function useHookName(category: string | null = null, limit: number = 10) {
+
+// For hooks with only limit parameters  
+export function useHookName(limit: number = 10) {
+
+// For hooks with multiple string parameters
+export function useHookName(param1: string = 'default', param2: string = 'all', limit: number = 5) {
+```
+
+**Prevention:** Always add explicit TypeScript types to function parameters, especially with default values.
+
+---
+
 ## 🔧 Common TypeScript Fixes
 
 ### Type-Only Imports

@@ -1,66 +1,18 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Container,
   Header,
   Grid,
   Box,
-  Cards,
   Button,
   SpaceBetween,
-  Badge,
-  Icon
+  Badge
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
 import InteractiveStats from '../components/InteractiveStats';
 import '../styles/concourse-interactions.css';
 
-const mallSections = [
-  {
-    id: 'peer-circles',
-    title: 'Peer Circles',
-    description: 'Connect with sisters who understand your journey. Share experiences, find support, and build lasting friendships.',
-    icon: 'user-profile',
-    color: 'blue',
-    href: '/circles',
-    stats: '127 active members'
-  },
-  {
-    id: 'comedy-lounge',
-    title: 'Comedy Lounge',
-    description: 'Find relief through laughter. Curated comedy content designed to lift your spirits and reduce stress.',
-    icon: 'heart',
-    color: 'green',
-    href: '/comedy',
-    stats: '45 new clips this week'
-  },
-  {
-    id: 'story-booth',
-    title: 'Story Booth',
-    description: 'Share your voice. Record audio stories, write posts, and inspire others with your experiences.',
-    icon: 'microphone',
-    color: 'purple',
-    href: '/stories',
-    stats: '23 stories shared today'
-  },
-  {
-    id: 'marketplace',
-    title: 'Marketplace',
-    description: 'Support Black-owned wellness brands. Discover products that celebrate your culture and support your health.',
-    icon: 'shopping-cart',
-    color: 'orange',
-    href: '/marketplace',
-    stats: '89 featured brands'
-  },
-  {
-    id: 'resource-hub',
-    title: 'Resource Hub',
-    description: 'Access curated health information, wellness tips, and educational content from trusted sources.',
-    icon: 'book',
-    color: 'teal',
-    href: '/resources',
-    stats: '156 articles available'
-  }
-];
+
 
 export default function Concourse() {
   const [feedback, setFeedback] = useState('');
@@ -98,6 +50,7 @@ export default function Concourse() {
         pageName="Concourse"
         title="Welcome to Your Wellness Sanctuary"
         subtitle="A digital mall designed by and for Black women living with Graves' Disease. Find sisterhood, healing, and joy in our culturally safe community space."
+        variant="contained"
         primaryCTA={{
           text: "Join a Circle",
           onClick: () => window.location.href = '/circles',
@@ -110,6 +63,29 @@ export default function Concourse() {
         }}
         backgroundGradient="linear-gradient(135deg, var(--color-burnt-sienna), var(--color-golden-ochre), var(--color-sage-green))"
         floatingElements={floatingElements}
+        bentoBoxes={[
+          {
+            title: "127 Active Members",
+            content: "Join our growing community of sisters supporting each other",
+            icon: "👥",
+            action: () => window.location.href = '/circles',
+            size: 'medium'
+          },
+          {
+            title: "45 New Comedy Clips",
+            content: "Fresh therapeutic content added this week",
+            icon: "😂",
+            action: () => window.location.href = '/comedy',
+            size: 'medium'
+          },
+          {
+            title: "4.8/5 Relief Rating",
+            content: "Community-rated therapeutic effectiveness",
+            icon: "⭐",
+            action: () => document.getElementById('mall-sections')?.scrollIntoView({ behavior: 'smooth' }),
+            size: 'large'
+          }
+        ]}
       />
       
       <SpaceBetween size="l">
@@ -137,14 +113,15 @@ export default function Concourse() {
         <div className="interactive-grid">
           <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
             {/* Peer Circles */}
-            <Box 
-              padding="l" 
+            <div 
               className="kadir-nelson-gradient-warm mall-section-card ripple-effect"
               onClick={() => handleSectionClick('Peer Circles', '/circles')}
               tabIndex={0}
               role="button"
               aria-label="Visit Peer Circles"
+              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
+              <Box padding="l">
               <SpaceBetween size="m">
                 <SpaceBetween direction="horizontal" size="s" alignItems="center">
                   <Box fontSize="heading-xl" className="mall-section-icon">👥</Box>
@@ -172,17 +149,19 @@ export default function Concourse() {
                   Visit Peer Circles
                 </Button>
               </SpaceBetween>
-            </Box>
+              </Box>
+            </div>
 
             {/* Comedy Lounge */}
-            <Box 
-              padding="l" 
+            <div 
               className="kadir-nelson-gradient-sage mall-section-card ripple-effect"
               onClick={() => handleSectionClick('Comedy Lounge', '/comedy')}
               tabIndex={0}
               role="button"
               aria-label="Visit Comedy Lounge"
+              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
+              <Box padding="l">
               <SpaceBetween size="m">
                 <SpaceBetween direction="horizontal" size="s" alignItems="center">
                   <Box fontSize="heading-xl" className="mall-section-icon">😂</Box>
@@ -210,25 +189,27 @@ export default function Concourse() {
                   Visit Comedy Lounge
                 </Button>
               </SpaceBetween>
-            </Box>
+              </Box>
+            </div>
           </Grid>
         </div>
 
         <div className="interactive-grid">
           <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
             {/* Story Booth */}
-            <Box 
-              padding="l" 
+            <div 
               className="kadir-nelson-gradient-earth mall-section-card ripple-effect"
               onClick={() => handleSectionClick('Story Booth', '/stories')}
               tabIndex={0}
               role="button"
               aria-label="Visit Story Booth"
+              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
+              <Box padding="l">
               <SpaceBetween size="m">
                 <SpaceBetween direction="horizontal" size="s" alignItems="center">
                   <Box fontSize="heading-l" className="mall-section-icon">🎤</Box>
-                  <Header variant="h4">Story Booth</Header>
+                  <Header variant="h3">Story Booth</Header>
                 </SpaceBetween>
                 <Box>
                   Share your voice. Record audio stories, write posts, and inspire others.
@@ -247,21 +228,23 @@ export default function Concourse() {
                   Visit Story Booth
                 </Button>
               </SpaceBetween>
-            </Box>
+              </Box>
+            </div>
 
             {/* Marketplace */}
-            <Box 
-              padding="l" 
+            <div 
               className="kadir-nelson-accent mall-section-card ripple-effect"
               onClick={() => handleSectionClick('Marketplace', '/marketplace')}
               tabIndex={0}
               role="button"
               aria-label="Visit Marketplace"
+              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
+              <Box padding="l">
               <SpaceBetween size="m">
                 <SpaceBetween direction="horizontal" size="s" alignItems="center">
                   <Box fontSize="heading-l" className="mall-section-icon">🛍️</Box>
-                  <Header variant="h4">Marketplace</Header>
+                  <Header variant="h3">Marketplace</Header>
                 </SpaceBetween>
                 <Box>
                   Support Black-owned wellness brands that celebrate your culture.
@@ -280,21 +263,23 @@ export default function Concourse() {
                   Visit Marketplace
                 </Button>
               </SpaceBetween>
-            </Box>
+              </Box>
+            </div>
 
             {/* Resource Hub */}
-            <Box 
-              padding="l" 
+            <div 
               className="kadir-nelson-secondary mall-section-card ripple-effect"
               onClick={() => handleSectionClick('Resource Hub', '/resources')}
               tabIndex={0}
               role="button"
               aria-label="Visit Resource Hub"
+              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
+              <Box padding="l">
               <SpaceBetween size="m">
                 <SpaceBetween direction="horizontal" size="s" alignItems="center">
                   <Box fontSize="heading-l" className="mall-section-icon">📚</Box>
-                  <Header variant="h4">Resource Hub</Header>
+                  <Header variant="h3">Resource Hub</Header>
                 </SpaceBetween>
                 <Box>
                   Access curated health information and wellness tips from trusted sources.
@@ -313,7 +298,8 @@ export default function Concourse() {
                   Visit Resource Hub
                 </Button>
               </SpaceBetween>
-            </Box>
+              </Box>
+            </div>
           </Grid>
         </div>
       </Container>
@@ -324,16 +310,17 @@ export default function Concourse() {
         </Header>
         <div className="interactive-grid">
           <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
-            <Box 
-              padding="l" 
+            <div 
               className="kadir-nelson-gradient-warm highlight-card"
               onClick={() => showInteractionFeedback('Joining discussion...')}
               tabIndex={0}
               role="button"
               aria-label="Join Active Discussion"
+              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
+              <Box padding="l">
               <SpaceBetween size="s">
-                <Header variant="h4" className="breadcrumb-trail">💬 Active Discussions</Header>
+                <Header variant="h3" className="breadcrumb-trail">💬 Active Discussions</Header>
                 <Box>Join the conversation in "Managing Anxiety Together" - 12 new messages</Box>
                 <Button 
                   variant="normal"
@@ -346,10 +333,10 @@ export default function Concourse() {
                   Join Discussion
                 </Button>
               </SpaceBetween>
-            </Box>
+              </Box>
+            </div>
             
-            <Box 
-              padding="l" 
+            <div 
               className="kadir-nelson-gradient-sage highlight-card"
               onClick={() => {
                 showInteractionFeedback('Loading comedy content...');
@@ -358,9 +345,11 @@ export default function Concourse() {
               tabIndex={0}
               role="button"
               aria-label="Watch Comedy Content"
+              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
+              <Box padding="l">
               <SpaceBetween size="s">
-                <Header variant="h4" className="breadcrumb-trail">😂 Comedy Relief</Header>
+                <Header variant="h3" className="breadcrumb-trail">😂 Comedy Relief</Header>
                 <Box>New "Graves Giggles" collection just dropped - 5 minutes of pure joy</Box>
                 <Button 
                   variant="normal"
@@ -374,10 +363,10 @@ export default function Concourse() {
                   Watch Now
                 </Button>
               </SpaceBetween>
-            </Box>
+              </Box>
+            </div>
             
-            <Box 
-              padding="l" 
+            <div 
               className="kadir-nelson-gradient-earth highlight-card"
               onClick={() => {
                 showInteractionFeedback('Opening marketplace...');
@@ -386,9 +375,11 @@ export default function Concourse() {
               tabIndex={0}
               role="button"
               aria-label="Shop Featured Brand"
+              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
+              <Box padding="l">
               <SpaceBetween size="s">
-                <Header variant="h4" className="breadcrumb-trail">🛍️ Featured Brand</Header>
+                <Header variant="h3" className="breadcrumb-trail">🛍️ Featured Brand</Header>
                 <Box>Discover "Melanin Wellness Co." - Natural supplements for thyroid support</Box>
                 <Button 
                   variant="normal"
@@ -402,7 +393,8 @@ export default function Concourse() {
                   Shop Now
                 </Button>
               </SpaceBetween>
-            </Box>
+              </Box>
+            </div>
           </Grid>
         </div>
       </Container>

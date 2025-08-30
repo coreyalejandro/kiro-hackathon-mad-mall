@@ -76,6 +76,7 @@ export default function ComedyLounge() {
         pageName="Comedy Lounge"
         title="Laughter is the Best Medicine"
         subtitle="Find relief through joy and humor. Our curated comedy content is designed specifically to lift your spirits and provide therapeutic relief during challenging moments."
+        variant="contained"
         primaryCTA={{
           text: "Watch Comedy",
           onClick: () => document.getElementById('featured-comedy')?.scrollIntoView({ behavior: 'smooth' }),
@@ -97,6 +98,22 @@ export default function ComedyLounge() {
             </div>
           </div>
         }
+        bentoBoxes={[
+          {
+            title: "5 New Clips Today",
+            content: "Fresh 'Graves Giggles' collection just dropped",
+            icon: "🎭",
+            action: () => document.getElementById('featured-comedy')?.scrollIntoView({ behavior: 'smooth' }),
+            size: 'medium'
+          },
+          {
+            title: "4.9 Relief Rating",
+            content: "Community rates our content highly therapeutic",
+            icon: "⭐",
+            action: () => document.getElementById('mood-rating')?.scrollIntoView({ behavior: 'smooth' }),
+            size: 'medium'
+          }
+        ]}
       />
       
       <SpaceBetween size="l">

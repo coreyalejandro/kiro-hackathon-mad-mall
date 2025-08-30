@@ -287,7 +287,7 @@ sual Identity and Branding Tasks
   - Test color combinations for readability and cultural appropriateness
   - _Requirements: 9.1, 9.3, culturally resonant visual design_
 
-- [ ] 36. Apply custom theming to all UI components
+- [x] 36. Apply custom theming to all UI components
   - Update all Cloudscape components to use custom earthy color palette
   - Implement consistent spacing and typography with earthy theme
   - Create custom component variants for mall sections with unique colors
@@ -296,7 +296,7 @@ sual Identity and Branding Tasks
   - _Requirements: Cohesive visual experience supporting wellness goals_## Visua
 l Enhancement and Representation Tasks
 
-- [ ] 37. Create AWS-style viewport hero sections for each page
+- [x] 37. Create AWS-style viewport hero sections for each page
   - Design large bento box containers similar to AWS homepage layout
   - Implement viewport-sized hero sections at top of each page
   - Create responsive grid layouts that adapt to different screen sizes
