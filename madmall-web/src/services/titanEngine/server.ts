@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { CONFIG } from './config.js';
 import { GenerateRequest, SelectRequest, ValidationDecision } from './types.js';
-import { importFromUnsplash, generateAI, approveImage, addFeedback, getPending, selectForContext } from './services/images.js';
+import { importFromUnsplash, importFromPexels, importCulturallyAppropriate, generateAI, approveImage, addFeedback, getPending, selectForContext } from './services/images.js';
 import bodyParser from 'body-parser';
 
 const app = express();
@@ -17,6 +17,28 @@ app.post('/api/images/import/unsplash', async (req, res) => {
   try {
     const { query, category, count } = req.body as { query: string; category: any; count: number };
     const c = await importFromUnsplash(query, category, Math.min(count || 10, 30));
+    res.json({ imported: c });
+  } catch (e: any) {
+    res.status(400).json({ error: e.message });
+  }
+});
+
+// Import Pexels
+app.post('/api/images/import/pexels', async (req, res) => {
+  try {
+    const { query, category, count } = req.body as { query: string; category: any; count: number };
+    const c = await importFromPexels(query, category, Math.min(count || 10, 80));
+    res.json({ imported: c });
+  } catch (e: any) {
+    res.status(400).json({ error: e.message });
+  }
+});
+
+// Import Culturally Appropriate (Pexels with curated search terms)
+app.post('/api/images/import/cultural', async (req, res) => {
+  try {
+    const { category, count } = req.body as { category: any; count: number };
+    const c = await importCulturallyAppropriate(category, Math.min(count || 10, 20));
     res.json({ imported: c });
   } catch (e: any) {
     res.status(400).json({ error: e.message });

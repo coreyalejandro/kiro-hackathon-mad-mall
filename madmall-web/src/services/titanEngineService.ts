@@ -56,6 +56,34 @@ class TitanEngineService {
     return response.json();
   }
 
+  async importFromPexels(query: string, category: string, count = 10): Promise<ImageRecord[]> {
+    const response = await fetch(`${this.baseUrl}/api/images/import/pexels`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, category, count })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Pexels import failed: ${response.statusText}`);
+    }
+    
+    return response.json();
+  }
+
+  async importCulturallyAppropriate(category: string, count = 10): Promise<ImageRecord[]> {
+    const response = await fetch(`${this.baseUrl}/api/images/import/cultural`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ category, count })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Cultural import failed: ${response.statusText}`);
+    }
+    
+    return response.json();
+  }
+
   async generateImages(request: GenerateRequest): Promise<ImageRecord[]> {
     const response = await fetch(`${this.baseUrl}/api/images/generate`, {
       method: 'POST',

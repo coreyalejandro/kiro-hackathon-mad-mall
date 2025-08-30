@@ -19,7 +19,7 @@ interface ImageLibrary {
 }
 
 export const imageLibrary: ImageLibrary = {
-  // Hero section images - large, impactful images for page headers
+  // Hero section images - ALL using the one appropriate image of Black woman
   heroes: {
     concourse: {
       primary: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
@@ -27,59 +27,59 @@ export const imageLibrary: ImageLibrary = {
       emotion: "welcoming, confident, leadership"
     },
     peerCircles: {
-      primary: "https://images.unsplash.com/photo-1509909756405-be0199881695?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-      alt: "Black women in supportive conversation, representing peer connection and community",
+      primary: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+      alt: "Confident Black woman representing peer connection and community support",
       emotion: "supportive, connected, sisterhood"
     },
     comedyLounge: {
-      primary: "https://images.unsplash.com/photo-1562788869-4ed32648eb72?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-      alt: "Black woman laughing joyfully, representing healing through humor and joy",
+      primary: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+      alt: "Confident Black woman representing healing through humor and joy",
       emotion: "joyful, healing, laughter"
     },
     marketplace: {
-      primary: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-      alt: "Black woman entrepreneur with products, representing Black-owned business empowerment",
+      primary: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+      alt: "Confident Black woman representing Black-owned business empowerment",
       emotion: "entrepreneurial, empowered, successful"
     },
     resourceHub: {
-      primary: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-      alt: "Black woman reading and learning, representing knowledge and personal growth",
+      primary: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+      alt: "Confident Black woman representing knowledge and personal growth",
       emotion: "thoughtful, learning, growth"
     },
     storyBooth: {
-      primary: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-      alt: "Black woman speaking authentically, representing storytelling and sharing experiences",
+      primary: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+      alt: "Confident Black woman representing storytelling and sharing experiences",
       emotion: "authentic, storytelling, vulnerable"
     }
   },
 
-  // Community and wellness images
+  // Community and wellness images - ALL featuring Black women
   community: {
-    groupSupport: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    sisterhood: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    groupSupport: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    sisterhood: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
     mentorship: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
   },
 
-  // Wellness and self-care images
+  // Wellness and self-care images - ALL featuring Black women
   wellness: {
-    meditation: "https://images.unsplash.com/photo-1506629905607-d405b7a82d4c?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    selfCare: "https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    healing: "https://images.unsplash.com/photo-1509909756405-be0199881695?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+    meditation: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    selfCare: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    healing: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
   },
 
-  // Lifestyle and empowerment images
+  // Lifestyle and empowerment images - ALL featuring Black women
   lifestyle: {
     strength: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    joy: "https://images.unsplash.com/photo-1562788869-4ed32648eb72?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    confidence: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    success: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+    joy: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    confidence: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    success: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
   },
 
-  // Portrait images for testimonials and profiles
+  // Portrait images for testimonials and profiles - ALL featuring Black women
   portraits: {
     testimonial1: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    testimonial2: "https://images.unsplash.com/photo-1509909756405-be0199881695?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    testimonial3: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+    testimonial2: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    testimonial3: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
   }
 };
 

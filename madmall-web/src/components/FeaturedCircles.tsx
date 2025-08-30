@@ -19,7 +19,8 @@ const featuredCircles = [
     recentActivity: '2 hours ago',
     featured: true,
     highlight: 'Most supportive community for beginners',
-    activeDiscussions: 8
+    activeDiscussions: 8,
+    image: "testimonial1"
   },
   {
     id: '2',
@@ -29,7 +30,8 @@ const featuredCircles = [
     recentActivity: '30 minutes ago',
     featured: true,
     highlight: 'Practical anxiety management techniques',
-    activeDiscussions: 12
+    activeDiscussions: 12,
+    image: "testimonial2"
   },
   {
     id: '3',
@@ -39,111 +41,110 @@ const featuredCircles = [
     recentActivity: '1 hour ago',
     featured: false,
     highlight: 'Experienced members sharing wisdom',
-    activeDiscussions: 6
+    activeDiscussions: 6,
+    image: "testimonial3"
   }
 ];
 
 export default function FeaturedCircles() {
   return (
     <Container>
-      <Header variant="h2" id="featured-circles">Featured Circles</Header>
-      <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
-        {/* Newly Diagnosed Support */}
-        <Box padding="l" className="kadir-nelson-gradient-warm">
-          <SpaceBetween size="m">
-            <CommunityImage 
-              category="community"
-              type="groupSupport"
-              size="medium"
-              rounded={true}
-              overlay={true}
-              overlayText="New Members Welcome"
-              style={{ margin: '0 auto 1rem auto', display: 'block' }}
-            />
-            <SpaceBetween direction="horizontal" size="s" alignItems="center">
-              <Box fontSize="heading-l">👥</Box>
-              <Header variant="h3">Newly Diagnosed Support</Header>
-            </SpaceBetween>
-            <Box>
-              A welcoming space for those recently diagnosed with Graves Disease to ask questions and find support.
-            </Box>
-            <SpaceBetween direction="horizontal" size="s" alignItems="center">
-              <Badge color="grey">45 members</Badge>
-              <Badge color="grey">Active 2 hours ago</Badge>
-            </SpaceBetween>
-            <Button 
-              variant="primary"
-              onClick={() => console.log('Join Newly Diagnosed Support')}
-            >
-              Join Circle
-            </Button>
-          </SpaceBetween>
+      <SpaceBetween size="l">
+        <Box textAlign="center">
+          <Header variant="h2" className="text-rich-umber">
+            Featured Circles
+          </Header>
+          <Box color="text-body-secondary" fontSize="body-s">
+            Join supportive communities led by sisters who understand your journey
+          </Box>
         </Box>
 
-        {/* Managing Anxiety Together */}
-        <Box padding="l" className="kadir-nelson-gradient-sage">
-          <SpaceBetween size="m">
-            <CommunityImage 
-              category="wellness"
-              type="meditation"
-              size="medium"
-              rounded={true}
-              overlay={true}
-              overlayText="Find Your Peace"
-              style={{ margin: '0 auto 1rem auto', display: 'block' }}
-            />
-            <SpaceBetween direction="horizontal" size="s" alignItems="center">
-              <Box fontSize="heading-l">🧘‍♀️</Box>
-              <Header variant="h3">Managing Anxiety Together</Header>
-            </SpaceBetween>
-            <Box>
-              Share coping strategies and support each other through anxiety and stress management.
-            </Box>
-            <SpaceBetween direction="horizontal" size="s" alignItems="center">
-              <Badge color="grey">67 members</Badge>
-              <Badge color="grey">Active 30 minutes ago</Badge>
-            </SpaceBetween>
-            <Button 
-              variant="primary"
-              onClick={() => console.log('Join Managing Anxiety Together')}
+        <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
+          {featuredCircles.map((circle) => (
+            <div 
+              key={circle.id}
+              className="kadir-nelson-gradient-warm"
+              style={{ 
+                borderRadius: '16px',
+                position: 'relative',
+                overflow: 'hidden',
+                minHeight: '350px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                padding: '1.5rem'
+              }}
             >
-              Join Circle
-            </Button>
-          </SpaceBetween>
-        </Box>
+              <SpaceBetween size="m">
+                <Box textAlign="center">
+                  <CommunityImage 
+                    category="portraits"
+                    type={circle.image}
+                    size="small"
+                    rounded={true}
+                    style={{ 
+                      margin: '0 auto',
+                      border: '3px solid rgba(255, 255, 255, 0.3)',
+                      boxShadow: '0 8px 25px rgba(0, 0, 0, 0.2)'
+                    }}
+                  />
+                </Box>
 
-        {/* Thyroid Warriors */}
-        <Box padding="l" className="kadir-nelson-gradient-earth">
-          <SpaceBetween size="m">
-            <CommunityImage 
-              category="lifestyle"
-              type="strength"
-              size="medium"
-              rounded={true}
-              overlay={true}
-              overlayText="Warriors Unite"
-              style={{ margin: '0 auto 1rem auto', display: 'block' }}
-            />
-            <SpaceBetween direction="horizontal" size="s" alignItems="center">
-              <Box fontSize="heading-l">💪</Box>
-              <Header variant="h3">Thyroid Warriors</Header>
-            </SpaceBetween>
-            <Box>
-              For the strong women who have been fighting this battle and want to share their wisdom.
-            </Box>
-            <SpaceBetween direction="horizontal" size="s" alignItems="center">
-              <Badge color="grey">89 members</Badge>
-              <Badge color="grey">Active 1 hour ago</Badge>
-            </SpaceBetween>
-            <Button 
-              variant="primary"
-              onClick={() => console.log('Join Thyroid Warriors')}
-            >
-              Join Circle
-            </Button>
-          </SpaceBetween>
-        </Box>
-      </Grid>
+                <Box textAlign="center">
+                  <div 
+                    style={{ 
+                      fontSize: '1.3rem',
+                      fontWeight: 'bold',
+                      color: 'white',
+                      marginBottom: '0.5rem',
+                      textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)'
+                    }}
+                  >
+                    {circle.name}
+                  </div>
+                  <div 
+                    style={{ 
+                      fontSize: '1rem',
+                      lineHeight: '1.5',
+                      color: 'rgba(255, 255, 255, 0.95)',
+                      textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)',
+                      marginBottom: '1rem'
+                    }}
+                  >
+                    {circle.description}
+                  </div>
+                </Box>
+
+                <Box textAlign="center">
+                  <SpaceBetween direction="horizontal" size="s" alignItems="center" style={{ justifyContent: 'center' }}>
+                    <Badge color="grey" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', color: 'white', border: 'none' }}>
+                      {circle.memberCount} members
+                    </Badge>
+                    <Badge color="grey" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', color: 'white', border: 'none' }}>
+                      Active {circle.recentActivity}
+                    </Badge>
+                  </SpaceBetween>
+                  
+                  <div style={{ marginTop: '1rem' }}>
+                    <Button 
+                      variant="primary"
+                      onClick={() => console.log(`Join ${circle.name}`)}
+                      style={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        color: 'var(--color-rich-umber)',
+                        border: 'none',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      Join Circle
+                    </Button>
+                  </div>
+                </Box>
+              </SpaceBetween>
+            </div>
+          ))}
+        </Grid>
+      </SpaceBetween>
     </Container>
   );
 }

@@ -5,5 +5,6 @@ export const CONFIG = {
   DATA_DIR: process.env.DATA_DIR || './data',
   BASE_URL: process.env.BASE_URL || 'http://localhost:8080',
   UNSPLASH_ACCESS_KEY: process.env.UNSPLASH_ACCESS_KEY || '',
+  PEXELS_API_KEY: process.env.PEXELS_API_KEY || '',
   SD_WEBUI_URL: process.env.SD_WEBUI_URL || '',
 };

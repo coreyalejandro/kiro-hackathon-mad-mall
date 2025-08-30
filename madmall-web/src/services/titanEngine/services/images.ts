@@ -1,9 +1,11 @@
 import { db } from '../storage/db.js';
 import { fetchUnsplashImages } from '../providers/UnsplashProvider.js';
+import { fetchPexelsImages, fetchCulturallyAppropriateImages } from '../providers/PexelsProvider.js';
 import { generateWithAutomatic1111 } from '../providers/Automatic1111Provider.js';
+import { generateCulturalPlaceholder } from '../providers/PlaceholderProvider.js';
 import { ImageCategory } from '../types.js';
 
-function insertImage(filePath: string, source: 'generated'|'unsplash'|'upload', category: ImageCategory, altText: string) {
+function insertImage(filePath: string, source: 'generated'|'unsplash'|'pexels'|'upload', category: ImageCategory, altText: string) {
   const stmt = db.prepare('INSERT INTO images (source, category, filePath, altText, status, createdAt) VALUES (?, ?, ?, ?, ?, ?)');
   const now = new Date().toISOString();
   const info = stmt.run(source, category, filePath, altText, 'pending', now);
@@ -18,12 +20,39 @@ export async function importFromUnsplash(query: string, category: ImageCategory,
   return paths.length;
 }
 
-export async function generateAI(prompt: string, category: ImageCategory, count: number) {
-  const paths = await generateWithAutomatic1111(prompt, count);
+export async function importFromPexels(query: string, category: ImageCategory, count: number) {
+  const paths = await fetchPexelsImages(query, count);
   for (const p of paths) {
-    insertImage(p, 'generated', category, `AI-generated ${category}`);
+    insertImage(p, 'pexels', category, `Authentic Black women - ${category}`);
   }
   return paths.length;
+}
+
+export async function importCulturallyAppropriate(category: ImageCategory, count: number) {
+  const paths = await fetchCulturallyAppropriateImages(category, count);
+  for (const p of paths) {
+    insertImage(p, 'pexels', category, `Culturally appropriate ${category} imagery`);
+  }
+  return paths.length;
+}
+
+export async function generateAI(prompt: string, category: ImageCategory, count: number) {
+  try {
+    // Try Automatic1111 first
+    const paths = await generateWithAutomatic1111(prompt, count);
+    for (const p of paths) {
+      insertImage(p, 'generated', category, `AI-generated ${category}`);
+    }
+    return paths.length;
+  } catch (error: any) {
+    console.log('Automatic1111 unavailable, using cultural placeholders:', error.message);
+    // Fallback to cultural placeholders
+    const paths = await generateCulturalPlaceholder(category, prompt, count);
+    for (const p of paths) {
+      insertImage(p, 'generated', category, `Cultural placeholder - ${category}`);
+    }
+    return paths.length;
+  }
 }
 
 export function approveImage(id: number, approved: boolean, reasons?: string[]) {
