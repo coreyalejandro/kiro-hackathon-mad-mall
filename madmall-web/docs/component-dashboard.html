@@ -3,260 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MADMall Component Inventory</title>
+    <title>Component Dashboard - AIme Platform</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: #f5f5f5;
-        }
-        .header {
-            background: linear-gradient(135deg, #B85450, #D4A574);
-            color: white;
-            padding: 2rem;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-        }
-        .filters {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .filter-group {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        .filter-group:last-child {
-            margin-bottom: 0;
-        }
-        input, select {
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1rem;
-        }
-        .card {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-left: 4px solid #87A96B;
-        }
-        .card.component { border-left-color: #87A96B; }
-        .card.page { border-left-color: #B85450; }
-        .card.stylesheet { border-left-color: #D4A574; }
-        .card-header {
-            display: flex;
-            justify-content: between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin: 0;
-        }
-        .card-type {
-            background: #f0f0f0;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-        }
-        .card-meta {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 1rem;
-        }
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        .tag {
-            background: #e8f4f8;
-            color: #2c5282;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-        }
-        .hidden {
-            display: none;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 40px; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; text-align: center; }
+        .stat-number { font-size: 2em; font-weight: bold; margin-bottom: 5px; }
+        .stat-label { opacity: 0.9; }
+        .section { margin-bottom: 40px; }
+        .section h2 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; transition: transform 0.2s; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .card-title { font-weight: bold; color: #333; margin-bottom: 10px; }
+        .card-meta { color: #666; font-size: 0.9em; margin-bottom: 10px; }
+        .tag { display: inline-block; background: #e3f2fd; color: #1976d2; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; margin: 2px; }
+        .last-updated { text-align: center; color: #666; margin-top: 30px; font-size: 0.9em; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>MADMall Component Inventory</h1>
-        <p>Track and manage all components, pages, and styles in the Social Wellness Hub</p>
-    </div>
-
-    <div class="filters">
-        <div class="filter-group">
-            <label>Search:</label>
-            <input type="text" id="searchInput" placeholder="Search by name, code name, or description...">
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Component Dashboard</h1>
+            <p>AIme Platform - Social Wellness Hub</p>
         </div>
-        <div class="filter-group">
-            <label>Type:</label>
-            <select id="typeFilter">
-                <option value="">All Types</option>
-                <option value="component">Components</option>
-                <option value="page">Pages</option>
-                <option value="stylesheet">Stylesheets</option>
-            </select>
-            
-            <label>Status:</label>
-            <select id="statusFilter">
-                <option value="">All Status</option>
-                <option value="active">Active</option>
-                <option value="deprecated">Deprecated</option>
-                <option value="development">In Development</option>
-            </select>
-            
-            <label>Used On:</label>
-            <select id="pageFilter">
-                <option value="">All Pages</option>
-                <option value="Concourse">Concourse</option>
-                <option value="PeerCircles">Peer Circles</option>
-                <option value="ComedyLounge">Comedy Lounge</option>
-                <option value="StoryBooth">Story Booth</option>
-                <option value="Marketplace">Marketplace</option>
-                <option value="ResourceHub">Resource Hub</option>
-            </select>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">14</div>
+                <div class="stat-label">Components</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Pages</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Stylesheets</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📦 Components</h2>
+            <div class="grid">
+                
+                    <div class="card">
+                        <div class="card-title">AuthForm</div>
+                        <div class="card-meta">📁 components/AuthForm.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-30</div>
+                        <div><strong>Used on:</strong> <span class="tag">Authentication</span></div>
+                        <div><strong>Uses:</strong> <span class="tag">void</span><span class="tag">AuthFormData</span><span class="tag">Record</span><span class="tag">string</span><span class="tag">Container</span><span class="tag">SpaceBetween</span><span class="tag">Box</span><span class="tag">Header</span><span class="tag">Alert</span><span class="tag">form</span><span class="tag">FormField</span><span class="tag">Input</span><span class="tag">Checkbox</span><span class="tag">Link</span><span class="tag">Button</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">CommunityImage</div>
+                        <div class="card-meta">📁 components/CommunityImage.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-30</div>
+                        
+                        <div><strong>Uses:</strong> <span class="tag">img</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">CommunityTestimonials</div>
+                        <div class="card-meta">📁 components/CommunityTestimonials.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-30</div>
+                        <div><strong>Used on:</strong> <span class="tag">Concourse</span></div>
+                        <div><strong>Uses:</strong> <span class="tag">Container</span><span class="tag">SpaceBetween</span><span class="tag">Box</span><span class="tag">Header</span><span class="tag">Grid</span><span class="tag">CommunityImage</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">FeaturedBrands</div>
+                        <div class="card-meta">📁 components/FeaturedBrands.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-29</div>
+                        
+                        <div><strong>Uses:</strong> <span class="tag">Container</span><span class="tag">Header</span><span class="tag">Cards</span><span class="tag">SpaceBetween</span><span class="tag">Icon</span><span class="tag">Badge</span><span class="tag">Box</span><span class="tag">Button</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">FeaturedBusinesses</div>
+                        <div class="card-meta">📁 components/FeaturedBusinesses.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-30</div>
+                        <div><strong>Used on:</strong> <span class="tag">Marketplace</span></div>
+                        <div><strong>Uses:</strong> <span class="tag">Container</span><span class="tag">SpaceBetween</span><span class="tag">Box</span><span class="tag">Header</span><span class="tag">Grid</span><span class="tag">CommunityImage</span><span class="tag">Badge</span><span class="tag">Button</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">FeaturedCircles</div>
+                        <div class="card-meta">📁 components/FeaturedCircles.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-30</div>
+                        <div><strong>Used on:</strong> <span class="tag">PeerCircles</span></div>
+                        <div><strong>Uses:</strong> <span class="tag">Container</span><span class="tag">Header</span><span class="tag">Grid</span><span class="tag">Box</span><span class="tag">SpaceBetween</span><span class="tag">CommunityImage</span><span class="tag">Badge</span><span class="tag">Button</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">HeroSection</div>
+                        <div class="card-meta">📁 components/HeroSection.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-30</div>
+                        <div><strong>Used on:</strong> <span class="tag">Authentication</span><span class="tag">ComedyLounge</span><span class="tag">Concourse</span><span class="tag">Marketplace</span><span class="tag">PeerCircles</span><span class="tag">ResourceHub</span><span class="tag">StoryBooth</span></div>
+                        <div><strong>Uses:</strong> <span class="tag">h1</span><span class="tag">p</span><span class="tag">button</span><span class="tag">img</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">InteractiveStats</div>
+                        <div class="card-meta">📁 components/InteractiveStats.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-29</div>
+                        <div><strong>Used on:</strong> <span class="tag">Concourse</span></div>
+                        <div><strong>Uses:</strong> <span class="tag">StatItem</span><span class="tag">SpaceBetween</span><span class="tag">Box</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">LoadingCard</div>
+                        <div class="card-meta">📁 components/LoadingCard.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-29</div>
+                        <div><strong>Used on:</strong> <span class="tag">ComedyLounge</span><span class="tag">Marketplace</span><span class="tag">ResourceHub</span><span class="tag">StoryBooth</span></div>
+                        <div><strong>Uses:</strong> <span class="tag">Box</span><span class="tag">SpaceBetween</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">OnboardingFlow</div>
+                        <div class="card-meta">📁 components/OnboardingFlow.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-30</div>
+                        <div><strong>Used on:</strong> <span class="tag">Authentication</span></div>
+                        <div><strong>Uses:</strong> <span class="tag">void</span><span class="tag">OnboardingData</span><span class="tag">SpaceBetween</span><span class="tag">Box</span><span class="tag">Header</span><span class="tag">FormField</span><span class="tag">Multiselect</span><span class="tag">RadioGroup</span><span class="tag">Container</span><span class="tag">ProgressBar</span><span class="tag">Alert</span><span class="tag">Button</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">SearchWithFilters</div>
+                        <div class="card-meta">📁 components/SearchWithFilters.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-29</div>
+                        
+                        <div><strong>Uses:</strong> <span class="tag">string</span><span class="tag">SpaceBetween</span><span class="tag">Input</span><span class="tag">Button</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">SkeletonLoader</div>
+                        <div class="card-meta">📁 components/SkeletonLoader.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-29</div>
+                        
+                        <div><strong>Uses:</strong> <span class="tag">Box</span><span class="tag">SpaceBetween</span><span class="tag">style</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">ToastNotification</div>
+                        <div class="card-meta">📁 components/ToastNotification.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-29</div>
+                        <div><strong>Used on:</strong> <span class="tag">Authentication</span><span class="tag">ComedyLounge</span><span class="tag">Marketplace</span><span class="tag">ResourceHub</span><span class="tag">StoryBooth</span></div>
+                        <div><strong>Uses:</strong> <span class="tag">SpaceBetween</span><span class="tag">button</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">UserProfile</div>
+                        <div class="card-meta">📁 components/UserProfile.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-30</div>
+                        
+                        <div><strong>Uses:</strong> <span class="tag">void</span><span class="tag">UserProfileData</span><span class="tag">SpaceBetween</span><span class="tag">Header</span><span class="tag">FormField</span><span class="tag">Input</span><span class="tag">Textarea</span><span class="tag">RadioGroup</span><span class="tag">Multiselect</span><span class="tag">Alert</span><span class="tag">Toggle</span><span class="tag">Box</span><span class="tag">Button</span><span class="tag">Container</span><span class="tag">Tabs</span></div>
+                    </div>
+                
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📄 Pages</h2>
+            <div class="grid">
+                
+                    <div class="card">
+                        <div class="card-title">Authentication</div>
+                        <div class="card-meta">🔗 /authentication</div>
+                        <div class="card-meta">📁 pages/Authentication.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-30</div>
+                        <div><strong>Components:</strong> <span class="tag">AuthStep</span><span class="tag">HeroSection</span><span class="tag">br</span><span class="tag">SpaceBetween</span><span class="tag">ToastNotification</span><span class="tag">AuthForm</span><span class="tag">Container</span><span class="tag">Box</span><span class="tag">Header</span><span class="tag">OnboardingFlow</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">ComedyLounge</div>
+                        <div class="card-meta">🔗 /comedylounge</div>
+                        <div class="card-meta">📁 pages/ComedyLounge.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-30</div>
+                        <div><strong>Components:</strong> <span class="tag">HeroSection</span><span class="tag">SpaceBetween</span><span class="tag">ToastNotification</span><span class="tag">Container</span><span class="tag">Header</span><span class="tag">Grid</span><span class="tag">Input</span><span class="tag">select</span><span class="tag">option</span><span class="tag">Box</span><span class="tag">Badge</span><span class="tag">Alert</span><span class="tag">LoadingCard</span><span class="tag">Button</span><span class="tag">Cards</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">Concourse</div>
+                        <div class="card-meta">🔗 /concourse</div>
+                        <div class="card-meta">📁 pages/Concourse.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-30</div>
+                        <div><strong>Components:</strong> <span class="tag">HeroSection</span><span class="tag">SpaceBetween</span><span class="tag">Container</span><span class="tag">Box</span><span class="tag">Header</span><span class="tag">InteractiveStats</span><span class="tag">Grid</span><span class="tag">Badge</span><span class="tag">Button</span><span class="tag">CommunityTestimonials</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">Marketplace</div>
+                        <div class="card-meta">🔗 /marketplace</div>
+                        <div class="card-meta">📁 pages/Marketplace.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-30</div>
+                        <div><strong>Components:</strong> <span class="tag">HeroSection</span><span class="tag">SpaceBetween</span><span class="tag">ToastNotification</span><span class="tag">Container</span><span class="tag">Header</span><span class="tag">Grid</span><span class="tag">Input</span><span class="tag">select</span><span class="tag">option</span><span class="tag">Badge</span><span class="tag">Alert</span><span class="tag">LoadingCard</span><span class="tag">Box</span><span class="tag">Button</span><span class="tag">Cards</span><span class="tag">strong</span><span class="tag">em</span><span class="tag">FeaturedBusinesses</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">PeerCircles</div>
+                        <div class="card-meta">🔗 /peercircles</div>
+                        <div class="card-meta">📁 pages/PeerCircles.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-30</div>
+                        <div><strong>Components:</strong> <span class="tag">HeroSection</span><span class="tag">SpaceBetween</span><span class="tag">FeaturedCircles</span><span class="tag">Container</span><span class="tag">Header</span><span class="tag">Grid</span><span class="tag">Box</span><span class="tag">Badge</span><span class="tag">Button</span><span class="tag">strong</span><span class="tag">em</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">ResourceHub</div>
+                        <div class="card-meta">🔗 /resourcehub</div>
+                        <div class="card-meta">📁 pages/ResourceHub.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-30</div>
+                        <div><strong>Components:</strong> <span class="tag">HeroSection</span><span class="tag">SpaceBetween</span><span class="tag">ToastNotification</span><span class="tag">Container</span><span class="tag">Header</span><span class="tag">Grid</span><span class="tag">Input</span><span class="tag">select</span><span class="tag">option</span><span class="tag">Badge</span><span class="tag">Alert</span><span class="tag">LoadingCard</span><span class="tag">Box</span><span class="tag">Button</span><span class="tag">Cards</span><span class="tag">strong</span></div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-title">StoryBooth</div>
+                        <div class="card-meta">🔗 /storybooth</div>
+                        <div class="card-meta">📁 pages/StoryBooth.tsx</div>
+                        <div class="card-meta">📅 Modified: 2025-08-30</div>
+                        <div><strong>Components:</strong> <span class="tag">HeroSection</span><span class="tag">SpaceBetween</span><span class="tag">ToastNotification</span><span class="tag">Container</span><span class="tag">Header</span><span class="tag">Grid</span><span class="tag">Input</span><span class="tag">select</span><span class="tag">option</span><span class="tag">Badge</span><span class="tag">Alert</span><span class="tag">LoadingCard</span><span class="tag">Box</span><span class="tag">Button</span><span class="tag">Cards</span><span class="tag">Textarea</span></div>
+                    </div>
+                
+            </div>
+        </div>
+        
+        <div class="last-updated">
+            Last updated: 2025-08-30 | Auto-generated by Component Inventory System
         </div>
     </div>
-
-    <div class="grid" id="inventoryGrid">
-        <!-- Items will be populated by JavaScript -->
-    </div>
-
-    <script>
-        // Load inventory data (in real implementation, this would fetch from the JSON file)
-        const inventoryData = {
-            components: [
-                {
-                    id: "hero-section",
-                    name: "HeroSection",
-                    codeName: "HeroSection",
-                    type: "component",
-                    filePath: "src/components/HeroSection.tsx",
-                    usedOn: ["Concourse", "PeerCircles", "ComedyLounge", "StoryBooth", "Marketplace", "ResourceHub"],
-                    description: "Main hero banner with page name, title, subtitle, and CTAs",
-                    status: "active",
-                    lastModified: "2025-01-27"
-                },
-                {
-                    id: "featured-brands",
-                    name: "FeaturedBrands", 
-                    codeName: "FeaturedBrands",
-                    type: "component",
-                    filePath: "src/components/FeaturedBrands.tsx",
-                    usedOn: ["Concourse", "PeerCircles", "ComedyLounge", "StoryBooth", "Marketplace", "ResourceHub"],
-                    description: "Displays featured Black-owned wellness brands",
-                    status: "active",
-                    lastModified: "2025-01-27"
-                }
-            ],
-            pages: [
-                {
-                    id: "concourse",
-                    name: "Concourse",
-                    codeName: "Concourse", 
-                    type: "page",
-                    filePath: "src/pages/Concourse.tsx",
-                    description: "Main landing page - wellness mall overview",
-                    status: "active",
-                    lastModified: "2025-01-27"
-                }
-                // Add other pages...
-            ],
-            styles: [
-                {
-                    id: "hero-sections-css",
-                    name: "Hero Sections CSS",
-                    codeName: "hero-sections.css",
-                    type: "stylesheet", 
-                    filePath: "src/styles/hero-sections.css",
-                    description: "AWS-style hero sections with neural depth motion effects",
-                    status: "active",
-                    lastModified: "2025-01-27"
-                }
-            ]
-        };
-
-        function renderInventory(items) {
-            const grid = document.getElementById('inventoryGrid');
-            grid.innerHTML = '';
-            
-            const allItems = [...items.components, ...items.pages, ...items.styles];
-            
-            allItems.forEach(item => {
-                const card = document.createElement('div');
-                card.className = `card ${item.type}`;
-                card.innerHTML = `
-                    <div class="card-header">
-                        <h3 class="card-title">${item.name}</h3>
-                        <span class="card-type">${item.type}</span>
-                    </div>
-                    <div class="card-meta">
-                        <strong>Code Name:</strong> ${item.codeName}<br>
-                        <strong>File:</strong> ${item.filePath}<br>
-                        <strong>Status:</strong> ${item.status}<br>
-                        <strong>Modified:</strong> ${item.lastModified}
-                    </div>
-                    <p>${item.description}</p>
-                    ${item.usedOn ? `
-                        <div class="tags">
-                            ${item.usedOn.map(page => `<span class="tag">${page}</span>`).join('')}
-                        </div>
-                    ` : ''}
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        // Initialize
-        renderInventory(inventoryData);
-
-        // Add filter functionality
-        document.getElementById('searchInput').addEventListener('input', filterItems);
-        document.getElementById('typeFilter').addEventListener('change', filterItems);
-        document.getElementById('statusFilter').addEventListener('change', filterItems);
-        document.getElementById('pageFilter').addEventListener('change', filterItems);
-
-        function filterItems() {
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            const typeFilter = document.getElementById('typeFilter').value;
-            const statusFilter = document.getElementById('statusFilter').value;
-            const pageFilter = document.getElementById('pageFilter').value;
-
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                const type = card.classList[1];
-                
-                const matchesSearch = !search || text.includes(search);
-                const matchesType = !typeFilter || type === typeFilter;
-                const matchesStatus = !statusFilter || text.includes(statusFilter);
-                const matchesPage = !pageFilter || text.includes(pageFilter);
-                
-                if (matchesSearch && matchesType && matchesStatus && matchesPage) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
-            });
-        }
-    </script>
 </body>
 </html>

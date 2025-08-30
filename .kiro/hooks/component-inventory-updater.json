@@ -1,0 +1,26 @@
+{
+  "name": "Component Inventory Auto-Updater",
+  "description": "Automatically updates component inventory documentation when component files are saved",
+  "trigger": {
+    "type": "file_save",
+    "patterns": [
+      "src/components/**/*.tsx",
+      "src/components/**/*.ts",
+      "src/pages/**/*.tsx",
+      "src/pages/**/*.ts"
+    ]
+  },
+  "actions": [
+    {
+      "type": "run_script",
+      "script": "scripts/update-inventory.js",
+      "args": ["--auto"],
+      "workingDirectory": "madmall-web"
+    }
+  ],
+  "settings": {
+    "debounceMs": 2000,
+    "enabled": true,
+    "runInBackground": true
+  }
+}

@@ -14,6 +14,7 @@ import {
 import HeroSection from '../components/HeroSection';
 import LoadingCard from '../components/LoadingCard';
 import ToastNotification from '../components/ToastNotification';
+import FeaturedBusinesses from '../components/FeaturedBusinesses';
 import { useFeaturedProducts, useProductReviews, useContentInteraction } from '../hooks/useApiData';
 
 // Type definitions
@@ -82,7 +83,7 @@ export default function Marketplace() {
   return (
     <div>
       <HeroSection
-        pageName="Marketplace"
+        pageName="marketplace"
         title="Support Black-Owned Wellness"
         subtitle="Discover and support Black-owned wellness brands that understand your journey and celebrate your culture. Every purchase supports sisterhood and healing."
         variant="contained"
@@ -98,15 +99,6 @@ export default function Marketplace() {
         }}
         backgroundGradient="linear-gradient(135deg, var(--color-golden-ochre), var(--color-deep-amber), var(--color-dusty-rose))"
         floatingElements={floatingElements}
-        imageContent={
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🛍️</div>
-            <div style={{ fontSize: '1.2rem', opacity: 0.9 }}>
-              Black-Owned Wellness<br />
-              Support & Celebrate
-            </div>
-          </div>
-        }
         bentoBoxes={[
           {
             title: "89 Featured Brands",
@@ -383,6 +375,8 @@ export default function Marketplace() {
           </SpaceBetween>
         </Box>
       </Container>
+
+      <FeaturedBusinesses />
       </SpaceBetween>
     </div>
   );

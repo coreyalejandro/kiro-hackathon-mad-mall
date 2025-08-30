@@ -100,7 +100,7 @@ export default function StoryBooth() {
   return (
     <div>
       <HeroSection
-        pageName="Story Booth"
+        pageName="storyBooth"
         title="Share Your Voice, Inspire Others"
         subtitle="Every story matters. Share your journey, wisdom, and experiences to help build our supportive community. Your voice has the power to heal and inspire."
         variant="contained"
@@ -116,15 +116,6 @@ export default function StoryBooth() {
         }}
         backgroundGradient="linear-gradient(135deg, var(--color-dusty-rose), var(--color-golden-ochre), var(--color-sage-green))"
         floatingElements={floatingElements}
-        imageContent={
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🗣️</div>
-            <div style={{ fontSize: '1.2rem', opacity: 0.9 }}>
-              Your Story Matters<br />
-              Inspire & Heal Together
-            </div>
-          </div>
-        }
         bentoBoxes={[
           {
             title: "23 Stories Today",

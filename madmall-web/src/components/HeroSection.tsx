@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from '@cloudscape-design/components';
+import { getHeroImage } from '../assets/images/imageLibrary';
 import '../styles/hero-sections.css';
 
 interface HeroSectionProps {
@@ -118,12 +118,23 @@ export default function HeroSection({
               <div className="hero-image-layer hero-image-depth-1"></div>
               <div className="hero-image-layer hero-image-main">
                 {imageContent || (
-                  <div className="hero-default-content">
-                    <div className="hero-default-icon">👩🏾‍💼</div>
-                    <div className="hero-default-text">
-                      Beautiful Black Women<br />
-                      Thriving Together
-                    </div>
+                  <div className="hero-authentic-image">
+                    <img 
+                      src={getHeroImage(pageName)?.primary || getHeroImage('concourse')?.primary}
+                      alt={getHeroImage(pageName)?.alt || getHeroImage('concourse')?.alt || 'Community wellness image'}
+                      className="hero-main-image"
+                      loading="eager"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        console.log('Image failed to load:', target.src);
+                        target.style.display = 'none';
+                        target.parentElement?.classList.add('image-error');
+                      }}
+                      onLoad={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        console.log('Image loaded successfully:', target.src);
+                      }}
+                    />
                   </div>
                 )}
               </div>

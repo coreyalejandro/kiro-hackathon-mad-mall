@@ -87,7 +87,7 @@ export default function ResourceHub() {
   return (
     <div>
       <HeroSection
-        pageName="Resource Hub"
+        pageName="resourceHub"
         title="Your Wellness Knowledge Hub"
         subtitle="Access curated health information, evidence-based wellness tips, and educational content from trusted sources. Knowledge is power on your healing journey."
         variant="contained"
@@ -103,15 +103,6 @@ export default function ResourceHub() {
         }}
         backgroundGradient="linear-gradient(135deg, var(--color-sage-green), var(--color-deep-olive), var(--color-golden-ochre))"
         floatingElements={floatingElements}
-        imageContent={
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📚</div>
-            <div style={{ fontSize: '1.2rem', opacity: 0.9 }}>
-              Knowledge & Wisdom<br />
-              Evidence-Based Healing
-            </div>
-          </div>
-        }
         bentoBoxes={[
           {
             title: "156 Articles Available",

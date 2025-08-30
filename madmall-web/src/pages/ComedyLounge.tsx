@@ -73,7 +73,7 @@ export default function ComedyLounge() {
   return (
     <div>
       <HeroSection
-        pageName="Comedy Lounge"
+        pageName="comedyLounge"
         title="Laughter is the Best Medicine"
         subtitle="Find relief through joy and humor. Our curated comedy content is designed specifically to lift your spirits and provide therapeutic relief during challenging moments."
         variant="contained"
@@ -89,15 +89,6 @@ export default function ComedyLounge() {
         }}
         backgroundGradient="linear-gradient(135deg, var(--color-golden-ochre), var(--color-deep-amber), var(--color-sage-green))"
         floatingElements={floatingElements}
-        imageContent={
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>😂</div>
-            <div style={{ fontSize: '1.2rem', opacity: 0.9 }}>
-              Therapeutic Laughter<br />
-              Joy & Healing
-            </div>
-          </div>
-        }
         bentoBoxes={[
           {
             title: "5 New Clips Today",

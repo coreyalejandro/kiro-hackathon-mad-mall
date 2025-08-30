@@ -1,4 +1,4 @@
-import React from 'react';
+
 import {
   Container,
   Header,
@@ -8,6 +8,7 @@ import {
   Badge,
   Box
 } from '@cloudscape-design/components';
+import CommunityImage from './CommunityImage';
 
 const featuredCircles = [
   {
@@ -50,9 +51,18 @@ export default function FeaturedCircles() {
         {/* Newly Diagnosed Support */}
         <Box padding="l" className="kadir-nelson-gradient-warm">
           <SpaceBetween size="m">
+            <CommunityImage 
+              category="community"
+              type="groupSupport"
+              size="medium"
+              rounded={true}
+              overlay={true}
+              overlayText="New Members Welcome"
+              style={{ margin: '0 auto 1rem auto', display: 'block' }}
+            />
             <SpaceBetween direction="horizontal" size="s" alignItems="center">
               <Box fontSize="heading-l">👥</Box>
-              <Header variant="h4">Newly Diagnosed Support</Header>
+              <Header variant="h3">Newly Diagnosed Support</Header>
             </SpaceBetween>
             <Box>
               A welcoming space for those recently diagnosed with Graves Disease to ask questions and find support.
@@ -73,9 +83,18 @@ export default function FeaturedCircles() {
         {/* Managing Anxiety Together */}
         <Box padding="l" className="kadir-nelson-gradient-sage">
           <SpaceBetween size="m">
+            <CommunityImage 
+              category="wellness"
+              type="meditation"
+              size="medium"
+              rounded={true}
+              overlay={true}
+              overlayText="Find Your Peace"
+              style={{ margin: '0 auto 1rem auto', display: 'block' }}
+            />
             <SpaceBetween direction="horizontal" size="s" alignItems="center">
               <Box fontSize="heading-l">🧘‍♀️</Box>
-              <Header variant="h4">Managing Anxiety Together</Header>
+              <Header variant="h3">Managing Anxiety Together</Header>
             </SpaceBetween>
             <Box>
               Share coping strategies and support each other through anxiety and stress management.
@@ -96,9 +115,18 @@ export default function FeaturedCircles() {
         {/* Thyroid Warriors */}
         <Box padding="l" className="kadir-nelson-gradient-earth">
           <SpaceBetween size="m">
+            <CommunityImage 
+              category="lifestyle"
+              type="strength"
+              size="medium"
+              rounded={true}
+              overlay={true}
+              overlayText="Warriors Unite"
+              style={{ margin: '0 auto 1rem auto', display: 'block' }}
+            />
             <SpaceBetween direction="horizontal" size="s" alignItems="center">
               <Box fontSize="heading-l">💪</Box>
-              <Header variant="h4">Thyroid Warriors</Header>
+              <Header variant="h3">Thyroid Warriors</Header>
             </SpaceBetween>
             <Box>
               For the strong women who have been fighting this battle and want to share their wisdom.

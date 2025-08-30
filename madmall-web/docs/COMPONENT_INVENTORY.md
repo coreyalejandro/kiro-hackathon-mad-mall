@@ -1,159 +1,39 @@
-# MADMall Component Inventory
+# Component Inventory Report
 
-> Last Updated: 2025-01-27 | Version: 1.0.0
+*Last updated: 2025-08-30*
 
-## Quick Reference
+## Summary
+- **Components**: 14
+- **Pages**: 7  
+- **Stylesheets**: 3
 
-| Component | Code Name | Type | Used On | Status | Issues |
-|-----------|-----------|------|---------|--------|--------|
-| HeroSection | `HeroSection` | Component | All Pages | ✅ Active | None |
-| FeaturedBrands | `FeaturedBrands` | Component | All Pages | ✅ Active | None |
-| Concourse | `Concourse` | Page | `/` | ✅ Active | None |
-| PeerCircles | `PeerCircles` | Page | `/circles` | ✅ Active | None |
-| ComedyLounge | `ComedyLounge` | Page | `/comedy` | ✅ Active | None |
-| StoryBooth | `StoryBooth` | Page | `/stories` | ✅ Active | None |
-| Marketplace | `Marketplace` | Page | `/marketplace` | ✅ Active | None |
-| ResourceHub | `ResourceHub` | Page | `/resources` | ✅ Active | None |
+## Components
 
----
+| Name | File | Used On | Dependencies |
+|------|------|---------|--------------|
+| AuthForm | `components/AuthForm.tsx` | Authentication | None |
+| CommunityImage | `components/CommunityImage.tsx` | None | imageLibrary |
+| CommunityTestimonials | `components/CommunityTestimonials.tsx` | Concourse | CommunityImage |
+| FeaturedBrands | `components/FeaturedBrands.tsx` | None | None |
+| FeaturedBusinesses | `components/FeaturedBusinesses.tsx` | Marketplace | CommunityImage |
+| FeaturedCircles | `components/FeaturedCircles.tsx` | PeerCircles | CommunityImage |
+| HeroSection | `components/HeroSection.tsx` | Authentication, ComedyLounge, Concourse, Marketplace, PeerCircles, ResourceHub, StoryBooth | imageLibrary |
+| InteractiveStats | `components/InteractiveStats.tsx` | Concourse | None |
+| LoadingCard | `components/LoadingCard.tsx` | ComedyLounge, Marketplace, ResourceHub, StoryBooth | None |
+| OnboardingFlow | `components/OnboardingFlow.tsx` | Authentication | None |
+| SearchWithFilters | `components/SearchWithFilters.tsx` | None | None |
+| SkeletonLoader | `components/SkeletonLoader.tsx` | None | None |
+| ToastNotification | `components/ToastNotification.tsx` | Authentication, ComedyLounge, Marketplace, ResourceHub, StoryBooth | None |
+| UserProfile | `components/UserProfile.tsx` | None | None |
 
-## 🧩 Components
+## Pages
 
-### HeroSection
-- **Code Name:** `HeroSection`
-- **File:** `src/components/HeroSection.tsx`
-- **Description:** Main hero banner with page name, title, subtitle, and CTAs
-- **Props:** `pageName`, `title`, `subtitle`, `primaryCTA`, `secondaryCTA`, `backgroundGradient`, `floatingElements`
-- **Used On:** All pages (Concourse, PeerCircles, ComedyLounge, StoryBooth, Marketplace, ResourceHub)
-- **Dependencies:** `hero-sections.css`
-- **Status:** ✅ Active
-- **Last Modified:** 2025-01-27
-- **Issues:** None
-
-### FeaturedBrands
-- **Code Name:** `FeaturedBrands`
-- **File:** `src/components/FeaturedBrands.tsx`
-- **Description:** Displays featured Black-owned wellness brands
-- **Props:** None
-- **Used On:** All pages
-- **Dependencies:** None
-- **Status:** ✅ Active
-- **Last Modified:** 2025-01-27
-- **Issues:** None
-
----
-
-## 📄 Pages
-
-### Concourse
-- **Code Name:** `Concourse`
-- **File:** `src/pages/Concourse.tsx`
-- **Route:** `/`
-- **Description:** Main landing page - wellness mall overview
-- **Components Used:** HeroSection, FeaturedBrands
-- **Status:** ✅ Active
-- **Last Modified:** 2025-01-27
-- **Issues:** None
-
-### Peer Circles
-- **Code Name:** `PeerCircles`
-- **File:** `src/pages/PeerCircles.tsx`
-- **Route:** `/circles`
-- **Description:** Community support groups and peer connections
-- **Components Used:** HeroSection, FeaturedBrands
-- **Status:** ✅ Active
-- **Last Modified:** 2025-01-27
-- **Issues:** None
-
-### Comedy Lounge
-- **Code Name:** `ComedyLounge`
-- **File:** `src/pages/ComedyLounge.tsx`
-- **Route:** `/comedy`
-- **Description:** Therapeutic comedy content and mood tracking
-- **Components Used:** HeroSection, FeaturedBrands
-- **Status:** ✅ Active
-- **Last Modified:** 2025-01-27
-- **Issues:** None
-
-### Story Booth
-- **Code Name:** `StoryBooth`
-- **File:** `src/pages/StoryBooth.tsx`
-- **Route:** `/stories`
-- **Description:** Community storytelling and experience sharing
-- **Components Used:** HeroSection, FeaturedBrands
-- **Status:** ✅ Active
-- **Last Modified:** 2025-01-27
-- **Issues:** None
-
-### Marketplace
-- **Code Name:** `Marketplace`
-- **File:** `src/pages/Marketplace.tsx`
-- **Route:** `/marketplace`
-- **Description:** Black-owned wellness brands and products
-- **Components Used:** HeroSection, FeaturedBrands
-- **Status:** ✅ Active
-- **Last Modified:** 2025-01-27
-- **Issues:** None
-
-### Resource Hub
-- **Code Name:** `ResourceHub`
-- **File:** `src/pages/ResourceHub.tsx`
-- **Route:** `/resources`
-- **Description:** Educational content and wellness resources
-- **Components Used:** HeroSection, FeaturedBrands
-- **Status:** ✅ Active
-- **Last Modified:** 2025-01-27
-- **Issues:** None
-
----
-
-## 🎨 Stylesheets
-
-### Hero Sections CSS
-- **Code Name:** `hero-sections.css`
-- **File:** `src/styles/hero-sections.css`
-- **Description:** AWS-style hero sections with neural depth motion effects
-- **Used By:** HeroSection component
-- **Status:** ✅ Active
-- **Last Modified:** 2025-01-27
-- **Issues:** None
-
-### Kadir Nelson Theme
-- **Code Name:** `kadir-nelson-theme.css`
-- **File:** `src/styles/kadir-nelson-theme.css`
-- **Description:** Kadir Nelson-inspired color palette and theme variables
-- **Used By:** All pages and components
-- **Status:** ✅ Active
-- **Last Modified:** 2025-01-27
-- **Issues:** None
-
----
-
-## 🔧 Maintenance
-
-### Status Legend
-- ✅ **Active:** Currently in use and maintained
-- 🚧 **Development:** Under active development
-- ⚠️ **Deprecated:** Scheduled for removal
-- 🐛 **Issues:** Has known issues that need attention
-
-### Update Process
-1. When adding new components, update all three inventory files
-2. When modifying existing components, update the `lastModified` date
-3. When issues are found, add them to the `issues` array/field
-4. Review and clean up deprecated components monthly
-
-### Quick Commands
-```bash
-# Find all component files
-find src/components -name "*.tsx" -type f
-
-# Find all page files  
-find src/pages -name "*.tsx" -type f
-
-# Find all style files
-find src/styles -name "*.css" -type f
-
-# Search for component usage
-grep -r "HeroSection" src/pages/
-```
+| Name | Route | File | Components Used |
+|------|-------|------|-----------------|
+| Authentication | /authentication | `pages/Authentication.tsx` | AuthStep, HeroSection, br, SpaceBetween, ToastNotification, AuthForm, Container, Box, Header, OnboardingFlow |
+| ComedyLounge | /comedylounge | `pages/ComedyLounge.tsx` | HeroSection, SpaceBetween, ToastNotification, Container, Header, Grid, Input, select, option, Box, Badge, Alert, LoadingCard, Button, Cards |
+| Concourse | /concourse | `pages/Concourse.tsx` | HeroSection, SpaceBetween, Container, Box, Header, InteractiveStats, Grid, Badge, Button, CommunityTestimonials |
+| Marketplace | /marketplace | `pages/Marketplace.tsx` | HeroSection, SpaceBetween, ToastNotification, Container, Header, Grid, Input, select, option, Badge, Alert, LoadingCard, Box, Button, Cards, strong, em, FeaturedBusinesses |
+| PeerCircles | /peercircles | `pages/PeerCircles.tsx` | HeroSection, SpaceBetween, FeaturedCircles, Container, Header, Grid, Box, Badge, Button, strong, em |
+| ResourceHub | /resourcehub | `pages/ResourceHub.tsx` | HeroSection, SpaceBetween, ToastNotification, Container, Header, Grid, Input, select, option, Badge, Alert, LoadingCard, Box, Button, Cards, strong |
+| StoryBooth | /storybooth | `pages/StoryBooth.tsx` | HeroSection, SpaceBetween, ToastNotification, Container, Header, Grid, Input, select, option, Badge, Alert, LoadingCard, Box, Button, Cards, Textarea |

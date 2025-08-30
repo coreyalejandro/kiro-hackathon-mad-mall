@@ -10,6 +10,7 @@ import {
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
 import InteractiveStats from '../components/InteractiveStats';
+import CommunityTestimonials from '../components/CommunityTestimonials';
 import '../styles/concourse-interactions.css';
 
 
@@ -47,7 +48,7 @@ export default function Concourse() {
   return (
     <div>
       <HeroSection
-        pageName="Concourse"
+        pageName="concourse"
         title="Welcome to Your Wellness Sanctuary"
         subtitle="A digital mall designed by and for Black women living with Graves' Disease. Find sisterhood, healing, and joy in our culturally safe community space."
         variant="contained"
@@ -398,6 +399,8 @@ export default function Concourse() {
           </Grid>
         </div>
       </Container>
+
+      <CommunityTestimonials />
       </SpaceBetween>
     </div>
   );

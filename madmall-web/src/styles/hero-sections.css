@@ -17,11 +17,13 @@
   margin: 0;
   border-radius: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .hero-section.hero-viewport .hero-bento-container {
-  margin-top: 4rem;
-  padding: 0 3rem;
+  margin-top: 1rem;
+  padding: 0 2rem 3rem 2rem;
 }
 
 .hero-section.hero-viewport .hero-bento-box {
@@ -32,30 +34,36 @@
 
 /* AWS-style contained hero for internal pages */
 .hero-section.hero-contained {
-  min-height: 80vh;
+  min-height: auto;
   margin: 2rem;
   border-radius: 24px;
-  padding: 2rem 0;
+  padding: 2rem 0 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .hero-container {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 3rem 2rem;
+  padding: 2rem 2rem 0 2rem;
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 2rem;
+  flex: 1;
 }
 
 .hero-main-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
-  min-height: 60vh;
+  gap: 1rem;
+  align-items: start;
+  min-height: 40vh;
+  padding: 0 2rem 1rem 2rem;
+  overflow: hidden;
 }
 
 .hero-content {
@@ -163,7 +171,47 @@
 .hero-visual-container {
   position: relative;
   animation: slideInFromRight 0.8s ease-out 0.2s both;
+  overflow: hidden;
+  border-radius: 20px;
+  margin: 2rem;
+  max-width: calc(100% - 4rem);
+  max-height: calc(100% - 4rem);
 }
+
+/* Authentic Image Styling */
+.hero-authentic-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+}
+
+.hero-authentic-image.image-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-dusty-rose), var(--color-sage-green));
+  color: white;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.hero-authentic-image.image-error::after {
+  content: "🌸 Wellness Image Loading...";
+  opacity: 0.8;
+}
+
+.hero-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: brightness(1.1) contrast(1.05) saturate(1.1);
+}
+
 
 @keyframes slideInFromRight {
   0% {
@@ -178,18 +226,22 @@
 
 .hero-image-container {
   position: relative;
-  height: 500px;
-  perspective: 1200px;
-  transform-style: preserve-3d;
+  height: 350px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 20px;
 }
 
 .hero-image-layer {
   position: absolute;
-  border-radius: 24px;
+  border-radius: 20px;
   overflow: hidden;
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(1px);
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .hero-image-main {
@@ -337,11 +389,12 @@
 /* AWS-Style Bento Box Grid */
 .hero-bento-container {
   width: 100%;
-  margin-top: 3rem;
+  margin-top: 1rem;
   animation: fadeInUp 1s ease-out 0.8s both;
-  padding: 0 2rem;
+  padding: 0 2rem 2rem 2rem;
   position: relative;
   z-index: 10;
+  flex-shrink: 0;
 }
 
 @keyframes fadeInUp {
@@ -357,28 +410,33 @@
 
 .hero-bento-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 1400px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 1rem 0;
+  padding: 0;
+  align-items: start;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .hero-bento-box {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(15px);
   border: 2px solid rgba(255, 255, 255, 0.25);
-  border-radius: 20px;
-  padding: 2rem;
+  border-radius: 16px;
+  padding: 1.5rem;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   animation: slideInUp 0.6s ease-out var(--animation-delay, 0s) both;
   position: relative;
   overflow: hidden;
-  min-height: 140px;
+  min-height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 @keyframes slideInUp {
@@ -417,14 +475,23 @@
 
 .hero-bento-small {
   grid-column: span 1;
+  min-height: 120px;
 }
 
 .hero-bento-medium {
   grid-column: span 1;
+  min-height: 140px;
 }
 
 .hero-bento-large {
-  grid-column: span 2;
+  grid-column: span 1;
+  min-height: 160px;
+}
+
+@media (min-width: 768px) {
+  .hero-bento-large {
+    grid-column: span 2;
+  }
 }
 
 .hero-bento-icon {
@@ -458,15 +525,33 @@
 /* Enhanced Responsive Design */
 @media (max-width: 1024px) {
   .hero-container {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.5rem 0 1.5rem;
   }
   
   .hero-main-grid {
-    gap: 3rem;
+    gap: 2rem;
   }
   
   .hero-bento-large {
     grid-column: span 1;
+  }
+  
+  .hero-bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .hero-visual-container {
+    margin: 0.75rem;
+  }
+  
+  .hero-image-container {
+    height: 350px;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-bento-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -485,9 +570,13 @@
     font-size: 1.1rem;
   }
   
-  .hero-image-container {
-    height: 300px;
+  .hero-visual-container {
+    margin: 0.5rem;
     order: -1;
+  }
+  
+  .hero-image-container {
+    height: 280px;
   }
   
   .hero-section.hero-viewport {
@@ -495,28 +584,32 @@
   }
   
   .hero-section.hero-contained {
-    min-height: 70vh;
+    min-height: auto;
     margin: 1rem;
-    padding: 1.5rem 0;
+    padding: 1.5rem 0 0 0;
   }
   
   .hero-container {
-    padding: 1.5rem 1rem;
+    padding: 1.5rem 1rem 0 1rem;
   }
   
   .hero-bento-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1rem;
   }
   
   .hero-bento-box {
-    padding: 1.5rem;
-    min-height: 120px;
+    padding: 1.25rem;
+    min-height: 100px;
   }
   
   .hero-section.hero-viewport .hero-bento-container {
     margin-top: 2rem;
-    padding: 0 1rem;
+    padding: 0 1rem 2rem 1rem;
+  }
+  
+  .hero-section.hero-contained .hero-bento-container {
+    padding: 0 1rem 3rem 1rem;
   }
   
   .hero-cta-group {
@@ -540,8 +633,12 @@
     font-size: 1rem;
   }
   
+  .hero-visual-container {
+    margin: 0.5rem;
+  }
+  
   .hero-image-container {
-    height: 250px;
+    height: 220px;
   }
   
   .hero-default-icon {

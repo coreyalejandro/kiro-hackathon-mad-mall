@@ -56,7 +56,7 @@ export default function PeerCircles() {
   return (
     <div>
       <HeroSection
-        pageName="Peer Circles"
+        pageName="peerCircles"
         title="Find Your Circle of Sisters"
         subtitle="Connect with Black women who truly understand your Graves' Disease journey. Share experiences, find support, and build lasting friendships in our safe community spaces."
         variant="contained"
@@ -72,15 +72,6 @@ export default function PeerCircles() {
         }}
         backgroundGradient="linear-gradient(135deg, var(--color-sage-green), var(--color-dusty-rose), var(--color-burnt-sienna))"
         floatingElements={floatingElements}
-        imageContent={
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>👩🏾‍🤝‍👩🏿</div>
-            <div style={{ fontSize: '1.2rem', opacity: 0.9 }}>
-              Sisterhood<br />
-              Support & Understanding
-            </div>
-          </div>
-        }
         bentoBoxes={[
           {
             title: "67 Members Active",

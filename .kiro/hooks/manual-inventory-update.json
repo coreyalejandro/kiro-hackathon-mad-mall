@@ -1,0 +1,21 @@
+{
+  "name": "Manual Component Inventory Update",
+  "description": "Manually trigger a full component inventory update with detailed output",
+  "trigger": {
+    "type": "manual",
+    "buttonText": "🔄 Update Component Inventory",
+    "category": "Documentation"
+  },
+  "actions": [
+    {
+      "type": "run_script",
+      "script": "scripts/update-inventory.js",
+      "workingDirectory": "madmall-web",
+      "showOutput": true
+    }
+  ],
+  "settings": {
+    "enabled": true,
+    "confirmBeforeRun": false
+  }
+}
