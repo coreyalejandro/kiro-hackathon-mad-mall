@@ -10,6 +10,8 @@ import ComedyLounge from './pages/ComedyLounge';
 import Marketplace from './pages/Marketplace';
 import ResourceHub from './pages/ResourceHub';
 import StoryBooth from './pages/StoryBooth';
+import Authentication from './pages/Authentication';
+import UserProfile from './components/UserProfile';
 
 const navigationItems = [
   { type: 'link', text: 'Concourse', href: '/' },
@@ -44,8 +46,8 @@ function App() {
             },
             {
               type: 'button',
-              text: 'Settings',
-              href: '/settings',
+              text: 'Sign In',
+              href: '/auth',
               external: false
             }
           ]}
@@ -66,6 +68,43 @@ function App() {
               <Route path="/stories" element={<StoryBooth />} />
               <Route path="/marketplace" element={<Marketplace />} />
               <Route path="/resources" element={<ResourceHub />} />
+              <Route path="/auth" element={<Authentication />} />
+              <Route path="/profile" element={
+                <UserProfile 
+                  userData={{
+                    firstName: 'Demo',
+                    lastName: 'User',
+                    email: 'demo@example.com',
+                    bio: 'Welcome to our community!',
+                    profileVisibility: 'circles_only',
+                    showRealName: true,
+                    allowDirectMessages: true,
+                    shareHealthJourney: true,
+                    primaryGoals: ['emotional_support', 'community_connection'],
+                    comfortLevel: 'somewhat_comfortable',
+                    culturalBackground: ['african_american'],
+                    communicationStyle: 'direct_supportive',
+                    diagnosisStage: 'managing_well',
+                    supportNeeds: ['emotional_support', 'stress_management'],
+                    emailNotifications: true,
+                    pushNotifications: false,
+                    weeklyDigest: true,
+                    circleNotifications: true,
+                    contentPreferences: ['personal_stories', 'self_care_tips'],
+                    circleInterests: ['anxiety_management', 'self_care']
+                  }}
+                  onSave={async (data) => {
+                    console.log('Saving profile data:', data);
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                  }}
+                  onDeleteAccount={async () => {
+                    console.log('Deleting account');
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                  }}
+                />
+              } />
             </Routes>
           }
           toolsHide
