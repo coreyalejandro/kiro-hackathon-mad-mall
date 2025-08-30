@@ -1,5 +1,8 @@
-// Image Library Configuration for AIme Platform
-// Curated collection of authentic Black women imagery
+// Image Library Configuration for MADMall Platform
+// Hybrid system: Static fallbacks + TitanEngine integration
+
+import { titanEngineService } from '../../services/titanEngineService';
+import type { ImageRecord, SelectRequest } from '../../types/titanEngine';
 
 interface HeroImage {
   primary: string;
@@ -99,6 +102,53 @@ export const getRandomImage = (category: 'community' | 'wellness' | 'lifestyle' 
   const keys = Object.keys(images);
   const randomKey = keys[Math.floor(Math.random() * keys.length)];
   return images[randomKey];
+};
+
+// TitanEngine integration functions
+export const getTitanEngineImage = async (context: SelectRequest['context'], category?: SelectRequest['category']): Promise<string | null> => {
+  try {
+    const isAvailable = await titanEngineService.isAvailable();
+    if (!isAvailable) return null;
+
+    const images = await titanEngineService.selectImages({ context, category, limit: 1 });
+    if (images.length > 0) {
+      return titanEngineService.buildImageUrl(images[0].filePath);
+    }
+    return null;
+  } catch (error) {
+    console.warn('TitanEngine image selection failed, falling back to static library:', error);
+    return null;
+  }
+};
+
+export const getHeroImageWithFallback = async (pageName?: string): Promise<HeroImage> => {
+  const staticImage = getHeroImage(pageName);
+  
+  try {
+    const titanImage = await getTitanEngineImage(pageName as any || 'home');
+    if (titanImage) {
+      return {
+        primary: titanImage,
+        alt: staticImage.alt,
+        emotion: staticImage.emotion
+      };
+    }
+  } catch (error) {
+    console.warn('TitanEngine hero image failed, using static fallback:', error);
+  }
+
+  return staticImage;
+};
+
+export const getRandomImageWithFallback = async (category: 'community' | 'wellness' | 'lifestyle' | 'portraits'): Promise<string | null> => {
+  try {
+    const titanImage = await getTitanEngineImage('home', category as any);
+    if (titanImage) return titanImage;
+  } catch (error) {
+    console.warn('TitanEngine random image failed, using static fallback:', error);
+  }
+
+  return getRandomImage(category);
 };
 
 export default imageLibrary;
