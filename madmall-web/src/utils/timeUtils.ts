@@ -2,7 +2,7 @@
  * Time formatting utilities for the wellness platform
  */
 
-export function formatTimeAgo(timestamp) {
+export function formatTimeAgo(timestamp: string | Date): string {
   const now = new Date();
   const time = new Date(timestamp);
   const diffInSeconds = Math.floor((now - time) / 1000);
@@ -40,13 +40,13 @@ export function formatTimeAgo(timestamp) {
   return `${diffInYears} year${diffInYears === 1 ? '' : 's'} ago`;
 }
 
-export function formatDuration(seconds) {
+export function formatDuration(seconds: number): string {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
   return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
-export function formatReadTime(wordCount) {
+export function formatReadTime(wordCount: number): string {
   const wordsPerMinute = 200;
   const minutes = Math.ceil(wordCount / wordsPerMinute);
   return `${minutes} min read`;

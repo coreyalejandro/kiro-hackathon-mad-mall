@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Container,
   Header,
@@ -7,30 +7,47 @@ import {
   SpaceBetween,
   Badge,
   Box,
-  Icon,
   Grid,
   Input,
-  Alert,
-  Spinner
+  Alert
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
 import LoadingCard from '../components/LoadingCard';
 import ToastNotification from '../components/ToastNotification';
 import { useFeaturedProducts, useProductReviews, useContentInteraction } from '../hooks/useApiData';
 
+// Type definitions
+interface Product {
+  id: string;
+  productName: string;
+  brand: string;
+  reviewContent: string;
+  category: string;
+  rating: number;
+  price: string;
+  culturalRelevance?: string[];
+  verifiedPurchase?: boolean;
+}
+
+type ToastType = 'info' | 'success' | 'error' | 'warning';
+
 
 
 export default function Marketplace() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [toast, setToast] = useState({ show: false, message: '', type: 'info' as const });
+  const [toast, setToast] = useState<{ show: boolean; message: string; type: ToastType }>({ 
+    show: false, 
+    message: '', 
+    type: 'info' 
+  });
   
   // API data hooks
   const { data: featuredProducts, loading: featuredLoading, error: featuredError } = useFeaturedProducts(6);
   const { data: allProducts, loading: productsLoading, error: productsError } = useProductReviews(selectedCategory, 20);
   const { saveContent, interacting } = useContentInteraction();
 
-  const showToast = (message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info') => {
+  const showToast = (message: string, type: ToastType = 'info') => {
     setToast({ show: true, message, type });
   };
 
@@ -47,7 +64,7 @@ export default function Marketplace() {
     showToast(`Redirecting to ${brand} for ${productName}... 🛒`, 'info');
   };
 
-  const filteredProducts = allProducts?.filter(product => {
+  const filteredProducts = allProducts?.filter((product: Product) => {
     const matchesSearch = !searchQuery || 
       product.productName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -135,7 +152,7 @@ export default function Marketplace() {
               <Badge color="green">Searching: "{searchQuery}"</Badge>
             )}
             {selectedCategory && (
-              <Badge color="purple">Category: {selectedCategory}</Badge>
+              <Badge color="blue">Category: {selectedCategory}</Badge>
             )}
           </SpaceBetween>
         </SpaceBetween>
@@ -156,12 +173,12 @@ export default function Marketplace() {
           </Grid>
         ) : (
           <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }, { colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
-            {featuredProducts?.map((product, index) => {
+            {featuredProducts?.map((product: Product, index: number) => {
               const gradients = [
                 'kadir-nelson-gradient-warm', 'kadir-nelson-gradient-sage', 'kadir-nelson-gradient-earth',
                 'kadir-nelson-accent', 'kadir-nelson-secondary', 'kadir-nelson-gradient-warm'
               ];
-              const icons = {
+              const icons: { [key: string]: string } = {
                 'Supplements': '💊',
                 'Skincare': '✨',
                 'Wellness': '🍵',
@@ -171,7 +188,7 @@ export default function Marketplace() {
               };
               
               return (
-                <Box key={product.id} padding="l" className={gradients[index % 6]}>
+                <Box key={product.id} padding="l">
                   <SpaceBetween size="m">
                     <SpaceBetween direction="horizontal" size="s" alignItems="center">
                       <Box fontSize="heading-l">{icons[product.category] || '✨'}</Box>
@@ -251,7 +268,7 @@ export default function Marketplace() {
         ) : (
           <Cards
             cardDefinition={{
-              header: item => (
+              header: (item: Product) => (
                 <SpaceBetween direction="horizontal" size="s" alignItems="center">
                   <Box fontSize="heading-m">
                     {item.category === 'Supplements' ? '💊' :
@@ -266,7 +283,7 @@ export default function Marketplace() {
               ),
               sections: [
                 {
-                  content: item => (
+                  content: (item: Product) => (
                     <SpaceBetween size="s">
                       <Box><strong>{item.brand}</strong></Box>
                       <Box>{item.reviewContent.substring(0, 120)}...</Box>
@@ -311,7 +328,7 @@ export default function Marketplace() {
 
       <Container>
         <Header variant="h2">Retail Therapy Corner</Header>
-        <Box padding="l" className="kadir-nelson-secondary">
+        <Box padding="l">
           <SpaceBetween size="s">
             <Header variant="h3">💜 Treat Yourself Today</Header>
             <Box>
@@ -335,7 +352,7 @@ export default function Marketplace() {
 
       <Container>
         <Header variant="h2">Community Recommendations</Header>
-        <Box padding="l" className="kadir-nelson-gradient-earth">
+        <Box padding="l">
           <SpaceBetween size="s">
             <Box>
               <strong>Maya K.</strong> recommends <em>Sister Strength Teas</em>: "The Calm Evening blend has been a game-changer for my sleep! 🌙"

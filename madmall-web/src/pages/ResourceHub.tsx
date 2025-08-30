@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Container,
   Header,
@@ -8,28 +8,43 @@ import {
   Badge,
   Box,
   Input,
-  Icon,
   Grid,
-  Alert,
-  Spinner
+  Alert
 } from '@cloudscape-design/components';
 import HeroSection from '../components/HeroSection';
 import LoadingCard from '../components/LoadingCard';
 import ToastNotification from '../components/ToastNotification';
 import { useFeaturedResources, useResourceContent, useContentInteraction } from '../hooks/useApiData';
 
+// Type definitions
+interface Resource {
+  id: string;
+  title: string;
+  content: string;
+  author: string;
+  category: string;
+  readTime: string;
+  helpfulCount: number;
+}
+
+type ToastType = 'info' | 'success' | 'error' | 'warning';
+
 
 export default function ResourceHub() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [toast, setToast] = useState({ show: false, message: '', type: 'info' as const });
+  const [toast, setToast] = useState<{ show: boolean; message: string; type: ToastType }>({ 
+    show: false, 
+    message: '', 
+    type: 'info' 
+  });
   
   // API data hooks
   const { data: featuredResources, loading: featuredLoading, error: featuredError } = useFeaturedResources(4);
   const { data: allResources, loading: resourcesLoading, error: resourcesError } = useResourceContent(selectedCategory, 20);
   const { saveContent, likeContent, interacting } = useContentInteraction();
 
-  const showToast = (message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info') => {
+  const showToast = (message: string, type: ToastType = 'info') => {
     setToast({ show: true, message, type });
   };
 
@@ -55,7 +70,7 @@ export default function ResourceHub() {
     showToast(`Opening "${resourceTitle}"... 📖`, 'info');
   };
 
-  const filteredResources = allResources?.filter(resource => {
+  const filteredResources = allResources?.filter((resource: Resource) => {
     const matchesSearch = !searchQuery || 
       resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       resource.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -141,7 +156,7 @@ export default function ResourceHub() {
               <Badge color="green">Searching: "{searchQuery}"</Badge>
             )}
             {selectedCategory && (
-              <Badge color="purple">Category: {selectedCategory}</Badge>
+              <Badge color="blue">Category: {selectedCategory}</Badge>
             )}
           </SpaceBetween>
         </SpaceBetween>
@@ -150,7 +165,7 @@ export default function ResourceHub() {
 
 
       <Container>
-        <Header variant="h2" id="featured-resources">Featured Resources</Header>
+        <Header variant="h2">Featured Resources</Header>
         {featuredError && (
           <Alert type="error">
             Failed to load featured resources. Please try again later.
@@ -165,9 +180,9 @@ export default function ResourceHub() {
           </Grid>
         ) : (
           <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
-            {featuredResources?.map((resource, index) => {
+            {featuredResources?.map((resource: Resource, index: number) => {
               const gradients = ['kadir-nelson-gradient-warm', 'kadir-nelson-gradient-sage', 'kadir-nelson-gradient-earth', 'kadir-nelson-accent'];
-              const icons = {
+              const icons: { [key: string]: string } = {
                 'education': '📚',
                 'mental_health': '🧠',
                 'nutrition': '🥗',
@@ -176,7 +191,7 @@ export default function ResourceHub() {
               };
               
               return (
-                <Box key={resource.id} padding="l" className={gradients[index % 4]}>
+                <Box key={resource.id} padding="l">
                   <SpaceBetween size="m">
                     <SpaceBetween direction="horizontal" size="s" alignItems="center">
                       <Box fontSize="heading-l">{icons[resource.category] || '📚'}</Box>
@@ -261,7 +276,7 @@ export default function ResourceHub() {
         ) : (
           <Cards
             cardDefinition={{
-              header: item => (
+              header: (item: Resource) => (
                 <SpaceBetween direction="horizontal" size="s" alignItems="center">
                   <Box fontSize="heading-m">
                     {item.category === 'education' ? '📚' :
@@ -275,7 +290,7 @@ export default function ResourceHub() {
               ),
               sections: [
                 {
-                  content: item => (
+                  content: (item: Resource) => (
                     <SpaceBetween size="s">
                       <Box>{item.content.substring(0, 150)}...</Box>
                       <Box fontSize="body-s">By {item.author}</Box>
@@ -325,7 +340,7 @@ export default function ResourceHub() {
       <Container>
         <Header variant="h2">Quick Access Tools</Header>
         <SpaceBetween direction="horizontal" size="m">
-          <Box padding="l" className="kadir-nelson-gradient-warm">
+          <Box padding="l">
             <SpaceBetween size="s">
               <Header variant="h3">📋 Symptom Tracker</Header>
               <Box>Keep track of your symptoms and patterns</Box>
@@ -335,7 +350,7 @@ export default function ResourceHub() {
             </SpaceBetween>
           </Box>
           
-          <Box padding="l" className="kadir-nelson-gradient-sage">
+          <Box padding="l">
             <SpaceBetween size="s">
               <Header variant="h3">💊 Medication Reminders</Header>
               <Box>Set up reminders for your medications</Box>
@@ -345,7 +360,7 @@ export default function ResourceHub() {
             </SpaceBetween>
           </Box>
           
-          <Box padding="l" className="kadir-nelson-secondary">
+          <Box padding="l">
             <SpaceBetween size="s">
               <Header variant="h3">🏥 Find Doctors</Header>
               <Box>Locate thyroid specialists in your area</Box>
@@ -359,7 +374,7 @@ export default function ResourceHub() {
 
       <Container>
         <Header variant="h2">Community Contributions</Header>
-        <Box padding="l" className="kadir-nelson-gradient-earth">
+        <Box padding="l">
           <SpaceBetween size="s">
             <Box>
               <strong>Maya K.</strong> shared: "This meditation technique from the anxiety guide really works! Try the 4-7-8 breathing method."

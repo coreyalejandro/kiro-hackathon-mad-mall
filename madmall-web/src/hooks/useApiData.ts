@@ -4,12 +4,43 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import apiService from '../services/apiService.js';
+import apiService from '../services/apiService';
+
+// Type definitions
+interface ApiHookResult<T> {
+  data: T | null;
+  loading: boolean;
+  error: string | null;
+  refetch: () => void;
+}
+
+interface ToastState {
+  show: boolean;
+  message: string;
+  type: 'info' | 'success' | 'error' | 'warning';
+}
+
+interface SearchResult {
+  searchResults: any[];
+  searching: boolean;
+  searchError: string | null;
+  search: (query: string) => void;
+}
+
+interface ContentInteraction {
+  interacting: boolean;
+  interactionError: string | null;
+  likeContent: (contentId: string, contentType: string) => Promise<any>;
+  saveContent: (contentId: string, contentType: string) => Promise<any>;
+  shareContent: (contentId: string, contentType: string) => Promise<any>;
+  watchContent: (contentId: string, contentType: string) => Promise<any>;
+  readContent: (contentId: string, contentType: string) => Promise<any>;
+}
 
 /**
  * Generic hook for API data fetching
  */
-export function useApiData(apiCall, dependencies = []) {
+export function useApiData<T>(apiCall: () => Promise<T>, dependencies: any[] = []): ApiHookResult<T> {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -140,7 +171,7 @@ export function useUserProfiles(limit = 10) {
 /**
  * Hook for search functionality
  */
-export function useSearch(query, contentType = 'all', limit = 20) {
+export function useSearch(query: string, contentType: string = 'all', limit: number = 20): SearchResult {
   const [searchResults, setSearchResults] = useState([]);
   const [searching, setSearching] = useState(false);
   const [searchError, setSearchError] = useState(null);
@@ -187,11 +218,11 @@ export function useSearch(query, contentType = 'all', limit = 20) {
 /**
  * Hook for content interactions
  */
-export function useContentInteraction() {
+export function useContentInteraction(): ContentInteraction {
   const [interacting, setInteracting] = useState(false);
   const [interactionError, setInteractionError] = useState(null);
 
-  const interact = useCallback(async (contentId, action, contentType) => {
+  const interact = useCallback(async (contentId: string, action: string, contentType: string) => {
     try {
       setInteracting(true);
       setInteractionError(null);
@@ -206,23 +237,23 @@ export function useContentInteraction() {
     }
   }, []);
 
-  const likeContent = useCallback((contentId, contentType) => {
+  const likeContent = useCallback((contentId: string, contentType: string) => {
     return interact(contentId, 'like', contentType);
   }, [interact]);
 
-  const saveContent = useCallback((contentId, contentType) => {
+  const saveContent = useCallback((contentId: string, contentType: string) => {
     return interact(contentId, 'save', contentType);
   }, [interact]);
 
-  const shareContent = useCallback((contentId, contentType) => {
+  const shareContent = useCallback((contentId: string, contentType: string) => {
     return interact(contentId, 'share', contentType);
   }, [interact]);
 
-  const watchContent = useCallback((contentId, contentType) => {
+  const watchContent = useCallback((contentId: string, contentType: string) => {
     return interact(contentId, 'watch', contentType);
   }, [interact]);
 
-  const readContent = useCallback((contentId, contentType) => {
+  const readContent = useCallback((contentId: string, contentType: string) => {
     return interact(contentId, 'read', contentType);
   }, [interact]);
 
@@ -247,6 +278,6 @@ export function useRecommendations(userId = 'default', contentType = 'all', limi
 /**
  * Hook for categories
  */
-export function useCategories(contentType) {
+export function useCategories(contentType: string) {
   return useApiData(() => apiService.getCategories(contentType), [contentType]);
 }

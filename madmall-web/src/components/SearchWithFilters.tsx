@@ -3,8 +3,7 @@ import {
   Input,
   Button,
   SpaceBetween,
-  Box,
-  Badge
+  Box
 } from '@cloudscape-design/components';
 
 interface SearchWithFiltersProps {
@@ -77,14 +76,13 @@ export default function SearchWithFilters({
       {categories.length > 0 && (
         <SpaceBetween direction="horizontal" size="s">
           {categories.map((category) => (
-            <Badge
+            <Button
               key={category}
-              color={selectedCategory === category ? 'blue' : 'grey'}
+              variant={selectedCategory === category ? 'primary' : 'normal'}
               onClick={() => handleCategoryClick(category)}
-              style={{ cursor: 'pointer' }}
             >
               {category}
-            </Badge>
+            </Button>
           ))}
         </SpaceBetween>
       )}

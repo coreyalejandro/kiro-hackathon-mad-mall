@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Container,
   Header,
@@ -8,7 +8,6 @@ import {
   Badge,
   Box,
   Textarea,
-  Icon,
   Grid,
   Input,
   Alert
@@ -19,17 +18,35 @@ import ToastNotification from '../components/ToastNotification';
 import { useFeaturedStories, useUserStories, useContentInteraction } from '../hooks/useApiData';
 import { formatTimeAgo } from '../utils/timeUtils';
 
+// Type definitions
+interface Story {
+  id: string;
+  title: string;
+  content: string;
+  author: string;
+  duration: string;
+  likes: number;
+  timestamp: string;
+  themes?: string[];
+}
+
+type ToastType = 'info' | 'success' | 'error' | 'warning';
+
 export default function StoryBooth() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [toast, setToast] = useState({ show: false, message: '', type: 'info' as const });
+  const [toast, setToast] = useState<{ show: boolean; message: string; type: ToastType }>({ 
+    show: false, 
+    message: '', 
+    type: 'info' 
+  });
   const [newStory, setNewStory] = useState('');
   
   const { data: featuredStories, loading: featuredLoading, error: featuredError } = useFeaturedStories(3);
   const { data: allStories, loading: storiesLoading, error: storiesError } = useUserStories(20);
   const { likeContent, shareContent, saveContent, interacting } = useContentInteraction();
 
-  const showToast = (message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info') => {
+  const showToast = (message: string, type: ToastType = 'info') => {
     setToast({ show: true, message, type });
   };
 
@@ -42,14 +59,7 @@ export default function StoryBooth() {
     }
   };
 
-  const handleShare = async (contentId: string) => {
-    try {
-      await shareContent(contentId, 'story');
-      showToast('Story shared with your circles! 🔗', 'success');
-    } catch (error) {
-      showToast('Unable to share right now', 'error');
-    }
-  };
+
 
   const handleSave = async (contentId: string) => {
     try {
@@ -69,7 +79,7 @@ export default function StoryBooth() {
     }
   };
 
-  const filteredStories = allStories?.filter(story => {
+  const filteredStories = allStories?.filter((story: Story) => {
     const matchesSearch = !searchQuery || 
       story.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       story.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -158,7 +168,7 @@ export default function StoryBooth() {
                 <Badge color="green">Searching: "{searchQuery}"</Badge>
               )}
               {selectedCategory !== 'all' && (
-                <Badge color="purple">Category: {selectedCategory}</Badge>
+                <Badge color="blue">Category: {selectedCategory}</Badge>
               )}
             </SpaceBetween>
           </SpaceBetween>
@@ -179,7 +189,7 @@ export default function StoryBooth() {
             </Grid>
           ) : (
             <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
-              {featuredStories?.map((story, index) => {
+              {featuredStories?.map((story: Story, index: number) => {
                 const gradients = ['kadir-nelson-gradient-warm', 'kadir-nelson-gradient-sage', 'kadir-nelson-gradient-earth'];
                 const icons = ['🎤', '📖', '✨'];
                 
@@ -266,7 +276,7 @@ export default function StoryBooth() {
           ) : (
             <Cards
               cardDefinition={{
-                header: item => (
+                header: (item: Story) => (
                   <SpaceBetween direction="horizontal" size="s" alignItems="center">
                     <Box fontSize="heading-m">
                       {item.themes?.includes('diagnosis') ? '🎯' :
@@ -280,7 +290,7 @@ export default function StoryBooth() {
                 ),
                 sections: [
                   {
-                    content: item => (
+                    content: (item: Story) => (
                       <SpaceBetween size="s">
                         <Box>{item.content.substring(0, 150)}...</Box>
                         <SpaceBetween direction="horizontal" size="s" alignItems="center">
