@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Container,
   Header,
@@ -8,7 +8,7 @@ import {
   Badge,
   Box,
   Grid,
-  Icon,
+
   Input,
   Alert
 } from '@cloudscape-design/components';
@@ -21,7 +21,7 @@ import { formatTimeAgo } from '../utils/timeUtils';
 export default function ComedyLounge() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [toast, setToast] = useState({ show: false, message: '', type: 'info' as const });
+  const [toast, setToast] = useState<{ show: boolean; message: string; type: 'success' | 'error' | 'info' | 'warning' }>({ show: false, message: '', type: 'info' });
   
   const { data: featuredComedy, loading: featuredLoading, error: featuredError } = useFeaturedComedy(3);
   const { data: comedyContent, loading: contentLoading, error: contentError } = useComedyContent(selectedCategory || null, 20);
@@ -58,11 +58,11 @@ export default function ComedyLounge() {
     }
   };
 
-  const filteredContent = comedyContent?.filter(item => 
+  const filteredContent = Array.isArray(comedyContent) ? comedyContent.filter((item: any) => 
     !searchQuery || 
-    item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.description.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+    item.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.description?.toLowerCase().includes(searchQuery.toLowerCase())
+  ) : [];
 
   const floatingElements = [
     <div style={{ fontSize: '2rem', opacity: 0.6 }}>😂</div>,
@@ -153,9 +153,9 @@ export default function ComedyLounge() {
               <LoadingCard height="280px" />
               <LoadingCard height="280px" />
             </Grid>
-          ) : featuredComedy && featuredComedy.length > 0 ? (
+          ) : featuredComedy && Array.isArray(featuredComedy) && featuredComedy.length > 0 ? (
             <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
-              {featuredComedy.slice(0, 3).map((comedy, index) => {
+              {featuredComedy.slice(0, 3).map((comedy: any, index: number) => {
                 const gradientClasses = ['kadir-nelson-gradient-warm', 'kadir-nelson-gradient-sage', 'kadir-nelson-gradient-earth'];
                 const icons = ['🎭', '👩‍⚕️', '💊'];
                 
@@ -269,7 +269,7 @@ export default function ComedyLounge() {
             ) : (
               <Cards
                 cardDefinition={{
-                  header: item => (
+                  header: (item: any) => (
                     <SpaceBetween direction="horizontal" size="s" alignItems="center">
                       <Box fontSize="heading-m">
                         {item.category === 'Thyroid Life' ? '💊' :
@@ -282,7 +282,7 @@ export default function ComedyLounge() {
                   ),
                   sections: [
                     {
-                      content: item => (
+                      content: (item: any) => (
                         <SpaceBetween size="s">
                           <Box>{item.description}</Box>
                           <SpaceBetween direction="horizontal" size="s" alignItems="center">

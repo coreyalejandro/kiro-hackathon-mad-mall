@@ -87,84 +87,84 @@ export function useTodaysHighlights() {
 /**
  * Hook for user stories
  */
-export function useUserStories(limit = 10) {
+export function useUserStories(limit: number = 10) {
   return useApiData(() => apiService.getUserStories(limit), [limit]);
 }
 
 /**
  * Hook for featured stories
  */
-export function useFeaturedStories(limit = 3) {
+export function useFeaturedStories(limit: number = 3) {
   return useApiData(() => apiService.getFeaturedStories(limit), [limit]);
 }
 
 /**
  * Hook for comedy content
  */
-export function useComedyContent(category = null, limit = 10) {
+export function useComedyContent(category: string | null = null, limit: number = 10) {
   return useApiData(() => apiService.getComedyContent(category, limit), [category, limit]);
 }
 
 /**
  * Hook for featured comedy
  */
-export function useFeaturedComedy(limit = 3) {
+export function useFeaturedComedy(limit: number = 3) {
   return useApiData(() => apiService.getFeaturedComedy(limit), [limit]);
 }
 
 /**
  * Hook for peer discussions
  */
-export function usePeerDiscussions(circleId = null, limit = 10) {
+export function usePeerDiscussions(circleId: string | null = null, limit: number = 10) {
   return useApiData(() => apiService.getPeerDiscussions(circleId, limit), [circleId, limit]);
 }
 
 /**
  * Hook for active discussions
  */
-export function useActiveDiscussions(limit = 5) {
+export function useActiveDiscussions(limit: number = 5) {
   return useApiData(() => apiService.getActiveDiscussions(limit), [limit]);
 }
 
 /**
  * Hook for resource articles
  */
-export function useResourceArticles(category = null, limit = 10) {
+export function useResourceArticles(category: string | null = null, limit: number = 10) {
   return useApiData(() => apiService.getResourceArticles(category, limit), [category, limit]);
 }
 
 /**
  * Hook for featured resources
  */
-export function useFeaturedResources(limit = 4) {
+export function useFeaturedResources(limit: number = 4) {
   return useApiData(() => apiService.getFeaturedResources(limit), [limit]);
 }
 
 /**
  * Hook for resource content (alias for resource articles)
  */
-export function useResourceContent(category = null, limit = 10) {
+export function useResourceContent(category: string | null = null, limit: number = 10) {
   return useApiData(() => apiService.getResourceArticles(category, limit), [category, limit]);
 }
 
 /**
  * Hook for product reviews
  */
-export function useProductReviews(category = null, limit = 10) {
+export function useProductReviews(category: string | null = null, limit: number = 10) {
   return useApiData(() => apiService.getProductReviews(category, limit), [category, limit]);
 }
 
 /**
  * Hook for featured products
  */
-export function useFeaturedProducts(limit = 6) {
+export function useFeaturedProducts(limit: number = 6) {
   return useApiData(() => apiService.getFeaturedProducts(limit), [limit]);
 }
 
 /**
  * Hook for user profiles
  */
-export function useUserProfiles(limit = 10) {
+export function useUserProfiles(limit: number = 10) {
   return useApiData(() => apiService.getUserProfiles(limit), [limit]);
 }
 
@@ -271,7 +271,7 @@ export function useContentInteraction(): ContentInteraction {
 /**
  * Hook for recommendations
  */
-export function useRecommendations(userId = 'default', contentType = 'all', limit = 5) {
+export function useRecommendations(userId: string = 'default', contentType: string = 'all', limit: number = 5) {
   return useApiData(() => apiService.getRecommendations(userId, contentType, limit), [userId, contentType, limit]);
 }
 

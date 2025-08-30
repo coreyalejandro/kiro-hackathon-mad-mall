@@ -51,7 +51,7 @@ function App() {
             }
           ]}
         />
-        
+
         <AppLayout
           navigation={
             <SideNavigation
@@ -69,7 +69,7 @@ function App() {
               <Route path="/resources" element={<ResourceHub />} />
               <Route path="/auth" element={<Authentication />} />
               <Route path="/profile" element={
-                <UserProfile 
+                <UserProfile
                   userData={{
                     firstName: 'Demo',
                     lastName: 'User',
