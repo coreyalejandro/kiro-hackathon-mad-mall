@@ -232,9 +232,10 @@ export default function ComedyLounge() {
         </Container>
 
         <Container>
-          <SpaceBetween size="m">
-            <SpaceBetween direction="horizontal" size="s" alignItems="center">
-              <Header variant="h2" className="text-rich-umber">Comedy Collection</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <SpaceBetween size="m">
+              <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                <Header variant="h2" className="text-rich-umber">Comedy Collection</Header>
               {selectedCategory && (
                 <Badge color="blue">
                   {selectedCategory}
@@ -343,6 +344,7 @@ export default function ComedyLounge() {
               />
             )}
           </SpaceBetween>
+          </div>
         </Container>
 
         <Container>
