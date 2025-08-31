@@ -149,6 +149,7 @@ export default function ComedyLounge() {
               </Grid>
             </SpaceBetween>
           </div>
+          </div>
         </Container>
 
         <Container>
@@ -227,6 +228,7 @@ export default function ComedyLounge() {
               </SpaceBetween>
             </Box>
           )}
+          </div>
         </Container>
 
         <Container>
@@ -359,6 +361,7 @@ export default function ComedyLounge() {
               <Box fontSize="body-s">Your feedback helps us curate better content for therapeutic relief.</Box>
             </SpaceBetween>
           </Box>
+          </div>
         </Container>
       </SpaceBetween>
     </div>

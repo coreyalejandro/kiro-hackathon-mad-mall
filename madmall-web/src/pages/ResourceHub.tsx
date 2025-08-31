@@ -169,6 +169,7 @@ export default function ResourceHub() {
             )}
           </SpaceBetween>
         </SpaceBetween>
+        </div>
       </Container>
 
 
@@ -247,6 +248,7 @@ export default function ResourceHub() {
             })}
           </Grid>
         )}
+        </div>
       </Container>
 
       <Container>
@@ -346,6 +348,7 @@ export default function ResourceHub() {
             ]}
           />
         )}
+        </div>
       </Container>
 
       <Container>
@@ -382,6 +385,7 @@ export default function ResourceHub() {
             </SpaceBetween>
           </Box>
         </SpaceBetween>
+        </div>
       </Container>
 
       <Container>
@@ -400,6 +404,7 @@ export default function ResourceHub() {
             </Box>
           </SpaceBetween>
         </Box>
+        </div>
       </Container>
       </SpaceBetween>
     </div>

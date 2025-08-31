@@ -181,6 +181,7 @@ export default function StoryBooth() {
               )}
             </SpaceBetween>
           </SpaceBetween>
+          </div>
         </Container>
 
         <Container>
@@ -247,6 +248,7 @@ export default function StoryBooth() {
               })}
             </Grid>
           )}
+          </div>
         </Container>
 
         <Container>
@@ -345,6 +347,7 @@ export default function StoryBooth() {
               ]}
             />
           )}
+          </div>
         </Container>
 
         <Container>
@@ -399,6 +402,7 @@ export default function StoryBooth() {
               </SpaceBetween>
             </Box>
           </SpaceBetween>
+          </div>
         </Container>
       </SpaceBetween>
     </div>

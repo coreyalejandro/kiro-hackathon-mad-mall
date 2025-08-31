@@ -166,6 +166,7 @@ export default function Marketplace() {
             )}
           </SpaceBetween>
         </SpaceBetween>
+          </div>
       </Container>
 
       <Container>
@@ -240,6 +241,7 @@ export default function Marketplace() {
             })}
           </Grid>
         )}
+        </div>
       </Container>
 
       <Container>
@@ -336,6 +338,7 @@ export default function Marketplace() {
             ]}
           />
         )}
+        </div>
       </Container>
 
       <Container>
@@ -361,6 +364,7 @@ export default function Marketplace() {
             </SpaceBetween>
           </SpaceBetween>
         </Box>
+        </div>
       </Container>
 
       <Container>
@@ -379,6 +383,7 @@ export default function Marketplace() {
             </Box>
           </SpaceBetween>
         </Box>
+        </div>
       </Container>
 
       <FeaturedBusinesses />
