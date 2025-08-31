@@ -15,7 +15,13 @@
     "server:start": "cd server && npm start",
     "dev:full": "concurrently \"npm run dev\" \"npm run server:dev\"",
     "setup": "npm install && npm run server:install",
-    "demo:data": "node scripts/demo-data-generation.js"
+    "demo:data": "node scripts/demo-data-generation.js",
+    "titanengine:build": "cd src/services/titanEngine && npm run build",
+    "titanengine:start": "cd src/services/titanEngine && npm start",
+    "titanengine:dev": "cd src/services/titanEngine && npm run dev",
+    "start": "concurrently --names \"REACT,TITAN\" --prefix-colors \"cyan,magenta\" \"npm run dev\" \"npm run titanengine:start\"",
+    "start:dev": "concurrently --names \"REACT,TITAN\" --prefix-colors \"cyan,magenta\" \"npm run dev\" \"npm run titanengine:dev\"",
+    "madmall": "npm run start"
   },
   "dependencies": {
     "@cloudscape-design/components": "^3.0.1074",

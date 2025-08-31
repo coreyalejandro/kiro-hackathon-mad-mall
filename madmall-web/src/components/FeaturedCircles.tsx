@@ -1,4 +1,4 @@
-
+import React from 'react';
 import {
   Container,
   Header,
@@ -51,9 +51,7 @@ export default function FeaturedCircles() {
     <Container>
       <SpaceBetween size="l">
         <Box textAlign="center">
-          <Header variant="h2" className="text-rich-umber">
-            Featured Circles
-          </Header>
+          <Header variant="h2">Featured Circles</Header>
           <Box color="text-body-secondary" fontSize="body-s">
             Join supportive communities led by sisters who understand your journey
           </Box>
@@ -116,11 +114,11 @@ export default function FeaturedCircles() {
                 </Box>
 
                 <Box textAlign="center">
-                  <SpaceBetween direction="horizontal" size="s" alignItems="center" style={{ justifyContent: 'center' }}>
-                    <Badge color="grey" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', color: 'white', border: 'none' }}>
+                  <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                    <Badge color="grey">
                       {circle.memberCount} members
                     </Badge>
-                    <Badge color="grey" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', color: 'white', border: 'none' }}>
+                    <Badge color="grey">
                       Active {circle.recentActivity}
                     </Badge>
                   </SpaceBetween>
@@ -129,12 +127,6 @@ export default function FeaturedCircles() {
                     <Button 
                       variant="primary"
                       onClick={() => console.log(`Join ${circle.name}`)}
-                      style={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                        color: 'var(--color-rich-umber)',
-                        border: 'none',
-                        fontWeight: 'bold'
-                      }}
                     >
                       Join Circle
                     </Button>
