@@ -131,7 +131,8 @@ export default function ResourceHub() {
       />
 
       <Container>
-        <Header variant="h2">Search Resources</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber">Search Resources</Header>
         <SpaceBetween size="m">
           <Grid gridDefinition={[{ colspan: 8 }, { colspan: 4 }]}>
             <Input
@@ -173,7 +174,8 @@ export default function ResourceHub() {
 
 
       <Container>
-        <Header variant="h2">Featured Resources</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber">Featured Resources</Header>
         {featuredError && (
           <Alert type="error">
             Failed to load featured resources. Please try again later.
@@ -248,7 +250,8 @@ export default function ResourceHub() {
       </Container>
 
       <Container>
-        <Header variant="h2">Resource Library</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber">Resource Library</Header>
         {resourcesError && (
           <Alert type="error">
             Failed to load resources. Please try again later.
@@ -346,7 +349,8 @@ export default function ResourceHub() {
       </Container>
 
       <Container>
-        <Header variant="h2">Quick Access Tools</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber">Quick Access Tools</Header>
         <SpaceBetween direction="horizontal" size="m">
           <Box padding="l">
             <SpaceBetween size="s">
@@ -381,7 +385,8 @@ export default function ResourceHub() {
       </Container>
 
       <Container>
-        <Header variant="h2">Community Contributions</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber">Community Contributions</Header>
         <Box padding="l">
           <SpaceBetween size="s">
             <Box>

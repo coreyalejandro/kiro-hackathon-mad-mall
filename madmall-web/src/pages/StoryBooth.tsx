@@ -143,7 +143,8 @@ export default function StoryBooth() {
         />
 
         <Container>
-          <Header variant="h2">Search Stories</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber">Search Stories</Header>
           <SpaceBetween size="m">
             <Grid gridDefinition={[{ colspan: 8 }, { colspan: 4 }]}>
               <Input
@@ -183,7 +184,8 @@ export default function StoryBooth() {
         </Container>
 
         <Container>
-          <Header variant="h2">Featured Stories</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber">Featured Stories</Header>
           {featuredError && (
             <Alert type="error">
               Failed to load featured stories. Please try again later.
@@ -248,7 +250,8 @@ export default function StoryBooth() {
         </Container>
 
         <Container>
-          <Header variant="h2" id="community-stories">Story Collection ({filteredStories.length} stories)</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber" id="community-stories">Story Collection ({filteredStories.length} stories)</Header>
           {storiesError && (
             <Alert type="error">
               Failed to load stories. Please try again later.
@@ -345,7 +348,8 @@ export default function StoryBooth() {
         </Container>
 
         <Container>
-          <Header variant="h2" id="share-story">Share Your Story</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber" id="share-story">Share Your Story</Header>
           <SpaceBetween size="m">
             <Box padding="l" className="kadir-nelson-secondary">
               <SpaceBetween size="s">

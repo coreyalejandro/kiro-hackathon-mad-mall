@@ -116,40 +116,44 @@ export default function ComedyLounge() {
         />
 
         <Container>
-          <Header variant="h2">Search Comedy</Header>
-          <SpaceBetween size="m">
-            <Grid gridDefinition={[{ colspan: 6 }, { colspan: 3 }, { colspan: 3 }]}>
-              <Input
-                placeholder="Search for comedy clips, topics, or themes..."
-                value={searchQuery}
-                onChange={({ detail }) => setSearchQuery(detail.value)}
-                type="search"
-              />
-              <select 
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                style={{
-                  padding: '8px 12px',
-                  borderRadius: '4px',
-                  border: '1px solid #ccc',
-                  fontSize: '14px'
-                }}
-              >
-                <option value="">All Categories</option>
-                <option value="Thyroid Life">Thyroid Life</option>
-                <option value="Self-Care Struggles">Self-Care Struggles</option>
-                <option value="Community Moments">Community Moments</option>
-                <option value="Medical Adventures">Medical Adventures</option>
-              </select>
-              <Box textAlign="right">
-                <Badge color="blue">{filteredContent.length} videos</Badge>
-              </Box>
-            </Grid>
-          </SpaceBetween>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber">Search Comedy</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: '1.5rem', borderRadius: '12px' }}>
+            <SpaceBetween size="m">
+              <Grid gridDefinition={[{ colspan: 6 }, { colspan: 3 }, { colspan: 3 }]}>
+                <Input
+                  placeholder="Search for comedy clips, topics, or themes..."
+                  value={searchQuery}
+                  onChange={({ detail }) => setSearchQuery(detail.value)}
+                  type="search"
+                />
+                <select 
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  style={{
+                    padding: '8px 12px',
+                    borderRadius: '4px',
+                    border: '1px solid #ccc',
+                    fontSize: '14px'
+                  }}
+                >
+                  <option value="">All Categories</option>
+                  <option value="Thyroid Life">Thyroid Life</option>
+                  <option value="Self-Care Struggles">Self-Care Struggles</option>
+                  <option value="Community Moments">Community Moments</option>
+                  <option value="Medical Adventures">Medical Adventures</option>
+                </select>
+                <Box textAlign="right">
+                  <Badge color="blue">{filteredContent.length} videos</Badge>
+                </Box>
+              </Grid>
+            </SpaceBetween>
+          </div>
         </Container>
 
         <Container>
-          <Header variant="h2">Featured Comedy</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" id="featured-comedy" className="text-rich-umber">Featured Comedy</Header>
           {featuredError && (
             <Alert type="error">
               Failed to load featured comedy. Please try again later.
@@ -228,7 +232,7 @@ export default function ComedyLounge() {
         <Container>
           <SpaceBetween size="m">
             <SpaceBetween direction="horizontal" size="s" alignItems="center">
-              <Header variant="h2" id="featured-comedy">Comedy Collection</Header>
+              <Header variant="h2" className="text-rich-umber">Comedy Collection</Header>
               {selectedCategory && (
                 <Badge color="blue">
                   {selectedCategory}
@@ -340,7 +344,8 @@ export default function ComedyLounge() {
         </Container>
 
         <Container>
-          <Header variant="h2" id="mood-rating">How Are You Feeling?</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber" id="mood-rating">How Are You Feeling?</Header>
           <Box padding="l" className="kadir-nelson-gradient-earth">
             <SpaceBetween size="s">
               <Box>After watching comedy content, rate how it made you feel:</Box>

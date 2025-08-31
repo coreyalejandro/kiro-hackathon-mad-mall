@@ -127,7 +127,8 @@ export default function Marketplace() {
       />
 
       <Container>
-        <Header variant="h2">Search Products</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber">Search Products</Header>
         <SpaceBetween size="m">
           <Grid gridDefinition={[{ colspan: 8 }, { colspan: 4 }]}>
             <Input
@@ -168,7 +169,8 @@ export default function Marketplace() {
       </Container>
 
       <Container>
-        <Header variant="h2">Featured Products</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber">Featured Products</Header>
         {featuredError && (
           <Alert type="error">
             Failed to load featured products. Please try again later.
@@ -241,7 +243,8 @@ export default function Marketplace() {
       </Container>
 
       <Container>
-        <Header variant="h2">Product Collection</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber">Product Collection</Header>
         {productsError && (
           <Alert type="error">
             Failed to load products. Please try again later.
@@ -336,7 +339,8 @@ export default function Marketplace() {
       </Container>
 
       <Container>
-        <Header variant="h2">Retail Therapy Corner</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber">Retail Therapy Corner</Header>
         <Box padding="l">
           <SpaceBetween size="s">
             <Header variant="h3">💜 Treat Yourself Today</Header>
@@ -360,7 +364,8 @@ export default function Marketplace() {
       </Container>
 
       <Container>
-        <Header variant="h2">Community Recommendations</Header>
+          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+            <Header variant="h2" className="text-rich-umber">Community Recommendations</Header>
         <Box padding="l">
           <SpaceBetween size="s">
             <Box>
