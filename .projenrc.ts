@@ -94,4 +94,10 @@ project.package.addField("pnpm", {
   cacheDir: "node_modules/.pnpm/cache",
 });
 
+// Ensure workspace packages are properly configured
+const workspaceFile = project.tryFindObjectFile('pnpm-workspace.yaml');
+if (workspaceFile) {
+  workspaceFile.addOverride('packages', ['packages/*']);
+}
+
 project.synth();
