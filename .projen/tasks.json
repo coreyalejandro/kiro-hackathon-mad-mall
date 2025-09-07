@@ -1,5 +1,29 @@
 {
   "tasks": {
+    "affected:build": {
+      "name": "affected:build",
+      "steps": [
+        {
+          "exec": "nx affected --target=build"
+        }
+      ]
+    },
+    "affected:lint": {
+      "name": "affected:lint",
+      "steps": [
+        {
+          "exec": "nx affected --target=lint"
+        }
+      ]
+    },
+    "affected:test": {
+      "name": "affected:test",
+      "steps": [
+        {
+          "exec": "nx affected --target=test"
+        }
+      ]
+    },
     "build": {
       "name": "build",
       "description": "Full release build for all affected projects",
@@ -7,6 +31,22 @@
         {
           "exec": "pnpm exec nx run-many --target=build --output-style=stream --nx-bail",
           "receiveArgs": true
+        }
+      ]
+    },
+    "build:all": {
+      "name": "build:all",
+      "steps": [
+        {
+          "exec": "nx run-many --target=build --all"
+        }
+      ]
+    },
+    "clean": {
+      "name": "clean",
+      "steps": [
+        {
+          "exec": "nx reset && pnpm exec projen clobber"
         }
       ]
     },
@@ -61,6 +101,14 @@
         }
       ]
     },
+    "dev": {
+      "name": "dev",
+      "steps": [
+        {
+          "exec": "nx run-many --target=dev --all --parallel"
+        }
+      ]
+    },
     "eject": {
       "name": "eject",
       "description": "Remove projen from the project",
@@ -76,9 +124,6 @@
     "eslint": {
       "name": "eslint",
       "description": "Runs eslint against the codebase for all affected projects",
-      "env": {
-        "ESLINT_USE_FLAT_CONFIG": "false"
-      },
       "steps": [
         {
           "exec": "pnpm exec nx run-many --target=eslint --output-style=stream --nx-bail",
@@ -115,6 +160,14 @@
         {
           "exec": "pnpm exec nx run-many --target=install:ci --output-style=stream --nx-bail",
           "receiveArgs": true
+        }
+      ]
+    },
+    "lint:all": {
+      "name": "lint:all",
+      "steps": [
+        {
+          "exec": "nx run-many --target=lint --all"
         }
       ]
     },
@@ -162,6 +215,14 @@
         }
       ]
     },
+    "setup": {
+      "name": "setup",
+      "steps": [
+        {
+          "exec": "pnpm install && pnpm build:all"
+        }
+      ]
+    },
     "test": {
       "name": "test",
       "description": "Run tests for all affected projects",
@@ -169,6 +230,14 @@
         {
           "exec": "pnpm exec nx run-many --target=test --output-style=stream --nx-bail",
           "receiveArgs": true
+        }
+      ]
+    },
+    "test:all": {
+      "name": "test:all",
+      "steps": [
+        {
+          "exec": "nx run-many --target=test --all"
         }
       ]
     },
@@ -180,7 +249,7 @@
       },
       "steps": [
         {
-          "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@aws/pdk,@types/node,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,npm-check-updates,prettier,ts-node,typescript,aws-cdk-lib,cdk-nag"
+          "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@aws/pdk,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,npm-check-updates,prettier,ts-node,typescript,aws-cdk-lib,cdk-nag"
         },
         {
           "exec": "pnpm i --no-frozen-lockfile"

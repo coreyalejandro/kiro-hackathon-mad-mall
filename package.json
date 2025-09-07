@@ -1,19 +1,28 @@
 {
   "name": "kiro hackathon-mad-mall",
   "scripts": {
+    "affected:build": "pnpm exec projen affected:build",
+    "affected:lint": "pnpm exec projen affected:lint",
+    "affected:test": "pnpm exec projen affected:test",
     "build": "pnpm exec projen build",
+    "build:all": "pnpm exec projen build:all",
+    "clean": "pnpm exec projen clean",
     "clobber": "pnpm exec projen clobber",
     "compile": "pnpm exec projen compile",
     "default": "pnpm exec projen default",
+    "dev": "pnpm exec projen dev",
     "eject": "pnpm exec projen eject",
     "eslint": "pnpm exec projen eslint",
     "graph": "pnpm exec projen graph",
+    "lint:all": "pnpm exec projen lint:all",
     "package": "pnpm exec projen package",
     "post-compile": "pnpm exec projen post-compile",
     "post-upgrade": "pnpm exec projen post-upgrade",
     "pre-compile": "pnpm exec projen pre-compile",
     "run-many": "pnpm exec projen run-many",
+    "setup": "pnpm exec projen setup",
     "test": "pnpm exec projen test",
+    "test:all": "pnpm exec projen test:all",
     "upgrade": "pnpm exec projen upgrade",
     "upgrade-deps": "pnpm exec projen upgrade-deps",
     "watch": "pnpm exec projen watch",
@@ -22,11 +31,11 @@
   },
   "devDependencies": {
     "@aws/pdk": "^0.26.14",
-    "@types/node": "^24.3.0",
-    "@typescript-eslint/eslint-plugin": "^8",
-    "@typescript-eslint/parser": "^8",
+    "@types/node": "^18",
+    "@typescript-eslint/eslint-plugin": "^7",
+    "@typescript-eslint/parser": "^7",
     "constructs": "^10.0.0",
-    "eslint": "^9",
+    "eslint": "^8",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
@@ -52,7 +61,17 @@
       "@types/babel__traverse": "7.18.2",
       "@zkochan/js-yaml": "npm:js-yaml@4.1.0",
       "wrap-ansi": "^7.0.0"
-    }
+    },
+    "shamefullyHoist": false,
+    "strictPeerDependencies": false,
+    "autoInstallPeers": true,
+    "workspaces": {
+      "packages": [
+        "packages/*"
+      ]
+    },
+    "storeDir": "node_modules/.pnpm",
+    "cacheDir": "node_modules/.pnpm/cache"
   },
   "engines": {
     "node": ">=16",

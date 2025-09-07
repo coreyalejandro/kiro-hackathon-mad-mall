@@ -1,0 +1,103 @@
+name: API Gateway CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'packages/api-gateway/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'packages/api-gateway/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: packages/api-gateway/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: packages/api-gateway
+      run: npm ci
+      
+    - name: Install Smithy CLI
+      run: npm install -g @smithy/cli
+      
+    - name: Validate Smithy models
+      working-directory: packages/api-gateway
+      run: ./scripts/validate.sh
+      
+    - name: Run tests
+      working-directory: packages/api-gateway
+      run: npm test
+      
+    - name: Generate code
+      working-directory: packages/api-gateway
+      run: npm run generate
+      
+    - name: Upload generated artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: generated-api-artifacts
+        path: |
+          packages/api-gateway/lib/
+          packages/api-gateway/generated/
+        retention-days: 30
+        
+  publish:
+    needs: validate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        registry-url: 'https://registry.npmjs.org'
+        
+    - name: Install dependencies
+      working-directory: packages/api-gateway
+      run: npm ci
+      
+    - name: Install Smithy CLI
+      run: npm install -g @smithy/cli
+      
+    - name: Generate code
+      working-directory: packages/api-gateway
+      run: npm run generate
+      
+    - name: Publish TypeScript client
+      working-directory: packages/api-gateway/lib
+      run: npm publish --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        
+    - name: Create GitHub release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: api-gateway-v${{ github.run_number }}
+        release_name: API Gateway Release v${{ github.run_number }}
+        body: |
+          Automated release of API Gateway package
+          
+          Generated artifacts:
+          - TypeScript client library
+          - OpenAPI 3.0 specification
+          - Lambda handler interfaces
+        draft: false
+        prerelease: false

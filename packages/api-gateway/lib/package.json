@@ -1,0 +1,8 @@
+{
+  "name": "@madmall/api-client",
+  "version": "1.0.0",
+  "description": "Generated TypeScript client for MADMall API",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "dependencies": {}
+}

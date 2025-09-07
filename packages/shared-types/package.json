@@ -1,0 +1,58 @@
+{
+  "name": "@madmall/shared-types",
+  "version": "0.0.0",
+  "description": "Shared TypeScript definitions for MADMall platform",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js",
+      "require": "./lib/index.js"
+    },
+    "./domain": {
+      "types": "./lib/domain/index.d.ts",
+      "import": "./lib/domain/index.js",
+      "require": "./lib/domain/index.js"
+    },
+    "./api": {
+      "types": "./lib/api/index.d.ts",
+      "import": "./lib/api/index.js",
+      "require": "./lib/api/index.js"
+    },
+    "./events": {
+      "types": "./lib/events/index.d.ts",
+      "import": "./lib/events/index.js",
+      "require": "./lib/events/index.js"
+    },
+    "./config": {
+      "types": "./lib/config/index.d.ts",
+      "import": "./lib/config/index.js",
+      "require": "./lib/config/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf lib",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "files": [
+    "lib/**/*",
+    "src/**/*"
+  ],
+  "keywords": [
+    "typescript",
+    "types",
+    "madmall",
+    "wellness",
+    "shared"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "version": "1.0",
+  "sources": ["models"],
+  "plugins": {
+    "typescript-codegen": {
+      "service": "com.madmall.api#MADMallAPI",
+      "packageName": "@madmall/api-client",
+      "packageVersion": "1.0.0"
+    },
+    "openapi": {
+      "service": "com.madmall.api#MADMallAPI",
+      "openApiVersion": "3.0.2",
+      "jsonAdd": {
+        "info": {
+          "title": "MADMall Social Wellness Platform API",
+          "description": "Enterprise-grade API for the MADMall social wellness platform",
+          "version": "1.0.0",
+          "contact": {
+            "name": "MADMall API Team",
+            "email": "api@madmall.com"
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.madmall.com/v1",
+            "description": "Production API"
+          },
+          {
+            "url": "https://api-staging.madmall.com/v1",
+            "description": "Staging API"
+          }
+        ]
+      }
+    }
+  }
+}

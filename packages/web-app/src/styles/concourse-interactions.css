@@ -1,0 +1,303 @@
+/* Concourse Interactive Hover Effects and Visual Feedback */
+
+/* Mall Section Cards - Enhanced Hover Effects */
+.mall-section-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.mall-section-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.6s ease;
+  z-index: 1;
+}
+
+.mall-section-card:hover::before {
+  left: 100%;
+}
+
+.mall-section-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.mall-section-card:active {
+  transform: translateY(-4px) scale(1.01);
+  transition: all 0.1s ease;
+}
+
+/* Icon Animation on Hover */
+.mall-section-icon {
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  display: inline-block;
+}
+
+.mall-section-card:hover .mall-section-icon {
+  transform: scale(1.2) rotate(5deg);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+/* Badge Hover Effects */
+.mall-section-badge {
+  transition: all 0.2s ease;
+}
+
+.mall-section-card:hover .mall-section-badge {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Button Hover Enhancements */
+.mall-section-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.mall-section-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.mall-section-button:hover::after {
+  width: 300px;
+  height: 300px;
+}
+
+.mall-section-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Highlight Cards Hover Effects */
+.highlight-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.highlight-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.highlight-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.highlight-card:hover::after {
+  opacity: 1;
+}
+
+/* Pulse Animation for Active Elements */
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(184, 84, 80, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(184, 84, 80, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(184, 84, 80, 0);
+  }
+}
+
+.active-indicator {
+  animation: pulse-glow 2s infinite;
+}
+
+/* Ripple Effect for Clicks */
+.ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-effect::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.ripple-effect:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Loading State Animations */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Micro-interactions for Stats */
+.stat-number {
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover .stat-number {
+  transform: scale(1.1);
+  color: var(--color-burnt-sienna);
+}
+
+/* Floating Action Feedback */
+.floating-feedback {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--color-sage-green);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateX(400px);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.floating-feedback.show {
+  transform: translateX(0);
+}
+
+/* Interactive Grid Hover Effects */
+.interactive-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.interactive-grid > * {
+  transition: all 0.3s ease;
+}
+
+.interactive-grid:hover > *:not(:hover) {
+  opacity: 0.7;
+  transform: scale(0.98);
+}
+
+.interactive-grid > *:hover {
+  opacity: 1;
+  transform: scale(1.02);
+  z-index: 10;
+}
+
+/* Breadcrumb Trail Effect */
+.breadcrumb-trail {
+  position: relative;
+}
+
+.breadcrumb-trail::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-burnt-sienna);
+  transition: width 0.3s ease;
+}
+
+.breadcrumb-trail:hover::after {
+  width: 100%;
+}
+
+/* Success State Animations */
+@keyframes success-bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+.success-animation {
+  animation: success-bounce 1s ease;
+}
+
+/* Focus States for Accessibility */
+.mall-section-card:focus,
+.highlight-card:focus,
+.mall-section-button:focus {
+  outline: 3px solid var(--color-burnt-sienna);
+  outline-offset: 2px;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .mall-section-card,
+  .mall-section-icon,
+  .mall-section-badge,
+  .mall-section-button,
+  .highlight-card,
+  .stat-number {
+    transition: none;
+    animation: none;
+  }
+  
+  .mall-section-card:hover,
+  .highlight-card:hover {
+    transform: none;
+  }
+  
+  .mall-section-card:hover .mall-section-icon {
+    transform: none;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .mall-section-card:hover {
+    box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
+  }
+  
+  .floating-feedback {
+    background: var(--color-rich-umber);
+  }
+}
