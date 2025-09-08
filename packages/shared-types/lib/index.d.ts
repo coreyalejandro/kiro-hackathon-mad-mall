@@ -6,6 +6,7 @@ export * from './domain';
 export * from './api';
 export * from './events';
 export * from './config';
+export * from './database';
 export declare const PACKAGE_VERSION = "0.0.0";
 export declare const PACKAGE_NAME = "@madmall/shared-types";
 export type Nullable<T> = T | null;

@@ -102,7 +102,7 @@ The hooks watch these patterns:
 
 ### Script Errors
 1. Ensure Node.js is available
-2. Check that `madmall-web` directory exists
+2. Check that `packages/web-app` directory exists
 3. Verify file permissions for docs directory
 
 ### Missing Documentation

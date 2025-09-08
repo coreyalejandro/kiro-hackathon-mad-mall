@@ -1,3 +1,10 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "typescript.preferences.exclude": [
+        "**/madmall-web-legacy-backup/**"
+    ],
+    "typescript.suggest.paths": false,
+    "files.exclude": {
+        "**/madmall-web-legacy-backup": true
+    }
 }

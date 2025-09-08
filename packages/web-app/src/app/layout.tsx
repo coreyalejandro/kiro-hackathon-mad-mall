@@ -11,7 +11,11 @@ export const metadata: Metadata = {
   description: 'A culturally-centered social wellness platform for mental health support and community connection',
   keywords: ['mental health', 'wellness', 'community', 'support', 'cultural'],
   authors: [{ name: 'MADMall Team' }],
-  viewport: 'width=device-width, initial-scale=1',
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 const navigationItems = [

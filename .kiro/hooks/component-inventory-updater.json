@@ -15,12 +15,12 @@
       "type": "run_script",
       "script": "scripts/update-inventory.js",
       "args": ["--auto"],
-      "workingDirectory": "madmall-web"
+      "workingDirectory": "packages/web-app"
     }
   ],
   "settings": {
     "debounceMs": 2000,
-    "enabled": true,
+    "enabled": false,
     "runInBackground": true
   }
 }

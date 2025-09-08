@@ -15,6 +15,9 @@ export * from './events';
 // Configuration types
 export * from './config';
 
+// Database types
+export * from './database';
+
 // Package metadata
 export const PACKAGE_VERSION = '0.0.0';
 export const PACKAGE_NAME = '@madmall/shared-types';

@@ -69,7 +69,7 @@
   - Create unit tests for migrated components to ensure functionality preservation
   - _Requirements: 2.1, 2.3, 2.5, 9.1, 9.4_
 
-- [ ] 8. Migrate existing pages to Next.js App Router with proper routing
+- [x] 8. Migrate existing pages to Next.js App Router with proper routing
   - Convert all existing page components (Concourse, PeerCircles, ComedyLounge, etc.) to Next.js pages
   - Implement App Router file-based routing to maintain existing URL structure
   - Set up proper layout components with navigation and authentication state
@@ -78,7 +78,7 @@
   - Implement loading states and error boundaries for improved user experience
   - _Requirements: 2.2, 2.3, 9.1, 9.4, 9.5_
 
-- [ ] 9. Set up DynamoDB data layer with single-table design and migration utilities
+- [x] 9. Set up DynamoDB data layer with single-table design and migration utilities
   - Implement DynamoDB service layer with proper connection management and error handling
   - Create data access objects (DAOs) for each entity type with CRUD operations
   - Implement single-table design access patterns for efficient querying
@@ -87,7 +87,7 @@
   - Implement data validation and consistency checks for all database operations
   - _Requirements: 4.5, 5.5, 9.2_
 
-- [ ] 10. Create Bedrock agents package with AI workflow implementations
+- [x] 10. Create Bedrock agents package with AI workflow implementations
   - Initialize bedrock-agents package with AWS Bedrock SDK and TypeScript configuration
   - Implement Cultural Validation Agent with content appropriateness checking
   - Create Content Moderation Agent for automated safety and compliance validation
