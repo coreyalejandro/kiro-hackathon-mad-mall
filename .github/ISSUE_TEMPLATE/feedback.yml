@@ -1,0 +1,35 @@
+name: Feedback
+description: Share user feedback, suggestions, or usability issues
+labels: [feedback]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to help improve MADMall!
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What feedback do you have? Be concise and specific.
+      placeholder: I expected..., instead I saw...
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Where did this occur? Include environment, version, or links.
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Who is impacted and how?
+  - type: checkboxes
+    id: code-of-conduct
+    attributes:
+      label: Code of Conduct
+      description: By submitting, you agree to follow our Code of Conduct.
+      options:
+        - label: I agree to follow the Code of Conduct
+          required: true
+
