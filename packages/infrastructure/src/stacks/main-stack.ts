@@ -99,6 +99,16 @@ export class MainStack extends Stack {
       enableStreams: true,
     });
 
+    // Create authentication infrastructure (must precede API so authorizer can bind)
+    this.authentication = new AuthenticationConstruct(this, 'Authentication', {
+      environment,
+      customDomain: authDomainName,
+      callbackUrls,
+      logoutUrls,
+      enableSocialLogin,
+      requireMfa,
+    });
+
     // Create Lambda functions
     this.lambda = new LambdaConstruct(this, 'Lambda', {
       environment,
@@ -117,6 +127,7 @@ export class MainStack extends Stack {
       environment,
       lambdaFunctions: this.lambda.functions,
       domainName: apiDomainName,
+      userPool: this.authentication.userPool,
       corsOptions: {
         allowOrigins: this.getCorsOriginsForEnvironment(environment).split(','),
         allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -134,15 +145,8 @@ export class MainStack extends Stack {
       throttleSettings: this.getThrottleSettingsForEnvironment(environment),
     });
 
-    // Create authentication infrastructure
-    this.authentication = new AuthenticationConstruct(this, 'Authentication', {
-      environment,
-      customDomain: authDomainName,
-      callbackUrls,
-      logoutUrls,
-      enableSocialLogin,
-      requireMfa,
-    });
+    // Now that authentication is created, wire the authorizer-backed API methods
+    // Note: API construct already reads the userPool provided above.
 
     // Create monitoring infrastructure
     this.monitoring = new MonitoringConstruct(this, 'Monitoring', {
@@ -153,6 +157,7 @@ export class MainStack extends Stack {
       userPool: this.authentication.userPool,
       alertEmails,
       slackWebhookUrl,
+      healthCheckUrl: `${this.apiGateway.restApi.url}health`,
     });
 
     // Create usage plans for API Gateway
@@ -265,7 +270,7 @@ export class MainStack extends Stack {
 
     // Monitoring outputs
     new CfnOutput(this, 'DashboardUrl', {
-      value: `https://console.aws.amazon.com/cloudwatch/home?region=${this.region}#dashboards:name=${this.monitoring.dashboard.dashboardName}`,
+      value: `https://console.aws.amazon.com/cloudwatch/home?region=${Stack.of(this).region}#dashboards:name=${this.monitoring.dashboard.dashboardName}`,
       description: 'CloudWatch Dashboard URL',
       exportName: `madmall-${environment}-dashboard-url`,
     });

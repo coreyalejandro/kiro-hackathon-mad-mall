@@ -1,8 +1,14 @@
 'use client';
 
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { signInWithRedirect, signOut } from 'aws-amplify/auth';
+import { env } from '@/lib/env';
+import { useEffect } from 'react';
 
 export function AuthenticationContent() {
+  useEffect(() => {
+    // Preload or verify auth domain/client id presence
+  }, []);
   return (
     <ContentLayout
       header={
@@ -25,11 +31,17 @@ export function AuthenticationContent() {
                   Sign in to your account or create a new one to join our wellness community.
                 </p>
                 <div className="hero-cta-group">
-                  <button className="hero-cta hero-cta-primary">
+                  <button
+                    className="hero-cta hero-cta-primary"
+                    onClick={() => signInWithRedirect()}
+                  >
                     <span className="hero-cta-icon">🔐</span>
                     Sign In
                   </button>
-                  <button className="hero-cta hero-cta-secondary">
+                  <button
+                    className="hero-cta hero-cta-secondary"
+                    onClick={() => signInWithRedirect()}
+                  >
                     <span className="hero-cta-icon">📝</span>
                     Create Account
                   </button>

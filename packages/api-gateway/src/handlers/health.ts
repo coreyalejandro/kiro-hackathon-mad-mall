@@ -1,4 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { getCorrelationId, logError } from '../utils/helpers';
 import { GetHealthInput, GetHealthOutput, HealthStatus } from '../generated/types';
 
 /**
@@ -9,6 +10,7 @@ export const healthHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
+    const correlationId = getCorrelationId(event);
     const response: GetHealthOutput = {
       status: HealthStatus.HEALTHY,
       message: 'AIme Wellness Platform API',
@@ -27,12 +29,13 @@ export const healthHandler = async (
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Correlation-Id',
+        'X-Correlation-Id': correlationId,
       },
       body: JSON.stringify(response)
     };
   } catch (error) {
-    console.error('Health check error:', error);
+    logError('Health check error', { error: (error as Error)?.message });
     
     return {
       statusCode: 500,

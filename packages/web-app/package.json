@@ -16,6 +16,7 @@
     "@cloudscape-design/components": "^3.0.1074",
     "@cloudscape-design/global-styles": "^1.0.45",
     "@madmall/shared-types": "file:../shared-types",
+    "aws-amplify": "^6.3.14",
     "next": "15.1.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
