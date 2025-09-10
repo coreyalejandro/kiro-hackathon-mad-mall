@@ -18,8 +18,13 @@
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
     "typeRoots": ["./node_modules/@types"],
+    "baseUrl": ".",
+    "paths": {
+      "@madmall/shared-types": ["../shared-types/src/index.ts"],
+      "@madmall/shared-types/*": ["../shared-types/src/*"]
+    },
     "outDir": "./lib",
-    "rootDir": "./src",
+    "rootDir": ".",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
