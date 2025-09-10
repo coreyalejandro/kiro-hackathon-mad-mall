@@ -15,6 +15,10 @@ import {
   DomainName,
   BasePathMapping,
   SecurityPolicy,
+  CognitoUserPoolsAuthorizer,
+  AuthorizationType,
+  MockIntegration,
+  PassthroughBehavior,
 } from 'aws-cdk-lib/aws-apigateway';
 import { Function as LambdaFunction } from 'aws-cdk-lib/aws-lambda';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
@@ -22,6 +26,7 @@ import { Certificate, CertificateValidation } from 'aws-cdk-lib/aws-certificatem
 import { HostedZone, ARecord, RecordTarget } from 'aws-cdk-lib/aws-route53';
 import { ApiGatewayDomain } from 'aws-cdk-lib/aws-route53-targets';
 import { RemovalPolicy, Tags } from 'aws-cdk-lib';
+import { UserPool } from 'aws-cdk-lib/aws-cognito';
 
 export interface ApiGatewayConstructProps {
   /**
@@ -54,12 +59,18 @@ export interface ApiGatewayConstructProps {
    * Throttling settings
    */
   throttleSettings?: ThrottleSettings;
+
+  /**
+   * Cognito User Pool for API authorization
+   */
+  userPool: UserPool;
 }
 
 export class ApiGatewayConstruct extends Construct {
   public readonly restApi: RestApi;
   public readonly domainName?: DomainName;
   public readonly certificate?: Certificate;
+  private readonly authorizer: CognitoUserPoolsAuthorizer;
 
   constructor(scope: Construct, id: string, props: ApiGatewayConstructProps) {
     super(scope, id);
@@ -71,6 +82,7 @@ export class ApiGatewayConstruct extends Construct {
       hostedZone,
       corsOptions,
       throttleSettings,
+      userPool,
     } = props;
 
     // Create access log group
@@ -112,6 +124,7 @@ export class ApiGatewayConstruct extends Construct {
         loggingLevel: MethodLoggingLevel.INFO,
         dataTraceEnabled: environment !== 'prod',
         metricsEnabled: true,
+        tracingEnabled: true,
         accessLogDestination: new LogGroupLogDestination(accessLogGroup),
         accessLogFormat: AccessLogFormat.jsonWithStandardFields({
           caller: true,
@@ -129,6 +142,12 @@ export class ApiGatewayConstruct extends Construct {
       },
       defaultCorsPreflightOptions: corsOptions || this.getDefaultCorsOptions(),
       cloudWatchRole: true,
+    });
+
+    // Create Cognito authorizer
+    this.authorizer = new CognitoUserPoolsAuthorizer(this, 'ApiAuthorizer', {
+      cognitoUserPools: [userPool],
+      authorizerName: `madmall-${environment}-cognito-authorizer`,
     });
 
     // Create base path mapping if custom domain is configured
@@ -154,6 +173,28 @@ export class ApiGatewayConstruct extends Construct {
 
     // Create API resources and methods
     this.createApiResources(lambdaFunctions);
+
+    // Public health endpoint for monitoring (no auth)
+    const health = this.restApi.root.addResource('health');
+    health.addMethod(
+      'GET',
+      new MockIntegration({
+        passthroughBehavior: PassthroughBehavior.NEVER,
+        requestTemplates: { 'application/json': '{"statusCode": 200}' },
+        integrationResponses: [
+          {
+            statusCode: '200',
+            responseTemplates: {
+              'application/json': '{"status":"healthy","service":"MADMall API"}',
+            },
+          },
+        ],
+      }),
+      {
+        authorizationType: AuthorizationType.NONE,
+        methodResponses: [{ statusCode: '200' }],
+      }
+    );
 
     // Add tags
     Tags.of(this.restApi).add('Name', `madmall-${environment}-api`);
@@ -277,6 +318,10 @@ export class ApiGatewayConstruct extends Construct {
                 proxy: true,
               }),
               anyMethod: true,
+              defaultMethodOptions: {
+                authorizationType: AuthorizationType.COGNITO,
+                authorizer: this.authorizer,
+              },
             });
           } else {
             // Add specific methods
@@ -284,7 +329,10 @@ export class ApiGatewayConstruct extends Construct {
               resource.addMethod(method, new LambdaIntegration(lambdaFunction, {
                 requestTemplates: { 'application/json': '{ "statusCode": "200" }' },
                 proxy: true,
-              }));
+              }), {
+                authorizationType: AuthorizationType.COGNITO,
+                authorizer: this.authorizer,
+              });
             });
           }
         }
