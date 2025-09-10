@@ -316,6 +316,159 @@ export interface DynamoDBResource extends BaseEntity {
   publishedAt?: string;
 }
 
+/**
+ * Image and Cultural Systems Entities (Feedback, Incidents, Advisory, Premium Sources, Personalization)
+ */
+
+export interface DynamoDBImageAsset extends BaseEntity {
+  // Primary access: PK = IMAGE#{imageId}, SK = METADATA
+  // By status: GSI3PK = IMAGE_STATUS#{status}, GSI3SK = UPDATED#{updatedAt}
+  // By category: GSI1PK = IMAGE_CATEGORY#{category}, GSI1SK = CREATED#{createdAt}
+
+  imageId: string;
+  url: string;
+  thumbnailUrl?: string;
+  altText: string;
+  category: string; // e.g., hero, circle_cover, resource_thumb
+  tags: string[];
+  source: 'generated' | 'premium' | 'user_upload' | 'stock';
+  sourceInfo?: {
+    provider?: string; // e.g., CreateHER, Nappy
+    licenseType?: string; // e.g., royalty_free, editorial, custom
+    licenseId?: string;
+    attribution?: string;
+    expiresAt?: string;
+    originalUrl?: string;
+  };
+  status: 'active' | 'archived' | 'flagged' | 'removed' | 'pending_review';
+  validation?: {
+    culturalScore: number; // 0-1
+    sensitivityScore: number; // 0-1
+    inclusivityScore: number; // 0-1
+    lastValidatedAt?: string;
+    validator?: string; // agent id or user id
+    issues?: string[];
+  };
+  usage?: {
+    contexts: string[]; // e.g., ['concourse.hero', 'circles.page']
+    lastUsedAt?: string;
+    totalImpressions?: number;
+    totalClicks?: number;
+  };
+}
+
+export interface DynamoDBFeedback extends BaseEntity {
+  // Primary access: PK = FEEDBACK#IMAGE#{imageId}, SK = USER#{userId}#TS#{timestamp}
+  // By image aggregate: GSI1PK = IMAGE#${imageId}#FEEDBACK, GSI1SK = TS#${timestamp}
+  // By severity/report: GSI3PK = FEEDBACK_SEVERITY#{severity}, GSI3SK = CREATED#${createdAt}
+
+  feedbackId: string;
+  imageId: string;
+  userId: string;
+  rating: number; // 1-5 cultural sensitivity rating
+  comment?: string;
+  categories: Array<'representation' | 'appropriateness' | 'stereotype' | 'context_mismatch' | 'other'>;
+  severity?: 'low' | 'medium' | 'high' | 'critical';
+  isReport: boolean;
+  status: 'new' | 'acknowledged' | 'in_review' | 'resolved' | 'dismissed';
+  resolution?: {
+    resolvedBy?: string;
+    resolvedAt?: string;
+    action?: 'removed' | 'replaced' | 'edited' | 'no_action';
+    notes?: string;
+  };
+  metadata?: Record<string, any>;
+}
+
+export interface DynamoDBIncident extends BaseEntity {
+  // Primary access: PK = INCIDENT#{incidentId}, SK = METADATA
+  // By status/priority: GSI3PK = INCIDENT_STATUS#{status}, GSI3SK = PRIORITY#{priority}#CREATED#{createdAt}
+
+  incidentId: string;
+  relatedImageId?: string;
+  triggeredBy: 'community_report' | 'automated_detection' | 'staff' | 'advisory_board';
+  status: 'open' | 'investigating' | 'mitigated' | 'closed';
+  priority: 'p1' | 'p2' | 'p3';
+  summary: string;
+  details?: string;
+  escalation?: {
+    level: 0 | 1 | 2 | 3;
+    onCallNotifiedAt?: string;
+    advisoryBoardNotifiedAt?: string;
+    commsSentAt?: string;
+  };
+  alerts?: Array<{ type: string; sentAt: string; channel: 'email' | 'slack' | 'sms' | 'webhook'; }>; 
+}
+
+export interface DynamoDBAdvisoryReview extends BaseEntity {
+  // Primary access: PK = ADVISORY#QUEUE, SK = REVIEW#{reviewId}
+  // By item: GSI1PK = REVIEW_TARGET#${targetType}#${targetId}, GSI1SK = CREATED#${createdAt}
+  // By status: GSI3PK = REVIEW_STATUS#${status}, GSI3SK = UPDATED#${updatedAt}
+
+  reviewId: string;
+  targetType: 'image' | 'resource' | 'story';
+  targetId: string;
+  submittedBy: string; // userId or system
+  assignedTo?: string; // advisory member userId
+  status: 'queued' | 'in_review' | 'approved' | 'changes_requested' | 'rejected';
+  notes?: string;
+  decisions?: Array<{
+    reviewerId: string;
+    decision: 'approve' | 'request_changes' | 'reject';
+    rationale: string;
+    decidedAt: string;
+  }>;
+  consensus?: {
+    score: number; // 0-1 agreement among reviewers
+    requiredVotes: number;
+    receivedVotes: number;
+  };
+}
+
+export interface DynamoDBPremiumSource extends BaseEntity {
+  // Primary access: PK = PREMIUM_SOURCE#{sourceId}, SK = METADATA
+  // By provider: GSI1PK = PROVIDER#${provider}, GSI1SK = CREATED#${createdAt}
+
+  sourceId: string;
+  provider: 'createher' | 'nappy' | 'other';
+  displayName: string;
+  apiBaseUrl?: string;
+  apiKeyArn?: string; // reference to secret manager
+  licenseDefaults: {
+    licenseType: string;
+    attributionTemplate?: string;
+    usageRestrictions?: string[];
+  };
+  status: 'active' | 'inactive';
+  qualityThreshold?: number; // 0-1 minimum validation score
+}
+
+export interface DynamoDBPersonalizationProfile extends BaseEntity {
+  // Primary access: PK = USER#${userId}, SK = PERSONALIZATION
+  // By cohort: GSI1PK = COHORT#${cohortId}, GSI1SK = UPDATED#${updatedAt}
+
+  userId: string;
+  preferences: {
+    imageStyles?: string[]; // e.g., documentary, studio, candid
+    avoidTags?: string[];
+    preferredContexts?: string[]; // page contexts user engages with
+  };
+  engagement: {
+    impressions: number;
+    clicks: number;
+    dwellTimeMs?: number;
+    lastInteractionAt?: string;
+  };
+  abTests?: Array<{
+    experimentId: string;
+    variant: 'A' | 'B' | 'C';
+    startedAt: string;
+    endedAt?: string;
+    metrics?: Record<string, number>;
+  }>;
+  cohorts?: string[];
+}
+
 // Key generation utilities
 export const KeyPatterns = {
   // User patterns
@@ -346,4 +499,30 @@ export const KeyPatterns = {
   TENANT_USERS: (tenantId: string) => ({ GSI4PK: `TENANT#${tenantId}#USERS` }),
   TENANT_CIRCLES: (tenantId: string) => ({ GSI4PK: `TENANT#${tenantId}#CIRCLES` }),
   TENANT_RESOURCES: (tenantId: string) => ({ GSI4PK: `TENANT#${tenantId}#RESOURCES` }),
+  
+  // Image and cultural systems
+  IMAGE_METADATA: (imageId: string) => ({ PK: `IMAGE#${imageId}`, SK: 'METADATA' }),
+  IMAGES_BY_CATEGORY: (category: string) => ({ GSI1PK: `IMAGE_CATEGORY#${category}` }),
+  IMAGE_STATUS: (status: string) => ({ GSI3PK: `IMAGE_STATUS#${status}` }),
+
+  FEEDBACK_FOR_IMAGE: (imageId: string, userId: string, timestampIso: string) => ({
+    PK: `FEEDBACK#IMAGE#${imageId}`,
+    SK: `USER#${userId}#TS#${timestampIso}`,
+    GSI1PK: `IMAGE#${imageId}#FEEDBACK`,
+    GSI1SK: `TS#${timestampIso}`,
+  }),
+  FEEDBACK_BY_SEVERITY: (severity: string) => ({ GSI3PK: `FEEDBACK_SEVERITY#${severity}` }),
+
+  INCIDENT_METADATA: (incidentId: string) => ({ PK: `INCIDENT#${incidentId}`, SK: 'METADATA' }),
+  INCIDENT_STATUS: (status: string) => ({ GSI3PK: `INCIDENT_STATUS#${status}` }),
+
+  ADVISORY_QUEUE: (reviewId: string) => ({ PK: 'ADVISORY#QUEUE', SK: `REVIEW#${reviewId}` }),
+  ADVISORY_BY_TARGET: (targetType: string, targetId: string) => ({ GSI1PK: `REVIEW_TARGET#${targetType}#${targetId}` }),
+  ADVISORY_BY_STATUS: (status: string) => ({ GSI3PK: `REVIEW_STATUS#${status}` }),
+
+  PREMIUM_SOURCE_METADATA: (sourceId: string) => ({ PK: `PREMIUM_SOURCE#${sourceId}`, SK: 'METADATA' }),
+  PREMIUM_BY_PROVIDER: (provider: string) => ({ GSI1PK: `PROVIDER#${provider}` }),
+
+  PERSONALIZATION_PROFILE: (userId: string) => ({ PK: `USER#${userId}`, SK: 'PERSONALIZATION' }),
+  PERSONALIZATION_BY_COHORT: (cohortId: string) => ({ GSI1PK: `COHORT#${cohortId}` }),
 } as const;

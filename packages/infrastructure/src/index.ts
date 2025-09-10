@@ -9,6 +9,9 @@ export * from './constructs/monitoring';
 // Export stacks
 export * from './stacks/main-stack';
 
+// Export DAO factory for application use
+export * from './dao';
+
 // Export types and interfaces
 export interface InfrastructureConfig {
   environment: string;
