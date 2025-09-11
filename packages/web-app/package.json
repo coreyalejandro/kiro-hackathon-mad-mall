@@ -16,6 +16,8 @@
     "@cloudscape-design/components": "^3.0.1074",
     "@cloudscape-design/global-styles": "^1.0.45",
     "@madmall/shared-types": "file:../shared-types",
+    "@tanstack/react-query": "^5.87.1",
+    "@tanstack/react-query-devtools": "^5.87.3",
     "aws-amplify": "^6.3.14",
     "next": "15.1.6",
     "react": "^19.1.1",

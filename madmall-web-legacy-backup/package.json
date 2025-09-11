@@ -1,0 +1,47 @@
+{
+  "name": "madmall-web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "inventory:update": "node scripts/update-inventory.js",
+    "inventory:view": "open docs/component-dashboard.html",
+    "server:install": "cd server && npm install",
+    "server:dev": "cd server && npm run dev",
+    "server:start": "cd server && npm start",
+    "dev:full": "concurrently \"npm run dev\" \"npm run server:dev\"",
+    "setup": "npm install && npm run server:install",
+    "demo:data": "node scripts/demo-data-generation.js",
+    "titanengine:build": "cd src/services/titanEngine && npm run build",
+    "titanengine:start": "cd src/services/titanEngine && npm start",
+    "titanengine:dev": "cd src/services/titanEngine && npm run dev",
+    "start": "concurrently --names \"REACT,TITAN\" --prefix-colors \"cyan,magenta\" \"npm run dev\" \"npm run titanengine:start\"",
+    "start:dev": "concurrently --names \"REACT,TITAN\" --prefix-colors \"cyan,magenta\" \"npm run dev\" \"npm run titanengine:dev\"",
+    "madmall": "npm run start"
+  },
+  "dependencies": {
+    "@cloudscape-design/components": "^3.0.1074",
+    "@cloudscape-design/global-styles": "^1.0.45",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^9.33.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.39.1",
+    "vite": "^7.1.2"
+  }
+}
