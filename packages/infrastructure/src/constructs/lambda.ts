@@ -1,6 +1,7 @@
 import { Construct } from 'constructs';
 import {
   Function as LambdaFunction,
+  IFunction,
   Runtime,
   Code,
   Architecture,
@@ -21,6 +22,7 @@ import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Duration, RemovalPolicy, Tags } from 'aws-cdk-lib';
+import { Alias, Version, TrafficRouting, LambdaDeploymentConfig, LambdaDeploymentGroup } from 'aws-cdk-lib/aws-codedeploy';
 
 export interface LambdaConstructProps {
   /**
@@ -99,7 +101,7 @@ export interface LambdaFunctionConfig {
 }
 
 export class LambdaConstruct extends Construct {
-  public readonly functions: Map<string, LambdaFunction> = new Map();
+  public readonly functions: Map<string, IFunction> = new Map();
   private readonly baseRole: Role;
   private readonly baseEnvironmentVariables: Record<string, string>;
 
@@ -298,7 +300,7 @@ export class LambdaConstruct extends Construct {
     environment: string,
     vpc: Vpc,
     securityGroup: SecurityGroup
-  ): LambdaFunction {
+  ): IFunction {
     const {
       name,
       description,
@@ -366,17 +368,37 @@ export class LambdaConstruct extends Construct {
     Tags.of(lambdaFunction).add('Environment', environment);
     Tags.of(lambdaFunction).add('Service', name);
 
-    // Store function reference
-    this.functions.set(name, lambdaFunction);
+    // Create version and alias for blue/green deployments
+    const version = new Version(this, `${name}Version`, {
+      lambda: lambdaFunction,
+    });
+    const alias = new Alias(this, `${name}Alias`, {
+      aliasName: 'live',
+      version,
+    });
 
-    return lambdaFunction;
+    // Configure CodeDeploy canary deployment for safe releases
+    new LambdaDeploymentGroup(this, `${name}DeploymentGroup`, {
+      alias,
+      deploymentConfig: LambdaDeploymentConfig.CANARY_10PERCENT_5MINUTES,
+      autoRollback: {
+        failedDeployment: true,
+        stoppedDeployment: true,
+        deploymentInAlarm: true,
+      },
+    });
+
+    // Store alias reference so API Gateway integrates with the live alias
+    this.functions.set(name, alias);
+
+    return alias;
   }
 
-  public getFunction(name: string): LambdaFunction | undefined {
+  public getFunction(name: string): IFunction | undefined {
     return this.functions.get(name);
   }
 
-  public getAllFunctions(): LambdaFunction[] {
+  public getAllFunctions(): IFunction[] {
     return Array.from(this.functions.values());
   }
 }

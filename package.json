@@ -27,7 +27,12 @@
     "upgrade-deps": "pnpm exec projen upgrade-deps",
     "watch": "pnpm exec projen watch",
     "install:ci": "pnpm exec projen install:ci",
-    "synth-workspace": "pnpm exec projen"
+    "synth-workspace": "pnpm exec projen",
+    "dev:localstack": "docker compose -f docker-compose.local.yml up -d",
+    "dev:local": "ENVIRONMENT=dev AWS_REGION=us-east-1 AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test pnpm -w run dev",
+    "dev:infra:deploy": "cd packages/infrastructure && cdk deploy --all --require-approval never -c environment=dev",
+    "dev:infra:destroy": "cd packages/infrastructure && cdk destroy --all -c environment=dev --force",
+    "docs:api": "cd packages/api-gateway && pnpm run generate && cp -f generated/openapi.json ../docs/openapi.json || true"
   },
   "devDependencies": {
     "@aws/pdk": "^0.26.14",
