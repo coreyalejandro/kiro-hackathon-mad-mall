@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Local Bootstrap Script",
+      "program": "${workspaceFolder}/node_modules/ts-node/dist/bin.js",
+      "args": [
+        "${workspaceFolder}/scripts/bootstrap-local.ts"
+      ],
+      "env": {
+        "ENVIRONMENT": "development",
+        "AWS_REGION": "us-east-1",
+        "AWS_DEFAULT_REGION": "us-east-1",
+        "LOCALSTACK_URL": "http://localhost:4566",
+        "DYNAMODB_ENDPOINT": "http://localhost:4566",
+        "DYNAMODB_TABLE_NAME": "madmall-development-main",
+        "USER_CONTENT_BUCKET": "madmall-development-user-content"
+      },
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node-terminal",
+      "name": "Next.js Web App Dev",
+      "request": "launch",
+      "command": "pnpm --filter @madmall/web-app dev"
+    }
+  ]
+}

@@ -26,15 +26,26 @@
     "upgrade": "pnpm exec projen upgrade",
     "upgrade-deps": "pnpm exec projen upgrade-deps",
     "watch": "pnpm exec projen watch",
+    "local:up": "docker compose -f docker-compose.localstack.yml up -d",
+    "local:down": "docker compose -f docker-compose.localstack.yml down",
+    "local:bootstrap": "cross-env ENVIRONMENT=development ts-node scripts/bootstrap-local.ts",
+    "dev:infra": "pnpm run local:up && pnpm run local:bootstrap",
+    "dev:web": "pnpm --filter @madmall/web-app dev",
+    "dev:all": "pnpm run dev:infra && pnpm run dev:web",
+    "dev:watch": "pnpm -r --if-present watch",
+    "setup:env": "[ -f .env ] || cp .env.example .env; [ -f packages/web-app/.env.local ] || cp packages/web-app/.env.local.example packages/web-app/.env.local",
     "install:ci": "pnpm exec projen install:ci",
     "synth-workspace": "pnpm exec projen"
   },
   "devDependencies": {
+    "@aws-sdk/client-dynamodb": "^3.883.0",
+    "@aws-sdk/client-s3": "^3.886.0",
     "@aws/pdk": "^0.26.14",
     "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^7",
     "@typescript-eslint/parser": "^7",
     "constructs": "^10.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -52,6 +63,8 @@
     "nx": "^19"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.886.0",
+    "@aws-sdk/client-s3": "^3.886.0",
     "aws-cdk-lib": "^2.214.0",
     "cdk-nag": "^2.37.13",
     "socket.io-client": "^4.8.1"
