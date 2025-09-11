@@ -19,7 +19,9 @@ import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import { UserPool } from 'aws-cdk-lib/aws-cognito';
 import { LogGroup, MetricFilter, FilterPattern } from 'aws-cdk-lib/aws-logs';
 import { Duration, Tags, RemovalPolicy } from 'aws-cdk-lib';
-import { Canary, Runtime, SyntheticsSchedule } from 'aws-cdk-lib/aws-synthetics';
+import { Canary, Runtime, Test } from 'aws-cdk-lib/aws-synthetics';
+import { Code as SyntheticsCode } from 'aws-cdk-lib/aws-synthetics';
+import { Schedule as SyntheticsSchedule } from 'aws-cdk-lib/aws-synthetics';
 import { Bucket, BlockPublicAccess, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { Key, KeySpec, KeyUsage } from 'aws-cdk-lib/aws-kms';
 
@@ -478,7 +480,7 @@ export class MonitoringConstruct extends Construct {
     dashboard.addWidgets(
       new LogQueryWidget({
         title: 'Recent Errors',
-        logGroups: [`/aws/lambda/madmall-${environment}-*`],
+        logGroupNames: [`/aws/lambda/madmall-${environment}-*`],
         queryLines: [
           'fields @timestamp, @message',
           'filter @message like /ERROR/',
@@ -669,7 +671,8 @@ export class MonitoringConstruct extends Construct {
       canaryName: `madmall-${environment}-health`,
       schedule: SyntheticsSchedule.rate(Duration.minutes(5)),
       runtime: Runtime.SYNTHETICS_NODEJS_PUPPETEER_6_2,
-      test: Canary.Code.fromInline(`const synthetics = require('Synthetics');
+      test: Test.custom({
+        code: SyntheticsCode.fromInline(`const synthetics = require('Synthetics');
 const log = require('SyntheticsLogger');
 const https = require('https');
 const url = '${healthCheckUrl}';
@@ -681,6 +684,8 @@ const request = async function () {
   await synthetics.executeHttpStep('HealthCheck', requestOptions, stepConfig);
 };
 exports.handler = async () => { return await request(); };`),
+        handler: 'index.handler',
+      }),
       environmentVariables: { ENVIRONMENT: environment },
       artifactsBucketLocation: { bucket: artifactsBucket },
       startAfterCreation: true,
