@@ -26,6 +26,13 @@
     "upgrade": "pnpm exec projen upgrade",
     "upgrade-deps": "pnpm exec projen upgrade-deps",
     "watch": "pnpm exec projen watch",
+    "dev": "pnpm -w nx run-many -t dev --parallel",
+    "dev:web": "pnpm -w nx run @madmall/web-app:dev",
+    "dev:lambda": "pnpm -w nx run @madmall/api-gateway:dev-local",
+    "localstack:up": "docker compose up -d localstack",
+    "localstack:down": "docker compose down",
+    "localstack:logs": "docker compose logs -f localstack | cat",
+    "env:copy": "[ -f .env ] || cp .env.example .env",
     "install:ci": "pnpm exec projen install:ci",
     "synth-workspace": "pnpm exec projen"
   },

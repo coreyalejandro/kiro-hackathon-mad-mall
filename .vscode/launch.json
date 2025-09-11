@@ -1,0 +1,43 @@
+{
+  // VS Code launch configurations
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Next.js: Web Dev",
+      "cwd": "${workspaceFolder}/packages/web-app",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev"],
+      "console": "integratedTerminal",
+      "autoAttachChildProcesses": true,
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "port": 9230
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Lambda: healthHandler (local)",
+      "cwd": "${workspaceFolder}/packages/api-gateway",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["run", "dev-local"],
+      "console": "integratedTerminal",
+      "autoAttachChildProcesses": true,
+      "env": {
+        "HANDLER": "healthHandler"
+      },
+      "port": 9229
+    },
+    {
+      "type": "pwa-node",
+      "request": "attach",
+      "name": "Attach to Node (9229)",
+      "port": 9229,
+      "restart": true,
+      "autoAttachChildProcesses": true
+    }
+  ]
+}
+

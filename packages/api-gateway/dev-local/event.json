@@ -1,0 +1,23 @@
+{
+  "resource": "/health",
+  "path": "/health",
+  "httpMethod": "GET",
+  "headers": {
+    "Host": "localhost",
+    "User-Agent": "VSCode-Launch",
+    "X-Correlation-Id": "local-dev"
+  },
+  "queryStringParameters": null,
+  "pathParameters": null,
+  "stageVariables": null,
+  "requestContext": {
+    "path": "/health",
+    "resourcePath": "/health",
+    "httpMethod": "GET",
+    "requestTimeEpoch": 0,
+    "identity": {}
+  },
+  "body": null,
+  "isBase64Encoded": false
+}
+
