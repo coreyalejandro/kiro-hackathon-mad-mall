@@ -6,6 +6,7 @@ import { LambdaConstruct } from '../constructs/lambda';
 import { ApiGatewayConstruct } from '../constructs/api-gateway';
 import { AuthenticationConstruct } from '../constructs/authentication';
 import { MonitoringConstruct } from '../constructs/monitoring';
+import { SecurityConstruct } from '../constructs/security';
 
 export interface MainStackProps extends StackProps {
   /**
@@ -61,6 +62,7 @@ export class MainStack extends Stack {
   public readonly apiGateway: ApiGatewayConstruct;
   public readonly authentication: AuthenticationConstruct;
   public readonly monitoring: MonitoringConstruct;
+  public readonly security: SecurityConstruct;
 
   constructor(scope: Construct, id: string, props: MainStackProps) {
     super(scope, id, props);
@@ -158,6 +160,12 @@ export class MainStack extends Stack {
       alertEmails,
       slackWebhookUrl,
       healthCheckUrl: `${this.apiGateway.restApi.url}health`,
+    });
+
+    // Security hardening (WAF, CloudTrail, AWS Config, Security Hub)
+    this.security = new SecurityConstruct(this, 'Security', {
+      environment,
+      restApi: this.apiGateway.restApi,
     });
 
     // Create usage plans for API Gateway

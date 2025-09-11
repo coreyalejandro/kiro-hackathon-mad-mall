@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
-import { App, Environment } from 'aws-cdk-lib';
+import { App, Environment, Aspects } from 'aws-cdk-lib';
 import { MainStack } from './stacks/main-stack';
+import { AwsSolutionsChecks } from 'cdk-nag';
 
 const app = new App();
 
@@ -104,4 +105,7 @@ app.node.applyAspect({
 });
 
 // Synthesize the app
+// Enable cdk-nag AwsSolutions checks
+Aspects.of(app).add(new AwsSolutionsChecks({ verbose: true }));
+
 app.synth();

@@ -5,6 +5,7 @@ export * from './constructs/lambda';
 export * from './constructs/api-gateway';
 export * from './constructs/authentication';
 export * from './constructs/monitoring';
+export * from './constructs/security';
 
 // Export stacks
 export * from './stacks/main-stack';

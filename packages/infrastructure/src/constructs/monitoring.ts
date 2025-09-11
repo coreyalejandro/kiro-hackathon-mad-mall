@@ -18,9 +18,10 @@ import { RestApi } from 'aws-cdk-lib/aws-apigateway';
 import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import { UserPool } from 'aws-cdk-lib/aws-cognito';
 import { LogGroup, MetricFilter, FilterPattern } from 'aws-cdk-lib/aws-logs';
-import { Duration, Tags } from 'aws-cdk-lib';
+import { Duration, Tags, RemovalPolicy } from 'aws-cdk-lib';
 import { Canary, Runtime, SyntheticsSchedule } from 'aws-cdk-lib/aws-synthetics';
-import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { Bucket, BlockPublicAccess, BucketEncryption } from 'aws-cdk-lib/aws-s3';
+import { Key, KeySpec, KeyUsage } from 'aws-cdk-lib/aws-kms';
 
 export interface MonitoringConstructProps {
   /**
@@ -645,6 +646,25 @@ export class MonitoringConstruct extends Construct {
   }
 
   private createSyntheticsCanary(environment: string, healthCheckUrl: string): void {
+    // KMS key for Synthetics artifacts bucket
+    const canaryKmsKey = new Key(this, 'SyntheticsKmsKey', {
+      description: `MADMall ${environment} KMS key for Synthetics artifacts`,
+      enableKeyRotation: true,
+      keyUsage: KeyUsage.ENCRYPT_DECRYPT,
+      keySpec: KeySpec.SYMMETRIC_DEFAULT,
+      removalPolicy: environment === 'prod' ? RemovalPolicy.RETAIN : RemovalPolicy.DESTROY,
+    });
+
+    const artifactsBucket = new Bucket(this, 'SyntheticsBucket', {
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+      enforceSSL: true,
+      encryption: BucketEncryption.KMS,
+      encryptionKey: canaryKmsKey,
+      versioned: true,
+      removalPolicy: environment === 'prod' ? RemovalPolicy.RETAIN : RemovalPolicy.DESTROY,
+      autoDeleteObjects: environment !== 'prod',
+    });
+
     const canary = new Canary(this, 'HealthCanary', {
       canaryName: `madmall-${environment}-health`,
       schedule: SyntheticsSchedule.rate(Duration.minutes(5)),
@@ -662,7 +682,7 @@ const request = async function () {
 };
 exports.handler = async () => { return await request(); };`),
       environmentVariables: { ENVIRONMENT: environment },
-      artifactsBucketLocation: { bucket: new Bucket(this, 'SyntheticsBucket') },
+      artifactsBucketLocation: { bucket: artifactsBucket },
       startAfterCreation: true,
     });
 
