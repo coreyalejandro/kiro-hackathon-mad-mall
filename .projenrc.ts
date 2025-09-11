@@ -101,3 +101,4 @@ if (workspaceFile) {
 }
 
 project.synth();
+// Add LocalStack docker-compose and developer convenience scripts

@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Web App: Next.js",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "--filter", "@madmall/web-app",
+        "run", "dev"
+      ],
+      "env": {
+        "NODE_OPTIONS": "--inspect",
+        "ENVIRONMENT": "dev"
+      },
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Infra: CDK Synth",
+      "program": "${workspaceFolder}/packages/infrastructure/src/app.ts",
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register"
+      ],
+      "env": {
+        "ENVIRONMENT": "dev"
+      },
+      "cwd": "${workspaceFolder}/packages/infrastructure",
+      "console": "integratedTerminal"
+    }
+  ]
+}

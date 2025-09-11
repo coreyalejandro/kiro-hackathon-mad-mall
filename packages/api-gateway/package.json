@@ -13,8 +13,8 @@
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "clean": "rimraf dist",
-    "generate": "smithy build",
-    "generate:watch": "smithy build --watch"
+    "generate": "bash scripts/generate.sh",
+    "generate:watch": "bash scripts/generate.sh"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.0.0",

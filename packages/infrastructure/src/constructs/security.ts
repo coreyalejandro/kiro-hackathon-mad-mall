@@ -207,6 +207,22 @@ export class SecurityConstruct extends Construct {
             sampledRequestsEnabled: true,
           },
         },
+        {
+          name: 'RateLimitByIp',
+          priority: 4,
+          action: { block: {} },
+          statement: {
+            rateBasedStatement: {
+              limit: 2000,
+              aggregateKeyType: 'IP',
+            },
+          },
+          visibilityConfig: {
+            cloudWatchMetricsEnabled: true,
+            metricName: 'RateLimitByIp',
+            sampledRequestsEnabled: true,
+          },
+        },
       ],
     });
 
