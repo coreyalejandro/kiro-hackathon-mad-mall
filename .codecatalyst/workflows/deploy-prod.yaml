@@ -1,0 +1,21 @@
+SchemaVersion: 1.0
+Name: Deploy - Prod
+Triggers:
+  - Type: Manual
+Compute:
+  Type: EC2
+  Fleet: Linux.x86-64.large
+Actions:
+  DeployProd:
+    Identifier: aws/build@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Configuration:
+      Steps:
+        - Run: corepack enable
+        - Run: pnpm -v || npm i -g pnpm@8
+        - Run: pnpm install --frozen-lockfile
+        - Run: pnpm run build:all
+        - Run: npx cdk bootstrap || true
+        - Run: npx cdk deploy --all --require-approval never -c environment=prod

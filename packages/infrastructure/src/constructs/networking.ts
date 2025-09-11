@@ -50,10 +50,10 @@ export interface NetworkingConstructProps {
 
 export class NetworkingConstruct extends Construct {
   public readonly vpc: Vpc;
-  public readonly lambdaSecurityGroup: SecurityGroup;
-  public readonly rdsSecurityGroup: SecurityGroup;
-  public readonly albSecurityGroup: SecurityGroup;
-  public readonly vpcEndpointSecurityGroup: SecurityGroup;
+  public lambdaSecurityGroup: SecurityGroup;
+  public rdsSecurityGroup: SecurityGroup;
+  public albSecurityGroup: SecurityGroup;
+  public vpcEndpointSecurityGroup: SecurityGroup;
 
   constructor(scope: Construct, id: string, props: NetworkingConstructProps) {
     super(scope, id);
@@ -68,7 +68,7 @@ export class NetworkingConstruct extends Construct {
 
     // Create VPC with public and private subnets
     this.vpc = new Vpc(this, 'Vpc', {
-      ipAddresses: { cidrBlock: cidr },
+      ipAddresses: { cidrBlock: cidr } as any,
       maxAzs,
       enableDnsHostnames: true,
       enableDnsSupport: true,

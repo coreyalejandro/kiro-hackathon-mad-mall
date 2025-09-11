@@ -325,14 +325,10 @@ export class LambdaConstruct extends Construct {
       functionRole = new Role(this, `${name}Role`, {
         assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
         description: `Role for ${functionName}`,
-        managedPolicies: this.baseRole.managedPolicies,
-      });
-
-      // Copy base role policies
-      this.baseRole.node.children.forEach(child => {
-        if (child.node.id.includes('Policy')) {
-          functionRole.attachInlinePolicy(child as any);
-        }
+        managedPolicies: [
+          ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaVPCAccessExecutionRole'),
+          ManagedPolicy.fromAwsManagedPolicyName('AWSXRayDaemonWriteAccess'),
+        ],
       });
 
       // Add additional policies

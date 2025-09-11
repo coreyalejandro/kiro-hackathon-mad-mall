@@ -1,12 +1,11 @@
 import { Construct } from 'constructs';
 import {
   Table,
-  TableProps,
   AttributeType,
   BillingMode,
   ProjectionType,
   StreamViewType,
-  PointInTimeRecoveryProps,
+  TableEncryption,
 } from 'aws-cdk-lib/aws-dynamodb';
 import { Key, KeySpec, KeyUsage } from 'aws-cdk-lib/aws-kms';
 import { RemovalPolicy, Tags } from 'aws-cdk-lib';
@@ -74,9 +73,8 @@ export class DatabaseConstruct extends Construct {
         type: AttributeType.STRING,
       },
       billingMode: BillingMode.PAY_PER_REQUEST,
-      encryption: {
-        kmsKey: this.kmsKey,
-      },
+      encryption: TableEncryption.CUSTOMER_MANAGED,
+      encryptionKey: this.kmsKey,
       pointInTimeRecovery: enablePointInTimeRecovery,
       stream: enableStreams ? StreamViewType.NEW_AND_OLD_IMAGES : undefined,
       removalPolicy,
