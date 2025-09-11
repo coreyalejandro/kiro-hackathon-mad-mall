@@ -27,6 +27,8 @@ import { HostedZone, ARecord, RecordTarget } from 'aws-cdk-lib/aws-route53';
 import { ApiGatewayDomain } from 'aws-cdk-lib/aws-route53-targets';
 import { RemovalPolicy, Tags } from 'aws-cdk-lib';
 import { UserPool } from 'aws-cdk-lib/aws-cognito';
+import { UsagePlan, QuotaSettings, Period } from 'aws-cdk-lib/aws-apigateway';
+import { Duration } from 'aws-cdk-lib';
 
 export interface ApiGatewayConstructProps {
   /**
@@ -381,7 +383,7 @@ export class ApiGatewayConstruct extends Construct {
         name: `madmall-${plan.name}`,
         description: `MADMall ${plan.name} usage plan`,
         throttle: plan.throttle,
-        quota: plan.quota,
+        quota: { limit: plan.quota.limit, period: Period.MONTH },
       });
 
       usagePlan.addApiStage({
@@ -393,4 +395,3 @@ export class ApiGatewayConstruct extends Construct {
 
 // Import LambdaIntegration
 import { LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
-import { Duration } from 'aws-cdk-lib';

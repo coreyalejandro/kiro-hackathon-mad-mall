@@ -4,17 +4,21 @@ import { RestApi } from 'aws-cdk-lib/aws-apigateway';
 import { Key, KeySpec, KeyUsage } from 'aws-cdk-lib/aws-kms';
 import { Bucket, BlockPublicAccess, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
-import { Trail, ReadWriteType } from 'aws-cdk-lib/aws-cloudtrail';
+import { Trail, ReadWriteType, InsightType } from 'aws-cdk-lib/aws-cloudtrail';
 import * as wafv2 from 'aws-cdk-lib/aws-wafv2';
 import * as config from 'aws-cdk-lib/aws-config';
+import { ManagedRuleIdentifiers } from 'aws-cdk-lib/aws-config';
 import * as securityhub from 'aws-cdk-lib/aws-securityhub';
 import { Secret, SecretProps } from 'aws-cdk-lib/aws-secretsmanager';
+import { PolicyStatement, Effect, AccountRootPrincipal, ArnPrincipal, ServicePrincipal, Role, ManagedPolicy, PolicyDocument } from 'aws-cdk-lib/aws-iam';
 
 export interface SecurityConstructProps {
   /** Environment name (dev, staging, prod) */
   environment: string;
   /** REST API to protect with WAF */
   restApi: RestApi;
+  /** Additional S3 buckets to include in CloudTrail data events */
+  additionalS3Buckets?: Bucket[];
 }
 
 export class SecurityConstruct extends Construct {
@@ -25,7 +29,7 @@ export class SecurityConstruct extends Construct {
   constructor(scope: Construct, id: string, props: SecurityConstructProps) {
     super(scope, id);
 
-    const { environment, restApi } = props;
+    const { environment, restApi, additionalS3Buckets = [] } = props;
 
     // KMS key for audit logs and bucket encryption
     this.auditKmsKey = new Key(this, 'AuditKmsKey', {
@@ -53,6 +57,15 @@ export class SecurityConstruct extends Construct {
 
     Tags.of(this.auditBucket).add('Name', `madmall-${environment}-audit-bucket`);
 
+    // Explicitly deny non-SSL access to audit bucket
+    this.auditBucket.addToResourcePolicy(new PolicyStatement({
+      effect: Effect.DENY,
+      principals: [new AccountRootPrincipal(), new ArnPrincipal('*')],
+      actions: ['s3:*'],
+      resources: [this.auditBucket.bucketArn, `${this.auditBucket.bucketArn}/*`],
+      conditions: { Bool: { 'aws:SecureTransport': 'false' } },
+    }));
+
     // CloudTrail - management and data events
     const trailLogGroup = new LogGroup(this, 'CloudTrailLogGroup', {
       logGroupName: `/aws/cloudtrail/madmall-${environment}`,
@@ -60,18 +73,64 @@ export class SecurityConstruct extends Construct {
       removalPolicy: environment === 'prod' ? RemovalPolicy.RETAIN : RemovalPolicy.DESTROY,
     });
 
+    const trailName = `madmall-${environment}-trail`;
     const trail = new Trail(this, 'AuditTrail', {
-      trailName: `madmall-${environment}-trail`,
+      trailName,
       bucket: this.auditBucket,
       encryptionKey: this.auditKmsKey,
       sendToCloudWatchLogs: true,
-      cloudWatchLogsRetention: trailLogGroup.retention,
+      cloudWatchLogGroup: trailLogGroup,
       includeGlobalServiceEvents: true,
       managementEvents: ReadWriteType.ALL,
       enableFileValidation: true,
+      isMultiRegionTrail: true,
+      insightTypes: [InsightType.API_CALL_RATE, InsightType.API_ERROR_RATE],
     });
-    // Capture S3 and Lambda data events (common)
-    trail.addS3EventSelector([{ bucket: this.auditBucket }], ReadWriteType.ALL);
+    // Capture S3 data events for audit and application buckets
+    trail.addS3EventSelector([
+      { bucket: this.auditBucket },
+      ...additionalS3Buckets.map(b => ({ bucket: b })),
+    ], { readWriteType: ReadWriteType.ALL });
+
+    // KMS key policy for CloudTrail service usage
+    const region = Stack.of(this).region;
+    const account = Stack.of(this).account;
+    const trailArn = `arn:aws:cloudtrail:${region}:${account}:trail/${trailName}`;
+    this.auditKmsKey.addToResourcePolicy(new PolicyStatement({
+      sid: 'AllowCloudTrailUseOfKMSKey',
+      effect: Effect.ALLOW,
+      principals: [new ServicePrincipal('cloudtrail.amazonaws.com')],
+      actions: [
+        'kms:DescribeKey',
+        'kms:GenerateDataKey*',
+        'kms:Encrypt',
+        'kms:Decrypt',
+      ],
+      resources: ['*'],
+      conditions: {
+        StringEquals: {
+          'AWS:SourceArn': trailArn,
+        },
+      },
+    }));
+
+    // Allow AWS Config to use the audit KMS key (for KMS-encrypted S3 writes)
+    this.auditKmsKey.addToResourcePolicy(new PolicyStatement({
+      sid: 'AllowConfigUseOfKMSKey',
+      effect: Effect.ALLOW,
+      principals: [new ServicePrincipal('config.amazonaws.com')],
+      actions: [
+        'kms:Encrypt',
+        'kms:GenerateDataKey*',
+        'kms:DescribeKey',
+      ],
+      resources: ['*'],
+      conditions: {
+        StringEquals: {
+          'AWS:SourceAccount': account,
+        },
+      },
+    }));
 
     // WAF WebACL with AWS managed rule sets
     this.webAcl = new wafv2.CfnWebACL(this, 'ApiWebAcl', {
@@ -151,7 +210,6 @@ export class SecurityConstruct extends Construct {
       ],
     });
 
-    const region = Stack.of(this).region;
     const apiStageArn = `arn:aws:apigateway:${region}::/restapis/${restApi.restApiId}/stages/${restApi.deploymentStage.stageName}`;
 
     new wafv2.CfnWebACLAssociation(this, 'ApiWebAclAssociation', {
@@ -160,29 +218,63 @@ export class SecurityConstruct extends Construct {
     });
 
     // AWS Config - recorder and delivery channel
-    const recorder = new config.ConfigurationRecorder(this, 'ConfigRecorder');
-    const delivery = new config.DeliveryChannel(this, 'ConfigDeliveryChannel', {
-      s3Bucket: this.auditBucket,
+    const configRole = new Role(this, 'ConfigServiceRole', {
+      assumedBy: new ServicePrincipal('config.amazonaws.com'),
+      managedPolicies: [
+        ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSConfigRole'),
+      ],
+    });
+
+    const recorder = new config.CfnConfigurationRecorder(this, 'ConfigRecorder', {
+      roleArn: configRole.roleArn,
+      recordingGroup: {
+        allSupported: true,
+        includeGlobalResourceTypes: true,
+      },
+    });
+    const delivery = new config.CfnDeliveryChannel(this, 'ConfigDeliveryChannel', {
+      s3BucketName: this.auditBucket.bucketName,
     });
     delivery.node.addDependency(recorder);
 
     // AWS Config - a few key managed rules
     new config.ManagedRule(this, 'ConfigS3Encryption', {
-      identifier: config.ManagedRuleIdentifiers.S3_BUCKET_SERVER_SIDE_ENCRYPTION_ENABLED,
+      identifier: ManagedRuleIdentifiers.S3_BUCKET_SERVER_SIDE_ENCRYPTION_ENABLED,
     });
     new config.ManagedRule(this, 'ConfigCloudTrailEnabled', {
-      identifier: config.ManagedRuleIdentifiers.CLOUD_TRAIL_ENABLED,
+      identifier: ManagedRuleIdentifiers.CLOUD_TRAIL_ENABLED,
     });
     new config.ManagedRule(this, 'ConfigRestrictedSSH', {
-      identifier: config.ManagedRuleIdentifiers.EC2_SECURITY_GROUPS_INCOMING_SSH_DISABLED,
+      identifier: ManagedRuleIdentifiers.EC2_SECURITY_GROUPS_INCOMING_SSH_DISABLED,
     });
     new config.ManagedRule(this, 'ConfigDefaultSgClosed', {
-      identifier: config.ManagedRuleIdentifiers.EC2_DEFAULT_SECURITY_GROUP_CLOSED,
+      identifier: ManagedRuleIdentifiers.VPC_DEFAULT_SECURITY_GROUP_CLOSED,
+    });
+    new config.ManagedRule(this, 'ConfigS3PublicReadProhibited', {
+      identifier: ManagedRuleIdentifiers.S3_BUCKET_PUBLIC_READ_PROHIBITED,
+    });
+    new config.ManagedRule(this, 'ConfigS3PublicWriteProhibited', {
+      identifier: ManagedRuleIdentifiers.S3_BUCKET_PUBLIC_WRITE_PROHIBITED,
+    });
+    new config.ManagedRule(this, 'ConfigS3SslRequestsOnly', {
+      identifier: ManagedRuleIdentifiers.S3_BUCKET_SSL_REQUESTS_ONLY,
+    });
+    new config.ManagedRule(this, 'ConfigDynamoPitrEnabled', {
+      identifier: ManagedRuleIdentifiers.DYNAMODB_PITR_ENABLED,
+    });
+    new config.ManagedRule(this, 'ConfigVpcFlowLogsEnabled', {
+      identifier: ManagedRuleIdentifiers.VPC_FLOW_LOGS_ENABLED,
+    });
+    new config.ManagedRule(this, 'ConfigCloudTrailLogValidation', {
+      identifier: ManagedRuleIdentifiers.CLOUD_TRAIL_LOG_FILE_VALIDATION_ENABLED,
+    });
+    new config.ManagedRule(this, 'ConfigCloudTrailEncryption', {
+      identifier: ManagedRuleIdentifiers.CLOUDTRAIL_MULTI_REGION_ENABLED,
     });
 
     // Security Hub - enable and subscribe to AWS Foundational Security Best Practices
     const hub = new securityhub.CfnHub(this, 'SecurityHub', {});
-    new securityhub.CfnStandardsSubscription(this, 'SecurityHubFsbp', {
+    new securityhub.CfnStandard(this, 'SecurityHubFsbp', {
       standardsArn: `arn:aws:securityhub:${region}::standards/aws-foundational-security-best-practices/v/1.0.0`,
     }).addDependency(hub);
 

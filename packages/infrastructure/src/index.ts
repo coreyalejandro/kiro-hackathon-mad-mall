@@ -10,8 +10,9 @@ export * from './constructs/security';
 // Export stacks
 export * from './stacks/main-stack';
 
-// Export DAO factory for application use
-export * from './dao';
+// The following exports pull in application DAO/services code which is outside the infra build scope.
+// They are intentionally commented out for the infra build pipeline.
+// export * from './dao';
 
 // Export types and interfaces
 export interface InfrastructureConfig {
