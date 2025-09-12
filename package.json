@@ -35,7 +35,12 @@
     "dev:watch": "pnpm -r --if-present watch",
     "setup:env": "[ -f .env ] || cp .env.example .env; [ -f packages/web-app/.env.local ] || cp packages/web-app/.env.local.example packages/web-app/.env.local",
     "install:ci": "pnpm exec projen install:ci",
-    "synth-workspace": "pnpm exec projen"
+    "synth-workspace": "pnpm exec projen",
+    "dev:localstack": "docker compose -f docker-compose.local.yml up -d",
+    "dev:local": "ENVIRONMENT=dev AWS_REGION=us-east-1 AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test pnpm -w run dev",
+    "dev:infra:deploy": "cd packages/infrastructure && cdk deploy --all --require-approval never -c environment=dev",
+    "dev:infra:destroy": "cd packages/infrastructure && cdk destroy --all -c environment=dev --force",
+    "docs:api": "cd packages/api-gateway && pnpm run generate && cp -f generated/openapi.json ../docs/openapi.json || true"
   },
   "devDependencies": {
     "@aws-sdk/client-dynamodb": "^3.883.0",
