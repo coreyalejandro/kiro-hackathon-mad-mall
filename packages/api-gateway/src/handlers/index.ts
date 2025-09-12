@@ -38,3 +38,5 @@ export { enqueueAdvisoryReviewHandler, listAdvisoryQueueHandler } from './adviso
 export { createIncidentHandler, listIncidentsHandler } from './incidents';
 export { listPremiumSourcesHandler } from './premium-sources';
 export { getPersonalizationHandler, updatePersonalizationHandler } from './personalization';
+export { getCareRecommendationsHandler, getCareStatsHandler } from './recommendations';
+export { compareCareRecommendationHandler } from './recommendations-demo';

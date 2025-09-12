@@ -1,3 +1,4 @@
+import { CareRecommendation } from './dspy-bridge';
 export interface TitanEngineConfig {
     region?: string;
     tableName?: string;
@@ -11,6 +12,8 @@ export declare class TitanEngine {
     private readonly placeholder;
     private readonly a1111;
     private readonly culturalAgent;
+    private readonly dspy;
+    private readonly kcache;
     constructor(config: TitanEngineConfig);
     static createDefault(): TitanEngine;
     importFromPexels(params: {
@@ -36,6 +39,27 @@ export declare class TitanEngine {
         sensitivity: any;
         inclusivity: any;
         issues: any;
+    }>;
+    generateCareModel(input: {
+        userId: string;
+        age: number;
+        diagnosisStage: string;
+        supportNeeds: string[];
+        culturalContext: {
+            primaryCulture: string;
+            secondaryCultures?: string[];
+            region?: string;
+            language?: string;
+            religiousConsiderations?: string[];
+            sensitiveTopics?: string[];
+        };
+        history?: any[];
+    }, options?: {
+        bypassCache?: boolean;
+    }): Promise<{
+        recommendation: CareRecommendation;
+        cached: boolean;
+        cacheStats: any;
     }>;
     listPending(limit?: number): Promise<import("@madmall/shared-types/database").DynamoDBImageAsset[]>;
     selectByContext(context: string, limit?: number): Promise<import("@madmall/shared-types/database").DynamoDBImageAsset[]>;

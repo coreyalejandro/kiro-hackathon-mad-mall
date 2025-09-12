@@ -1,5 +1,5 @@
 import { Construct } from 'constructs';
-import { Function as LambdaFunction } from 'aws-cdk-lib/aws-lambda';
+import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Vpc, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { Table } from 'aws-cdk-lib/aws-dynamodb';
@@ -67,13 +67,13 @@ export interface LambdaFunctionConfig {
     environmentVariables?: Record<string, string>;
 }
 export declare class LambdaConstruct extends Construct {
-    readonly functions: Map<string, LambdaFunction>;
+    readonly functions: Map<string, IFunction>;
     private readonly baseRole;
     private readonly baseEnvironmentVariables;
     constructor(scope: Construct, id: string, props: LambdaConstructProps);
     private createBaseLambdaRole;
     private createCommonFunctions;
-    createFunction(config: LambdaFunctionConfig, environment: string, vpc: Vpc, securityGroup: SecurityGroup): LambdaFunction;
-    getFunction(name: string): LambdaFunction | undefined;
-    getAllFunctions(): LambdaFunction[];
+    createFunction(config: LambdaFunctionConfig, environment: string, vpc: Vpc, securityGroup: SecurityGroup): IFunction;
+    getFunction(name: string): IFunction | undefined;
+    getAllFunctions(): IFunction[];
 }

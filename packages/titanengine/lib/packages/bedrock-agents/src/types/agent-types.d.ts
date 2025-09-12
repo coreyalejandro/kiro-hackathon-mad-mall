@@ -40,15 +40,15 @@ export declare const AgentContextSchema: z.ZodObject<{
     correlationId: string;
     timestamp: Date;
     userId?: string | undefined;
-    tenantId?: string | undefined;
     metadata?: Record<string, any> | undefined;
+    tenantId?: string | undefined;
 }, {
     sessionId: string;
     correlationId: string;
     timestamp: Date;
     userId?: string | undefined;
-    tenantId?: string | undefined;
     metadata?: Record<string, any> | undefined;
+    tenantId?: string | undefined;
 }>;
 export type AgentContext = z.infer<typeof AgentContextSchema>;
 export declare const AgentResponseSchema: z.ZodObject<{
