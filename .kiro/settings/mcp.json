@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "ai-browser-mcp": {
+      "command": "node",
+      "args": ["path/to/ai-browser-mcp/dist/index.js"],
+      "disabled": false,
+      "autoApprove": [
+        "mcp_ai_browser_mcp_browsernewContext",
+        "mcp_ai_browser_mcp_browsergoto",
+        "mcp_ai_browser_mcp_browserscreenshot"
+      ]
+    }
+  }
+}

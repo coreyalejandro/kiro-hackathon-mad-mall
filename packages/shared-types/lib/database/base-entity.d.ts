@@ -280,6 +280,135 @@ export interface DynamoDBResource extends BaseEntity {
     };
     publishedAt?: string;
 }
+/**
+ * Image and Cultural Systems Entities (Feedback, Incidents, Advisory, Premium Sources, Personalization)
+ */
+export interface DynamoDBImageAsset extends BaseEntity {
+    imageId: string;
+    url: string;
+    thumbnailUrl?: string;
+    altText: string;
+    category: string;
+    tags: string[];
+    source: 'generated' | 'premium' | 'user_upload' | 'stock';
+    sourceInfo?: {
+        provider?: string;
+        licenseType?: string;
+        licenseId?: string;
+        attribution?: string;
+        expiresAt?: string;
+        originalUrl?: string;
+    };
+    status: 'active' | 'archived' | 'flagged' | 'removed' | 'pending_review';
+    validation?: {
+        culturalScore: number;
+        sensitivityScore: number;
+        inclusivityScore: number;
+        lastValidatedAt?: string;
+        validator?: string;
+        issues?: string[];
+    };
+    usage?: {
+        contexts: string[];
+        lastUsedAt?: string;
+        totalImpressions?: number;
+        totalClicks?: number;
+    };
+}
+export interface DynamoDBFeedback extends BaseEntity {
+    feedbackId: string;
+    imageId: string;
+    userId: string;
+    rating: number;
+    comment?: string;
+    categories: Array<'representation' | 'appropriateness' | 'stereotype' | 'context_mismatch' | 'other'>;
+    severity?: 'low' | 'medium' | 'high' | 'critical';
+    isReport: boolean;
+    status: 'new' | 'acknowledged' | 'in_review' | 'resolved' | 'dismissed';
+    resolution?: {
+        resolvedBy?: string;
+        resolvedAt?: string;
+        action?: 'removed' | 'replaced' | 'edited' | 'no_action';
+        notes?: string;
+    };
+    metadata?: Record<string, any>;
+}
+export interface DynamoDBIncident extends BaseEntity {
+    incidentId: string;
+    relatedImageId?: string;
+    triggeredBy: 'community_report' | 'automated_detection' | 'staff' | 'advisory_board';
+    status: 'open' | 'investigating' | 'mitigated' | 'closed';
+    priority: 'p1' | 'p2' | 'p3';
+    summary: string;
+    details?: string;
+    escalation?: {
+        level: 0 | 1 | 2 | 3;
+        onCallNotifiedAt?: string;
+        advisoryBoardNotifiedAt?: string;
+        commsSentAt?: string;
+    };
+    alerts?: Array<{
+        type: string;
+        sentAt: string;
+        channel: 'email' | 'slack' | 'sms' | 'webhook';
+    }>;
+}
+export interface DynamoDBAdvisoryReview extends BaseEntity {
+    reviewId: string;
+    targetType: 'image' | 'resource' | 'story';
+    targetId: string;
+    submittedBy: string;
+    assignedTo?: string;
+    status: 'queued' | 'in_review' | 'approved' | 'changes_requested' | 'rejected';
+    notes?: string;
+    decisions?: Array<{
+        reviewerId: string;
+        decision: 'approve' | 'request_changes' | 'reject';
+        rationale: string;
+        decidedAt: string;
+    }>;
+    consensus?: {
+        score: number;
+        requiredVotes: number;
+        receivedVotes: number;
+    };
+}
+export interface DynamoDBPremiumSource extends BaseEntity {
+    sourceId: string;
+    provider: 'createher' | 'nappy' | 'other';
+    displayName: string;
+    apiBaseUrl?: string;
+    apiKeyArn?: string;
+    licenseDefaults: {
+        licenseType: string;
+        attributionTemplate?: string;
+        usageRestrictions?: string[];
+    };
+    status: 'active' | 'inactive';
+    qualityThreshold?: number;
+}
+export interface DynamoDBPersonalizationProfile extends BaseEntity {
+    userId: string;
+    preferences: {
+        imageStyles?: string[];
+        avoidTags?: string[];
+        preferredContexts?: string[];
+    };
+    engagement: {
+        impressions: number;
+        clicks: number;
+        dwellTimeMs?: number;
+        lastInteractionAt?: string;
+    };
+    abTests?: Array<{
+        experimentId: string;
+        variant: 'A' | 'B' | 'C';
+        startedAt: string;
+        endedAt?: string;
+        metrics?: Record<string, number>;
+    }>;
+    cohorts?: string[];
+}
 export declare const KeyPatterns: {
     readonly USER_PROFILE: (userId: string) => {
         PK: string;
@@ -342,6 +471,56 @@ export declare const KeyPatterns: {
     };
     readonly TENANT_RESOURCES: (tenantId: string) => {
         GSI4PK: string;
+    };
+    readonly IMAGE_METADATA: (imageId: string) => {
+        PK: string;
+        SK: string;
+    };
+    readonly IMAGES_BY_CATEGORY: (category: string) => {
+        GSI1PK: string;
+    };
+    readonly IMAGE_STATUS: (status: string) => {
+        GSI3PK: string;
+    };
+    readonly FEEDBACK_FOR_IMAGE: (imageId: string, userId: string, timestampIso: string) => {
+        PK: string;
+        SK: string;
+        GSI1PK: string;
+        GSI1SK: string;
+    };
+    readonly FEEDBACK_BY_SEVERITY: (severity: string) => {
+        GSI3PK: string;
+    };
+    readonly INCIDENT_METADATA: (incidentId: string) => {
+        PK: string;
+        SK: string;
+    };
+    readonly INCIDENT_STATUS: (status: string) => {
+        GSI3PK: string;
+    };
+    readonly ADVISORY_QUEUE: (reviewId: string) => {
+        PK: string;
+        SK: string;
+    };
+    readonly ADVISORY_BY_TARGET: (targetType: string, targetId: string) => {
+        GSI1PK: string;
+    };
+    readonly ADVISORY_BY_STATUS: (status: string) => {
+        GSI3PK: string;
+    };
+    readonly PREMIUM_SOURCE_METADATA: (sourceId: string) => {
+        PK: string;
+        SK: string;
+    };
+    readonly PREMIUM_BY_PROVIDER: (provider: string) => {
+        GSI1PK: string;
+    };
+    readonly PERSONALIZATION_PROFILE: (userId: string) => {
+        PK: string;
+        SK: string;
+    };
+    readonly PERSONALIZATION_BY_COHORT: (cohortId: string) => {
+        GSI1PK: string;
     };
 };
 //# sourceMappingURL=base-entity.d.ts.map
