@@ -28,10 +28,12 @@ export const queryKeys = {
   product: (id: string) => ['product', id] as const,
   productCategories: ['product-categories'] as const,
   
-  articles: (filters?: ArticleFilters, page?: number, limit?: number) => 
+  articles: (filters?: ArticleFilters, page?: number, limit?: number) =>
     ['articles', filters, page, limit] as const,
   article: (id: string) => ['article', id] as const,
   articleCategories: ['article-categories'] as const,
+  articleFormats: ['article-formats'] as const,
+  articleCredibilityLevels: ['article-credibility-levels'] as const,
   
   stories: (filters?: StoryFilters, page?: number, limit?: number) => 
     ['stories', filters, page, limit] as const,
@@ -191,6 +193,24 @@ export const useArticleCategories = () => {
   });
 };
 
+export const useArticleFormats = () => {
+  return useQuery({
+    queryKey: queryKeys.articleFormats,
+    queryFn: api.getArticleFormats,
+    staleTime: 30 * 60 * 1000, // 30 minutes
+    gcTime: 60 * 60 * 1000, // 1 hour
+  });
+};
+
+export const useArticleCredibilityLevels = () => {
+  return useQuery({
+    queryKey: queryKeys.articleCredibilityLevels,
+    queryFn: api.getArticleCredibilityLevels,
+    staleTime: 30 * 60 * 1000, // 30 minutes
+    gcTime: 60 * 60 * 1000, // 1 hour
+  });
+};
+
 // Story Booth queries
 export const useStories = (filters?: StoryFilters, page = 1, limit = 20) => {
   return useQuery({
@@ -245,6 +265,34 @@ export const useJoinCircle = () => {
       queryClient.invalidateQueries({ queryKey: ['circle', variables.circleId] });
       queryClient.invalidateQueries({ queryKey: ['community-activity'] });
       queryClient.invalidateQueries({ queryKey: ['platform-stats'] });
+    },
+  });
+};
+
+export const useLeaveCircle = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ circleId, userId }: { circleId: string; userId: string }) =>
+      api.leaveCircle(circleId, userId),
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['circles'] });
+      queryClient.invalidateQueries({ queryKey: ['circle', variables.circleId] });
+      queryClient.invalidateQueries({ queryKey: ['community-activity'] });
+      queryClient.invalidateQueries({ queryKey: ['platform-stats'] });
+    },
+  });
+};
+
+export const useCreateCirclePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ circleId, userId, content }: { circleId: string; userId: string; content: string }) =>
+      api.createCirclePost(circleId, userId, content),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['circle-posts', variables.circleId] });
+      queryClient.invalidateQueries({ queryKey: ['community-activity'] });
     },
   });
 };

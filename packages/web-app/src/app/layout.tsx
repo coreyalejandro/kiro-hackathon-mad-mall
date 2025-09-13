@@ -6,6 +6,9 @@ import '@/styles/concourse-interactions.css';
 import { AppLayout, TopNavigation, SideNavigation } from '@cloudscape-design/components';
 import { NavigationProvider } from '@/components/providers/NavigationProvider';
 import { QueryProvider } from '@/components/providers/QueryProvider';
+import { env } from '@/lib/env';
+
+void env; // trigger environment validation on bootstrap
 
 export const metadata: Metadata = {
   title: 'AIme - MADMall Social Wellness Hub',

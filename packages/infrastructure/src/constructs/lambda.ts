@@ -23,6 +23,8 @@ import { Key } from 'aws-cdk-lib/aws-kms';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Duration, RemovalPolicy, Tags } from 'aws-cdk-lib';
 import { Alias, Version, TrafficRouting, LambdaDeploymentConfig, LambdaDeploymentGroup } from 'aws-cdk-lib/aws-codedeploy';
+import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
+import { LambdaFunction as EventLambdaTarget } from 'aws-cdk-lib/aws-events-targets';
 
 export interface LambdaConstructProps {
   /**
@@ -291,7 +293,10 @@ export class LambdaConstruct extends Construct {
     ];
 
     commonFunctions.forEach(config => {
-      this.createFunction(config, environment, vpc, securityGroup);
+      const fn = this.createFunction(config, environment, vpc, securityGroup);
+      if (config.name === 'titan-engine') {
+        this.scheduleAudit(fn);
+      }
     });
   }
 
@@ -396,6 +401,13 @@ export class LambdaConstruct extends Construct {
 
   public getFunction(name: string): IFunction | undefined {
     return this.functions.get(name);
+  }
+
+  private scheduleAudit(fn: IFunction) {
+    new Rule(this, 'NightlyImageAudit', {
+      schedule: Schedule.cron({ minute: '0', hour: '0' }),
+      targets: [new EventLambdaTarget(fn)],
+    });
   }
 
   public getAllFunctions(): IFunction[] {

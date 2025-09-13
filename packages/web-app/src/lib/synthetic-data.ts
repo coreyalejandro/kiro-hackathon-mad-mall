@@ -1,7 +1,7 @@
 // Synthetic data generation for MADMall platform
-import { 
-  User, Circle, Post, ComedyClip, Product, Article, Story, 
-  ActivityItem, PlatformStats, MallSection 
+import {
+  User, Circle, Post, ComedyClip, Product, Article, Story,
+  ActivityItem, PlatformStats, MallSection, ImageAsset
 } from './types';
 
 // Culturally appropriate data sets
@@ -69,9 +69,11 @@ const PRODUCT_CATEGORIES = [
 ];
 
 const ARTICLE_CATEGORIES = [
-  'Graves Disease', 'Mental Health', 'Nutrition', 'Exercise', 'Self-Care', 
+  'Graves Disease', 'Mental Health', 'Nutrition', 'Exercise', 'Self-Care',
   'Medical Advocacy', 'Workplace Wellness', 'Relationships', 'Spirituality', 'Community'
 ];
+
+const IMAGE_CATEGORIES = ['wellness', 'community', 'empowerment', 'joy'];
 
 const BLACK_OWNED_BUSINESSES = [
   {
@@ -323,6 +325,8 @@ export const generateArticle = (): Article => {
       avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${id}`
     },
     category: article.category,
+    format: randomChoice(['article', 'video', 'podcast']),
+    credibility: randomChoice(['peer-reviewed', 'expert', 'community']),
     tags: randomChoices(['graves-disease', 'thyroid', 'wellness', 'mental-health', 'nutrition', 'advocacy', 'community'], randomInt(2, 5)),
     readingTime: randomInt(3, 15),
     publishedAt: randomDate(new Date(2023, 0, 1), new Date()),
@@ -376,6 +380,18 @@ export const generateStory = (): Story => {
       helpfulVotes: randomInt(0, 5),
     },
     isAnonymous: Math.random() > 0.7
+  };
+};
+
+export const generateImageAsset = (): ImageAsset => {
+  const category = randomChoice(IMAGE_CATEGORIES);
+  const id = `image-${Math.random().toString(36).substr(2, 9)}`;
+
+  return {
+    id,
+    url: `https://picsum.photos/seed/${id}/800/600`,
+    category,
+    alt: `${category} image`
   };
 };
 
@@ -498,6 +514,7 @@ export const generateBulkData = () => {
   const articles = Array.from({ length: 300 }, generateArticle);
   const stories = Array.from({ length: 100 }, generateStory);
   const activities = Array.from({ length: 50 }, generateActivityItem);
+  const images = Array.from({ length: 120 }, generateImageAsset);
   
   // Generate posts for circles
   const posts = circles.flatMap(circle => 
@@ -515,6 +532,7 @@ export const generateBulkData = () => {
     articles,
     stories,
     activities,
+    images,
     platformStats: generatePlatformStats(),
     mallSections: generateMallSections()
   };

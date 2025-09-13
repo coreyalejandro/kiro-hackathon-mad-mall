@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { validateImageContent } from '../../lib/image-validation';
 
 interface HeroSectionProps {
   pageName?: string;
@@ -31,6 +32,7 @@ interface HeroSectionProps {
   heroImage?: {
     src: string;
     alt: string;
+    category?: string;
     width?: number;
     height?: number;
   };
@@ -51,6 +53,46 @@ export default function HeroSection({
 }: HeroSectionProps) {
   const [scrollOffset, setScrollOffset] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [validatedSrc, setValidatedSrc] = useState<string | undefined>(
+    heroImage?.src
+  );
+
+  useEffect(() => {
+    const runValidation = async () => {
+      if (!heroImage) return;
+      try {
+        const result = await validateImageContent({
+          url: heroImage.src,
+          altText: heroImage.alt,
+          category: heroImage.category || 'hero',
+        });
+        const ok =
+          result.cultural >= 0.8 &&
+          result.inclusivity >= 0.8 &&
+          !(result.issues || []).some((i) => i.includes('cultural_mismatch'));
+        if (!ok) {
+          console.warn('Image failed cultural validation', {
+            src: heroImage.src,
+            alt: heroImage.alt,
+            category: heroImage.category || 'hero',
+            result,
+          });
+          setValidatedSrc('/images/default-placeholder.jpg');
+        } else {
+          setValidatedSrc(heroImage.src);
+        }
+      } catch (err) {
+        console.error('TitanEngine validation failed', {
+          error: err,
+          src: heroImage.src,
+          alt: heroImage.alt,
+          category: heroImage.category || 'hero',
+        });
+        setValidatedSrc('/images/default-placeholder.jpg');
+      }
+    };
+    runValidation();
+  }, [heroImage]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -129,7 +171,7 @@ export default function HeroSection({
                   <div className="hero-authentic-image">
                     {heroImage ? (
                       <Image
-                        src={heroImage.src}
+                        src={validatedSrc || '/images/default-placeholder.jpg'}
                         alt={heroImage.alt}
                         width={heroImage.width || 600}
                         height={heroImage.height || 400}

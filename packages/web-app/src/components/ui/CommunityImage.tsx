@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { validateImageContent } from '../../lib/image-validation';
 
 interface CommunityImageProps {
   category: 'community' | 'wellness' | 'lifestyle' | 'portraits';
@@ -43,7 +44,42 @@ export default function CommunityImage({
     return placeholders[category] || '/images/default-placeholder.jpg';
   };
 
-  const imageUrl = src || getPlaceholderImage();
+  const [imageUrl, setImageUrl] = useState(src || getPlaceholderImage());
+
+  useEffect(() => {
+    const runValidation = async () => {
+      if (!src) return;
+      try {
+        const result = await validateImageContent({
+          url: src,
+          altText: alt || '',
+          category,
+        });
+        const ok =
+          result.cultural >= 0.8 &&
+          result.inclusivity >= 0.8 &&
+          !(result.issues || []).some((i) => i.includes('cultural_mismatch'));
+        if (!ok) {
+          console.warn('Image failed cultural validation', {
+            src,
+            alt,
+            category,
+            result,
+          });
+          setImageUrl(getPlaceholderImage());
+        }
+      } catch (err) {
+        console.error('TitanEngine validation failed', {
+          error: err,
+          src,
+          alt,
+          category,
+        });
+        setImageUrl(getPlaceholderImage());
+      }
+    };
+    runValidation();
+  }, [src, alt, category]);
   
   const sizeConfig = {
     small: { width: 120, height: 120 },
