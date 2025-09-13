@@ -72,6 +72,11 @@ export class ImageAssetRepository extends BaseDynamoDAO<DynamoDBImageAsset> {
     return items as DynamoDBImageAsset[];
   }
 
+  async listFlagged(limit = 20) {
+    const { items } = await this.queryGSI('GSI3', KeyPatterns.IMAGE_STATUS('flagged').GSI3PK, undefined, { limit });
+    return items as DynamoDBImageAsset[];
+  }
+
   async selectByCategory(category: string, limit = 1) {
     const { items } = await this.queryGSI('GSI1', KeyPatterns.IMAGES_BY_CATEGORY(category).GSI1PK, undefined, {
       limit,

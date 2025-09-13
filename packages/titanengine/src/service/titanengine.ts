@@ -29,6 +29,17 @@ export class TitanEngine {
   private readonly culturalAgent: CulturalValidationAgent;
   private readonly dspy: DspyBridge;
   private readonly kcache: TitanKCache<CareRecommendation>;
+  
+  private async logAuditResult(imageId: string, scores: { cultural: number; sensitivity: number; inclusivity: number; issues?: string[] }, status: string) {
+    await this.dynamo.putItem({
+      PK: `IMAGE_AUDIT#${imageId}`,
+      SK: `TIMESTAMP#${new Date().toISOString()}`,
+      entityType: 'IMAGE_AUDIT',
+      imageId,
+      status,
+      scores,
+    } as any);
+  }
 
   constructor(config: TitanEngineConfig) {
     // Use globalThis to avoid TS complaining about process types in some contexts
@@ -199,8 +210,10 @@ export class TitanEngine {
           sourceInfo: placeholder.sourceInfo as any,
         } as any);
         await this.images.markValidated(img.imageId, { ...scores, validator: 'audit' }, 'flagged');
+        await this.logAuditResult(img.imageId, scores, 'flagged');
       } else {
         await this.images.markValidated(img.imageId, { ...scores, validator: 'audit' }, 'active');
+        await this.logAuditResult(img.imageId, scores, 'active');
       }
     }
   }
@@ -262,6 +275,10 @@ export class TitanEngine {
 
   async listPending(limit = 20) {
     return this.images.listPending(limit);
+  }
+
+  async listFlagged(limit = 20) {
+    return this.images.listFlagged(limit);
   }
 
   async selectByContext(context: string, limit = 1) {
