@@ -42,3 +42,16 @@ describe('TitanEngine.generateCareModel', () => {
     expect(recommendCareMock).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('TitanEngine analytics', () => {
+  beforeEach(() => {
+    process.env.KCACHE_INMEMORY = 'true';
+  });
+
+  it('records and retrieves events', async () => {
+    const engine = TitanEngine.createDefault();
+    await engine.recordEvent({ userId: 'u1', eventType: 'page', name: 'test' });
+    const events = await engine.getEvents('u1');
+    expect(events[0].name).toBe('test');
+  });
+});

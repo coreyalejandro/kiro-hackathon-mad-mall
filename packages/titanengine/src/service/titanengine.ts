@@ -198,6 +198,14 @@ export class TitanEngine {
     return { ...scores, isAppropriate: data.isAppropriate };
   }
 
+  async recordEvent(event: TitanEvent) {
+    await this.analytics.record(event);
+  }
+
+  async getEvents(userId: string): Promise<TitanEvent[]> {
+    return this.analytics.getEvents(userId);
+  }
+
   async auditImageAssets(limit = 20) {
     const pending = await this.images.listPending(limit);
     for (const img of pending) {

@@ -28,7 +28,12 @@ export async function GET(request: Request) {
       },
       { bypassCache },
     );
-
+    await engine.recordEvent({
+      userId,
+      eventType: 'interaction',
+      name: 'care-model:generate',
+      data: { age, diagnosisStage, supportNeeds },
+    });
     return NextResponse.json(result);
   } catch (err) {
     console.error('Failed to generate care model', err);
