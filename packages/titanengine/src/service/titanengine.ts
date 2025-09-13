@@ -149,4 +149,109 @@ export class TitanEngine {
     const resultsArray = await Promise.all(createdImages);
     return resultsArray.filter(Boolean); // Returns an array with successful creations
   }
+
+  async validateImageContent(image: {
+    url: string;
+    altText: string;
+    category: string;
+    imageId?: string;
+  }) {
+    const { response } = await this.culturalAgent.execute(
+      {
+        content: image.url,
+        contentType: 'image_url',
+        culturalContext: {
+          primaryCulture: 'african_american',
+          secondaryCultures: [],
+          region: 'us',
+          language: 'en',
+          religiousConsiderations: [],
+          sensitiveTopics: [],
+        },
+        targetAudience: {
+          ageRange: { min: 20, max: 60 },
+          diagnosisStage: 'in_treatment',
+          supportNeeds: ['community'],
+        },
+      },
+      {}
+    );
+
+    if (!response.success || !response.data) {
+      throw new Error(response.error || 'Image validation failed');
+    }
+
+    const data = response.data;
+    const scores = {
+      cultural: data.culturalRelevanceScore,
+      sensitivity: data.sensitivityScore,
+      inclusivity: data.inclusivityScore,
+      issues: data.issues.map((i) => i.description),
+      validator: 'cultural-validation-agent',
+    };
+
+    if (image.imageId) {
+      const status = data.isAppropriate ? 'active' : 'flagged';
+      await this.images.markValidated(image.imageId, scores, status);
+    }
+
+    return { ...scores, isAppropriate: data.isAppropriate };
+  }
+
+  async auditImageAssets(limit = 20) {
+    const pending = await this.images.listPending(limit);
+    for (const img of pending) {
+      const result = await this.validateImageContent(img as any);
+      if (!result.isAppropriate || result.cultural < 0.7) {
+        await this.images.markValidated(img.imageId, result, 'removed');
+        const [placeholder] = await this.placeholder.generate({
+          category: img.category,
+          count: 1,
+        });
+        if (placeholder) {
+          await this.images.createFromUrl({
+            imageId: uuidv4(),
+            url: placeholder.url,
+            thumbnailUrl: placeholder.thumbnailUrl,
+            altText: placeholder.altText,
+            category: img.category,
+            tags: placeholder.tags,
+            source: 'placeholder',
+            sourceInfo: placeholder.sourceInfo,
+          });
+        }
+      }
+    }
+
+    const flagged = await this.images.listFlagged(limit);
+    for (const img of flagged) {
+      const [placeholder] = await this.placeholder.generate({
+        category: img.category,
+        count: 1,
+      });
+      await this.images.markValidated(
+        img.imageId,
+        {
+          cultural: 0,
+          sensitivity: 0,
+          inclusivity: 0,
+          issues: ['replaced with placeholder'],
+          validator: 'auditImageAssets',
+        },
+        'removed'
+      );
+      if (placeholder) {
+        await this.images.createFromUrl({
+          imageId: uuidv4(),
+          url: placeholder.url,
+          thumbnailUrl: placeholder.thumbnailUrl,
+          altText: placeholder.altText,
+          category: img.category,
+          tags: placeholder.tags,
+          source: 'placeholder',
+          sourceInfo: placeholder.sourceInfo,
+        });
+      }
+    }
+  }
 }
