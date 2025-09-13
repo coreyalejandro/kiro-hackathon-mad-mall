@@ -70,8 +70,8 @@ The application supports different environment configurations:
 
 ### Environment Variables
 
-- `NEXT_PUBLIC_API_URL` - API base URL
-- `NEXT_PUBLIC_TITANENGINE_URL` - TitanEngine service URL
+- `NEXT_PUBLIC_API_URL` - API base URL (required)
+- `TITAN_ENGINE_URL` - TitanEngine service URL (required)
 - `NEXT_PUBLIC_ENABLE_DEBUG` - Enable debug mode
 
 ## Styling
