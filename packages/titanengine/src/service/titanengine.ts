@@ -11,6 +11,7 @@ import { BedrockSDXLProvider } from '../providers/bedrock-sdxl-provider';
 import { CulturalValidationAgent } from '@madmall/bedrock-agents';
 import { DspyBridge, CareRecommendation } from './dspy-bridge';
 import { TitanKCache } from './kcache';
+import { TitanAnalyticsProcessor, TitanEvent } from './analytics-processor';
 
 export interface TitanEngineConfig {
   region?: string;
@@ -29,6 +30,8 @@ export class TitanEngine {
   private readonly culturalAgent: CulturalValidationAgent;
   private readonly dspy: DspyBridge;
   private readonly kcache: TitanKCache<CareRecommendation>;
+  private readonly eventCache: TitanKCache<TitanEvent[]>;
+  private readonly analytics: TitanAnalyticsProcessor;
 
   constructor(config: TitanEngineConfig) {
     // Use globalThis to avoid TS complaining about process types in some contexts
@@ -53,6 +56,8 @@ export class TitanEngine {
     this.culturalAgent = new CulturalValidationAgent(region);
     this.dspy = new DspyBridge();
     this.kcache = new TitanKCache<CareRecommendation>({ namespace: 'titan-care', ttlSeconds: 300 });
+    this.eventCache = new TitanKCache<TitanEvent[]>({ namespace: 'titan-events', ttlSeconds: 300 });
+    this.analytics = new TitanAnalyticsProcessor(this.eventCache);
   }
 
   static createDefault() {
@@ -117,6 +122,22 @@ export class TitanEngine {
       created.push(item);
     }
     return created;
+  }
+
+  async trackEvent(event: TitanEvent): Promise<void> {
+    await this.analytics.record(event);
+    const ts = new Date(event.timestamp || Date.now()).toISOString();
+    await this.dynamo.putItem({
+      PK: `USER#${event.userId}`,
+      SK: `EVENT#${ts}`,
+      entityType: 'EVENT',
+      version: 1,
+      createdAt: ts,
+      updatedAt: ts,
+      eventType: event.eventType,
+      name: event.name,
+      data: event.data || {},
+    });
   }
 
   async generateWithBedrock(params: { prompt: string; category: string; count?: number }) {
@@ -220,6 +241,8 @@ export class TitanEngine {
     };
     history?: any[];
   }, options?: { bypassCache?: boolean }): Promise<{ recommendation: CareRecommendation; cached: boolean; cacheStats: any }>{
+    const events = await this.analytics.getEvents(input.userId);
+    const lastEventTs = events.length ? events[events.length - 1].timestamp || 0 : 0;
     const key = [
       input.userId,
       input.age,
@@ -228,6 +251,7 @@ export class TitanEngine {
       input.culturalContext.primaryCulture,
       input.culturalContext.region || 'US',
       input.culturalContext.language || 'en',
+      lastEventTs,
     ];
     await this.kcache.connect();
     const producer = async () => {
@@ -244,7 +268,7 @@ export class TitanEngine {
           religiousConsiderations: input.culturalContext.religiousConsiderations || [],
           sensitiveTopics: input.culturalContext.sensitiveTopics || [],
         },
-        history: input.history || [],
+        history: [...(input.history || []), ...events],
       });
       return rec;
     };
