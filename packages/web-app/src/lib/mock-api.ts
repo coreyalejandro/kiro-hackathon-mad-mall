@@ -370,14 +370,47 @@ export class MockAPI {
   }
 
   static async submitReliefRating(
-    clipId: string, 
-    userId: string, 
-    rating: number, 
+    clipId: string,
+    userId: string,
+    rating: number,
     notes?: string
   ): Promise<ApiResponse<{ success: boolean }>> {
     await delay(300);
-    // In a real app, this would save the rating and update clip's average
-    return createApiResponse({ success: true });
+    const data = initializeDataStore();
+    const clip = data.comedyClips.find(c => c.id === clipId);
+    if (clip) {
+      // Update average relief rating using viewCount as rating count
+      clip.averageReliefRating =
+        (clip.averageReliefRating * clip.viewCount + rating) /
+        (clip.viewCount + 1);
+      clip.viewCount += 1;
+
+      // Update platform stats
+      data.platformStats.reliefRatings += 1;
+
+      // Record activity for community feed
+      const user = data.users.find(u => u.id === userId);
+      data.activities.unshift({
+        id: `activity-${Math.random().toString(36).substr(2, 9)}`,
+        type: 'relief_rating',
+        user: {
+          name: user?.name || 'Anonymous',
+          avatar: user?.avatar || '/api/placeholder/32/32'
+        },
+        content: `${user?.name || 'Someone'} rated ${clip.title} ${rating}/5`,
+        timestamp: new Date(),
+        engagement: { likes: 0, comments: 0 },
+        targetId: clip.id,
+        targetType: 'comedy-clip'
+      });
+      if (data.activities.length > 100) {
+        data.activities.pop();
+      }
+
+      // Persist changes
+      localStorage.setItem('madmall-data', JSON.stringify(data));
+    }
+    return createApiResponse({ success: !!clip });
   }
 
   // Search
