@@ -26,8 +26,6 @@
     "upgrade": "pnpm exec projen upgrade",
     "upgrade-deps": "pnpm exec projen upgrade-deps",
     "watch": "pnpm exec projen watch",
-
-    // Local development commands
     "local:list": "docker compose -f docker-compose.localstack.yml up -d",
     "local:down": "docker compose -f docker-compose.localstack.yml down",
     "local:bootstrap": "cross-env ENVIRONMENT=development ts-node scripts/bootstrap-local.ts",
@@ -36,8 +34,6 @@
     "dev:all": "pnpm run dev:infra && pnpm run dev:web",
     "dev:watch": "pnpm -r --if-present watch",
     "setup:env": "[ -f .env ] || cp .env.example .env; [ -f packages/web-app/.env.local ] || cp packages/web-app/.env.local.example packages/web-app/.env.local",
-
-    // Specific local commands
     "localstack:up": "docker compose up -d localstack",
     "localstack:down": "docker compose down",
     "localstack:logs": "docker compose logs -f localstack | cat",

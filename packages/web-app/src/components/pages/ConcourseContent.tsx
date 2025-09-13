@@ -1,87 +1,47 @@
-}import React, { useState } from 'react';
-import { Container, ContentLayout } from '@cloudscape-design/components'; // Make sure to import the correct component library.
-import './ComedyLounge.css'; // Assuming you have an accompanying CSS file for styles.
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import '../../styles/concourse-interactions.css';
 
-const ComedyLounge = ({ clips }) => {
-  const [currentClip, setCurrentClip] = useState(null);
-  const [showRating, setShowRating] = useState(false);
+export function ConcourseContent() {
+  const router = useRouter();
 
-  const handleRate = (rating) => {
-    // Logic for handling the rating submission
-    console.log(`Rating submitted for "${currentClip.title}": ${rating}`);
-    setShowRating(false);
-    setCurrentClip(null);
+  const handlePeerCirclesClick = () => {
+    router.push('/circles');
   };
 
+  const communityActivity: Array<string> = [
+    'Tasha joined Peer Circles',
+    'New discussion: Managing Anxiety Together',
+    '5 new comedy clips this week',
+  ];
+
   return (
-    <ContentLayout>
-      <Container>
-        <div className="hero-section hero-contained">
-          <div className="hero-container">
-            <div className="hero-main-grid">
-              <div className="hero-content">
-                <div className="hero-page-name">Wellness Through Laughter</div>
-                <h1 className="hero-title">Comedy Lounge</h1>
-                <p className="hero-subtitle">
-                  Discover the healing power of laughter and share moments of joy with our community.
-                </p>
-                <div className="hero-cta-group">
-                  <button className="hero-cta hero-cta-primary">
-                    <span className="hero-cta-icon">😄</span>
-                    Watch Comedy
-                  </button>
-                  <button className="hero-cta hero-cta-secondary">
-                    <span className="hero-cta-icon">🎭</span>
-                    Share a Laugh
-                  </button>
-                </div>
-              </div>
-              <div className="hero-visual-container">
-                <div className="hero-image-container">
-                  <div className="hero-image-layer hero-image-main">
-                    {/* Optional: Placeholder for the main image, you can add a specific image component here */}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Display clips if available */}
-            <div className="clips-container">
-              {clips.length > 0 ? (
-                clips.map((clip) => (
-                  <div key={clip.id} className="clip">
-                    <h2>{clip.title}</h2>
-                    <p>{clip.description}</p>
-                    <button onClick={() => {
-                      setCurrentClip(clip);
-                      setShowRating(true);
-                    }}>
-                      Rate This Clip
-                    </button>
-                  </div>
-                ))
-              ) : (
-                <p>No clips available at the moment.</p>
-              )}
-            </div>
-
-            {/* Rating Modal or UI could be implemented here based on showRating */}
-            {showRating && currentClip && (
-              <div className="rating-modal">
-                <h2>Rate {currentClip.title}</h2>
-                <div>
-                  <button onClick={() => handleRate(1)}>😞</button>
-                  <button onClick={() => handleRate(3)}>😐</button>
-                  <button onClick={() => handleRate(5)}>😄</button>
-                </div>
-                <button onClick={() => setShowRating(false)}>Close</button>
-              </div>
-            )}
-          </div>
+    <div>
+      <section className="mall-sections-grid">
+        <div
+          data-testid="mall-section-peer-circles"
+          className="mall-section-card"
+          onClick={handlePeerCirclesClick}
+          role="button"
+          aria-label="Visit Peer Circles"
+          tabIndex={0}
+        >
+          <div className="mall-section-icon" aria-hidden>👥</div>
+          <h2>Peer Circles</h2>
+          <p>Connect with sisters who understand your journey.</p>
         </div>
-      </Container>
-    </ContentLayout>
-  );
-};
+      </section>
 
-export default ComedyLounge;
+      <section>
+        <h3>Community Activity</h3>
+        <ul className="community-activity-list">
+          {communityActivity.map((item, index) => (
+            <li key={index} className="community-activity-item">{item}</li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  );
+}
+
+export default ConcourseContent;
