@@ -275,6 +275,49 @@ export const useToggleBookmark = () => {
   });
 };
 
+export const useUploadStory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      title,
+      content,
+      type,
+      audioUrl,
+      videoUrl,
+      isAnonymous,
+    }: {
+      title: string;
+      content: string;
+      type: 'text' | 'audio' | 'video';
+      audioUrl?: string;
+      videoUrl?: string;
+      isAnonymous?: boolean;
+    }) =>
+      api.uploadStory({ title, content, type, audioUrl, videoUrl, isAnonymous }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['stories'] });
+    },
+  });
+};
+
+export const useTrackStoryEngagement = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      storyId,
+      type,
+    }: {
+      storyId: string;
+      type: 'view' | 'like' | 'share' | 'comment';
+    }) => api.trackStoryEngagement(storyId, type),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['stories'] });
+    },
+  });
+};
+
 export const useSubmitReliefRating = () => {
   const queryClient = useQueryClient();
   

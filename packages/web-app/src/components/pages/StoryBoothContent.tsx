@@ -1,6 +1,8 @@
 'use client';
 
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { StoryUploader } from '@/components/stories/StoryUploader';
+import { StoryList } from '@/components/stories/StoryList';
 
 export function StoryBoothContent() {
   return (
@@ -51,6 +53,8 @@ export function StoryBoothContent() {
           </div>
         </div>
       </Container>
+      <StoryUploader />
+      <StoryList />
     </ContentLayout>
   );
 }

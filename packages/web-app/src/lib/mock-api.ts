@@ -1,10 +1,12 @@
 // Mock API infrastructure for MADMall platform
-import { 
-  User, Circle, Post, ComedyClip, Product, Article, Story, 
+import {
+  User, Circle, Post, ComedyClip, Product, Article, Story,
   ActivityItem, PlatformStats, MallSection, ApiResponse, PaginatedResponse,
   CircleFilters, ComedyFilters, ProductFilters, ArticleFilters, StoryFilters
 } from './types';
 import { generateBulkData } from './synthetic-data';
+import { CulturalValidationEngine } from './cultural-validation';
+import { checkAgainstGuidelines } from './community-guidelines';
 
 // In-memory data store
 let dataStore: ReturnType<typeof generateBulkData> | null = null;
@@ -33,6 +35,14 @@ const initializeDataStore = () => {
           });
           dataStore.stories.forEach(story => {
             story.publishedAt = new Date(story.publishedAt);
+            story.engagement = {
+              likes: story.engagement?.likes || 0,
+              comments: story.engagement?.comments || 0,
+              shares: story.engagement?.shares || 0,
+              views: story.engagement?.views || 0,
+              saves: story.engagement?.saves || 0,
+              helpfulVotes: story.engagement?.helpfulVotes || 0,
+            };
           });
           dataStore.activities.forEach(activity => {
             activity.timestamp = new Date(activity.timestamp);
@@ -354,6 +364,109 @@ export class MockAPI {
     return createApiResponse(tags);
   }
 
+  static async uploadStory({
+    title,
+    content,
+    type,
+    audioUrl,
+    videoUrl,
+    isAnonymous = false,
+  }: {
+    title: string;
+    content: string;
+    type: 'text' | 'audio' | 'video';
+    audioUrl?: string;
+    videoUrl?: string;
+    isAnonymous?: boolean;
+  }): Promise<ApiResponse<Story | null>> {
+    await delay(200);
+    const guideline = checkAgainstGuidelines(content);
+    if (!guideline.valid) {
+      return {
+        data: null,
+        success: false,
+        message: `Content violates guidelines: ${guideline.violations.join(', ')}`,
+        timestamp: new Date(),
+      };
+    }
+    const engine = new CulturalValidationEngine();
+    const result = await engine.validateContent(content, {
+      primaryCulture: 'black',
+      region: 'us',
+      language: 'en',
+      communicationStyle: 'informal_familial',
+    });
+    if (result.overallScore < 0.8) {
+      return {
+        data: null,
+        success: false,
+        message: 'Content failed cultural validation',
+        timestamp: new Date(),
+      };
+    }
+    const data = initializeDataStore();
+    const id = `story-${Math.random().toString(36).substr(2, 9)}`;
+    const newStory: Story = {
+      id,
+      title,
+      content,
+      type,
+      audioUrl,
+      videoUrl,
+      author: {
+        name: isAnonymous ? 'Anonymous Sister' : 'You',
+        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${id}`,
+      },
+      tags: [],
+      publishedAt: new Date(),
+      engagement: {
+        likes: 0,
+        comments: 0,
+        shares: 0,
+        views: 0,
+        saves: 0,
+        helpfulVotes: 0,
+      },
+      isAnonymous,
+    };
+    data.stories.unshift(newStory);
+    localStorage.setItem('madmall-data', JSON.stringify(data));
+    return createApiResponse(newStory, 'Story uploaded');
+  }
+
+  static async trackStoryEngagement(
+    storyId: string,
+    type: 'view' | 'like' | 'share' | 'comment'
+  ): Promise<ApiResponse<Story | null>> {
+    await delay(100);
+    const data = initializeDataStore();
+    const story = data.stories.find(s => s.id === storyId);
+    if (!story) {
+      return {
+        data: null,
+        success: false,
+        message: 'Story not found',
+        timestamp: new Date(),
+      };
+    }
+    switch (type) {
+      case 'view':
+        story.engagement.views += 1;
+        break;
+      case 'like':
+        story.engagement.likes += 1;
+        break;
+      case 'share':
+        story.engagement.shares += 1;
+        break;
+      case 'comment':
+        story.engagement.comments += 1;
+        break;
+    }
+    localStorage.setItem('madmall-data', JSON.stringify(data));
+    return createApiResponse(story);
+  }
+
   // User interactions
   static async toggleWishlist(productId: string, userId: string): Promise<ApiResponse<{ isWishlisted: boolean }>> {
     await delay(200);
@@ -470,6 +583,8 @@ export const api = {
   getStories: MockAPI.getStories,
   getStory: MockAPI.getStory,
   getStoryTags: MockAPI.getStoryTags,
+  uploadStory: MockAPI.uploadStory,
+  trackStoryEngagement: MockAPI.trackStoryEngagement,
   
   // Interactions
   toggleWishlist: MockAPI.toggleWishlist,
