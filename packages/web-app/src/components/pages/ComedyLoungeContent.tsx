@@ -1,8 +1,24 @@
 'use client';
 
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { useState } from 'react';
+import { useComedyClips, useSubmitReliefRating } from '@/lib/queries';
+import type { ComedyClip } from '@/lib/types';
 
 export function ComedyLoungeContent() {
+  const { data: clips } = useComedyClips();
+  const [currentClip, setCurrentClip] = useState<ComedyClip | null>(null);
+  const [showRating, setShowRating] = useState(false);
+  const submitRating = useSubmitReliefRating();
+
+  const handleRate = (rating: number) => {
+    if (currentClip) {
+      submitRating.mutate({ clipId: currentClip.id, userId: 'user-1', rating });
+      setCurrentClip(null);
+      setShowRating(false);
+    }
+  };
+
   return (
     <ContentLayout
       header={
@@ -51,6 +67,71 @@ export function ComedyLoungeContent() {
           </div>
         </div>
       </Container>
+
+      <Container>
+        {clips ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {clips.data.map(clip => (
+              <div
+                key={clip.id}
+                className="cursor-pointer"
+                onClick={() => {
+                  setCurrentClip(clip);
+                  setShowRating(false);
+                }}
+              >
+                <img
+                  src={clip.thumbnailUrl}
+                  alt={clip.title}
+                  className="w-full h-auto rounded"
+                />
+                <div className="mt-2 font-semibold">{clip.title}</div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div>Loading clips...</div>
+        )}
+      </Container>
+
+      {currentClip && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+          <div className="bg-white p-4 rounded max-w-2xl w-full">
+            <video
+              src={currentClip.videoUrl}
+              controls
+              autoPlay
+              className="w-full"
+              onEnded={() => setShowRating(true)}
+            />
+            {showRating && (
+              <div className="mt-4">
+                <p className="mb-2">How much relief did this clip provide?</p>
+                <div className="flex gap-2">
+                  {[1, 2, 3, 4, 5].map(n => (
+                    <button
+                      key={n}
+                      className="px-3 py-1 border rounded"
+                      onClick={() => handleRate(n)}
+                    >
+                      {n}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            <button
+              className="mt-4 text-sm text-gray-600"
+              onClick={() => {
+                setCurrentClip(null);
+                setShowRating(false);
+              }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </ContentLayout>
   );
 }
