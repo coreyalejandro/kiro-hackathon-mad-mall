@@ -150,6 +150,35 @@ export class TitanEngine {
     return { cultural: 0, sensitivity: 0, inclusivity: 0, issues: ['validation_failed'] };
   }
 
+  async auditImageAssets(limit = 20) {
+    const pending = await this.images.listPending(limit);
+    for (const img of pending) {
+      const scores = await this.validateImageContent({
+        url: img.url,
+        altText: img.altText,
+        category: img.category,
+      });
+      const isBlackWoman =
+        scores.cultural >= 0.8 &&
+        scores.inclusivity >= 0.8 &&
+        !(scores.issues || []).some((i: string) => i.includes('cultural_mismatch'));
+      if (!isBlackWoman) {
+        const [placeholder] = await this.placeholder.generate({ category: img.category, count: 1 });
+        await this.images.update(img.PK, img.SK, {
+          url: placeholder.url,
+          thumbnailUrl: placeholder.thumbnailUrl,
+          altText: placeholder.altText,
+          tags: placeholder.tags as any,
+          source: placeholder.source as any,
+          sourceInfo: placeholder.sourceInfo as any,
+        } as any);
+        await this.images.markValidated(img.imageId, { ...scores, validator: 'audit' }, 'flagged');
+      } else {
+        await this.images.markValidated(img.imageId, { ...scores, validator: 'audit' }, 'active');
+      }
+    }
+  }
+
   async generateCareModel(input: {
     userId: string;
     age: number;
