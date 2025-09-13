@@ -8,6 +8,8 @@ import { UnsplashProvider } from '../providers/unsplash-provider';
 import { PlaceholderProvider } from '../providers/placeholder-provider';
 import { Automatic1111Provider } from '../providers/automatic1111-provider';
 import { CulturalValidationAgent } from '@madmall/bedrock-agents';
+import { DspyBridge, CareRecommendation } from './dspy-bridge';
+import { TitanKCache } from './kcache';
 
 export interface TitanEngineConfig {
   region?: string;
@@ -23,6 +25,8 @@ export class TitanEngine {
   private readonly placeholder: PlaceholderProvider;
   private readonly a1111: Automatic1111Provider;
   private readonly culturalAgent: CulturalValidationAgent;
+  private readonly dspy: DspyBridge;
+  private readonly kcache: TitanKCache<CareRecommendation>;
 
   constructor(config: TitanEngineConfig) {
     // Use globalThis to avoid TS complaining about process types in some contexts
@@ -44,6 +48,8 @@ export class TitanEngine {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const region = (globalThis as any).process?.env?.AWS_REGION || 'us-east-1';
     this.culturalAgent = new CulturalValidationAgent(region);
+    this.dspy = new DspyBridge();
+    this.kcache = new TitanKCache<CareRecommendation>({ namespace: 'titan-care', ttlSeconds: 300 });
   }
 
   static createDefault() {
@@ -142,6 +148,61 @@ export class TitanEngine {
       };
     }
     return { cultural: 0, sensitivity: 0, inclusivity: 0, issues: ['validation_failed'] };
+  }
+
+  async generateCareModel(input: {
+    userId: string;
+    age: number;
+    diagnosisStage: string;
+    supportNeeds: string[];
+    culturalContext: {
+      primaryCulture: string;
+      secondaryCultures?: string[];
+      region?: string;
+      language?: string;
+      religiousConsiderations?: string[];
+      sensitiveTopics?: string[];
+    };
+    history?: any[];
+  }, options?: { bypassCache?: boolean }): Promise<{ recommendation: CareRecommendation; cached: boolean; cacheStats: any }>{
+    const key = [
+      input.userId,
+      input.age,
+      input.diagnosisStage,
+      ...(input.supportNeeds || []),
+      input.culturalContext.primaryCulture,
+      input.culturalContext.region || 'US',
+      input.culturalContext.language || 'en',
+    ];
+    await this.kcache.connect();
+    const producer = async () => {
+      const rec = await this.dspy.recommendCare({
+        userId: input.userId,
+        age: input.age,
+        diagnosisStage: input.diagnosisStage,
+        supportNeeds: input.supportNeeds || [],
+        culturalContext: {
+          primaryCulture: input.culturalContext.primaryCulture,
+          secondaryCultures: input.culturalContext.secondaryCultures || [],
+          region: input.culturalContext.region || 'US',
+          language: input.culturalContext.language || 'en',
+          religiousConsiderations: input.culturalContext.religiousConsiderations || [],
+          sensitiveTopics: input.culturalContext.sensitiveTopics || [],
+        },
+        history: input.history || [],
+      });
+      return rec;
+    };
+
+    let result: { data: CareRecommendation; cached: boolean };
+    if (options?.bypassCache) {
+      const data = await producer();
+      result = { data, cached: false };
+    } else {
+      result = await this.kcache.withCache(key, producer, 300);
+    }
+
+    return { recommendation: result.data, cached: result.cached, cacheStats: this.kcache.getStats() };
   }
 
   async listPending(limit = 20) {

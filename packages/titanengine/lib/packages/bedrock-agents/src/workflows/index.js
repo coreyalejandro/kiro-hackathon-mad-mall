@@ -16,4 +16,4 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./orchestrator"), exports);
 __exportStar(require("./predefined-workflows"), exports);
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi9iZWRyb2NrLWFnZW50cy9zcmMvd29ya2Zsb3dzL2luZGV4LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSxpREFBK0I7QUFDL0IseURBQXVDIiwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0ICogZnJvbSAnLi9vcmNoZXN0cmF0b3InO1xuZXhwb3J0ICogZnJvbSAnLi9wcmVkZWZpbmVkLXdvcmtmbG93cyc7Il19

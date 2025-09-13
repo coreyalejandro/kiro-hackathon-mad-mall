@@ -262,12 +262,12 @@ export declare const ContentModerationInputSchema: z.ZodObject<{
         action: z.ZodEnum<["flag", "block", "warn"]>;
         reason: z.ZodString;
     }, "strip", z.ZodTypeAny, {
+        action: "block" | "warn" | "flag";
         pattern: string;
-        action: "warn" | "flag" | "block";
         reason: string;
     }, {
+        action: "block" | "warn" | "flag";
         pattern: string;
-        action: "warn" | "flag" | "block";
         reason: string;
     }>, "many">>;
 }, "strip", z.ZodTypeAny, {
@@ -275,8 +275,8 @@ export declare const ContentModerationInputSchema: z.ZodObject<{
     contentType: "text" | "image_url" | "video_url" | "audio_url";
     moderationLevel: "moderate" | "strict" | "lenient";
     customRules: {
+        action: "block" | "warn" | "flag";
         pattern: string;
-        action: "warn" | "flag" | "block";
         reason: string;
     }[];
 }, {
@@ -284,8 +284,8 @@ export declare const ContentModerationInputSchema: z.ZodObject<{
     contentType: "text" | "image_url" | "video_url" | "audio_url";
     moderationLevel?: "moderate" | "strict" | "lenient" | undefined;
     customRules?: {
+        action: "block" | "warn" | "flag";
         pattern: string;
-        action: "warn" | "flag" | "block";
         reason: string;
     }[] | undefined;
 }>;
@@ -309,22 +309,22 @@ export declare const ContentModerationResultSchema: z.ZodObject<{
     action: z.ZodEnum<["allow", "flag", "block", "review"]>;
     reason: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
+    action: "allow" | "block" | "flag" | "review";
     categories: {
         category: "hate_speech" | "harassment" | "violence" | "self_harm" | "sexual_content" | "spam" | "misinformation" | "privacy_violation" | "copyright_violation";
         severity: ValidationSeverity;
         confidence: number;
     }[];
-    action: "allow" | "flag" | "block" | "review";
     isAllowed: boolean;
     riskScore: number;
     reason?: string | undefined;
 }, {
+    action: "allow" | "block" | "flag" | "review";
     categories: {
         category: "hate_speech" | "harassment" | "violence" | "self_harm" | "sexual_content" | "spam" | "misinformation" | "privacy_violation" | "copyright_violation";
         severity: ValidationSeverity;
         confidence: number;
     }[];
-    action: "allow" | "flag" | "block" | "review";
     isAllowed: boolean;
     riskScore: number;
     reason?: string | undefined;

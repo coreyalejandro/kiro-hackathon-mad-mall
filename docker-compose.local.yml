@@ -15,3 +15,18 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./.localstack:/var/lib/localstack"
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+  dspy:
+    build:
+      context: ./consilium-mcp
+      dockerfile: Dockerfile.dspy
+    container_name: dspy-service
+    environment:
+      - PORT=8001
+    ports:
+      - "8001:8001"
