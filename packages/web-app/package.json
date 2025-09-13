@@ -18,6 +18,7 @@
     
     // Use workspace for shared types in local development and a file reference for others
     "@madmall/shared-types": "workspace:*",
+    "@madmall/titanengine": "workspace:*",
     
     // Added dependencies for React Query
     "@tanstack/react-query": "^5.87.1",
