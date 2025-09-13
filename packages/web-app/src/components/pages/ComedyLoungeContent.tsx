@@ -1,8 +1,17 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { api } from '@/lib/mock-api';
+import { ComedyClip } from '@/lib/types';
 
 export function ComedyLoungeContent() {
+  const [clips, setClips] = useState<ComedyClip[]>([]);
+
+  useEffect(() => {
+    api.getComedyClips().then(res => setClips(res.data));
+  }, []);
+
   return (
     <ContentLayout
       header={
@@ -49,6 +58,14 @@ export function ComedyLoungeContent() {
               </div>
             </div>
           </div>
+        </div>
+        <div>
+          <h2>Top Clips</h2>
+          <ul>
+            {clips.slice(0, 5).map(c => (
+              <li key={c.id}>{c.title}</li>
+            ))}
+          </ul>
         </div>
       </Container>
     </ContentLayout>

@@ -1,8 +1,17 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { api } from '@/lib/mock-api';
+import { Circle } from '@/lib/types';
 
 export function PeerCirclesContent() {
+  const [circles, setCircles] = useState<Circle[]>([]);
+
+  useEffect(() => {
+    api.getCircles().then(res => setCircles(res.data));
+  }, []);
+
   return (
     <ContentLayout
       header={
@@ -49,6 +58,14 @@ export function PeerCirclesContent() {
               </div>
             </div>
           </div>
+        </div>
+        <div>
+          <h2>Featured Circles</h2>
+          <ul>
+            {circles.slice(0, 5).map(c => (
+              <li key={c.id}>{c.name}</li>
+            ))}
+          </ul>
         </div>
       </Container>
     </ContentLayout>

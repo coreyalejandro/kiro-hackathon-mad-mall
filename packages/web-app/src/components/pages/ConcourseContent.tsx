@@ -1,8 +1,21 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { api } from '@/lib/mock-api';
+import { MallSection, ActivityItem, PlatformStats } from '@/lib/types';
 
 export function ConcourseContent() {
+  const [sections, setSections] = useState<MallSection[]>([]);
+  const [activity, setActivity] = useState<ActivityItem[]>([]);
+  const [stats, setStats] = useState<PlatformStats | null>(null);
+
+  useEffect(() => {
+    api.getMallSections().then(res => setSections(res.data));
+    api.getCommunityActivity().then(res => setActivity(res.data));
+    api.getPlatformStats().then(res => setStats(res.data));
+  }, []);
+
   return (
     <ContentLayout
       header={
@@ -49,6 +62,23 @@ export function ConcourseContent() {
               </div>
             </div>
           </div>
+        </div>
+        <div>
+          <h2>Mall Sections</h2>
+          <ul>
+            {sections.slice(0, 3).map(s => (
+              <li key={s.id}>{s.title}</li>
+            ))}
+          </ul>
+          <h2>Recent Activity</h2>
+          <ul>
+            {activity.slice(0, 5).map(a => (
+              <li key={a.id}>{a.content}</li>
+            ))}
+          </ul>
+          {stats && (
+            <p>Members: {stats.totalMembers} | Active Circles: {stats.activeCircles}</p>
+          )}
         </div>
       </Container>
     </ContentLayout>

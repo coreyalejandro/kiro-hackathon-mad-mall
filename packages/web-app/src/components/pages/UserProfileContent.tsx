@@ -1,8 +1,17 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { api } from '@/lib/mock-api';
+import { ActivityItem } from '@/lib/types';
 
 export function UserProfileContent() {
+  const [activity, setActivity] = useState<ActivityItem[]>([]);
+
+  useEffect(() => {
+    api.getCommunityActivity().then(res => setActivity(res.data));
+  }, []);
+
   return (
     <ContentLayout
       header={
@@ -49,6 +58,14 @@ export function UserProfileContent() {
               </div>
             </div>
           </div>
+        </div>
+        <div>
+          <h2>Recent Activity</h2>
+          <ul>
+            {activity.slice(0, 5).map(a => (
+              <li key={a.id}>{a.content}</li>
+            ))}
+          </ul>
         </div>
       </Container>
     </ContentLayout>

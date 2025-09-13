@@ -1,8 +1,9 @@
 // Mock API infrastructure for MADMall platform
 import { 
-  User, Circle, Post, ComedyClip, Product, Article, Story, 
+  User, Circle, Post, ComedyClip, Product, Article, Story,
   ActivityItem, PlatformStats, MallSection, ApiResponse, PaginatedResponse,
-  CircleFilters, ComedyFilters, ProductFilters, ArticleFilters, StoryFilters
+  CircleFilters, ComedyFilters, ProductFilters, ArticleFilters, StoryFilters,
+  ImageAsset
 } from './types';
 import { generateBulkData } from './synthetic-data';
 
@@ -354,6 +355,20 @@ export class MockAPI {
     return createApiResponse(tags);
   }
 
+  // Images
+  static async getImages(
+    category?: string,
+    page = 1,
+    limit = 20
+  ): Promise<PaginatedResponse<ImageAsset>> {
+    await delay(100);
+    const data = initializeDataStore();
+    const images = category
+      ? data.images.filter(img => img.category === category)
+      : data.images;
+    return createPaginatedResponse(images, page, limit, images.length);
+  }
+
   // User interactions
   static async toggleWishlist(productId: string, userId: string): Promise<ApiResponse<{ isWishlisted: boolean }>> {
     await delay(200);
@@ -470,7 +485,10 @@ export const api = {
   getStories: MockAPI.getStories,
   getStory: MockAPI.getStory,
   getStoryTags: MockAPI.getStoryTags,
-  
+
+  // Images
+  getImages: MockAPI.getImages,
+
   // Interactions
   toggleWishlist: MockAPI.toggleWishlist,
   toggleBookmark: MockAPI.toggleBookmark,

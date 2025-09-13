@@ -1,8 +1,17 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { api } from '@/lib/mock-api';
+import { Article } from '@/lib/types';
 
 export function ResourceHubContent() {
+  const [articles, setArticles] = useState<Article[]>([]);
+
+  useEffect(() => {
+    api.getArticles().then(res => setArticles(res.data));
+  }, []);
+
   return (
     <ContentLayout
       header={
@@ -49,6 +58,14 @@ export function ResourceHubContent() {
               </div>
             </div>
           </div>
+        </div>
+        <div>
+          <h2>Latest Articles</h2>
+          <ul>
+            {articles.slice(0, 5).map(a => (
+              <li key={a.id}>{a.title}</li>
+            ))}
+          </ul>
         </div>
       </Container>
     </ContentLayout>

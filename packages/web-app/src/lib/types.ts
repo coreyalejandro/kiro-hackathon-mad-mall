@@ -119,6 +119,13 @@ export interface Story {
   isAnonymous: boolean;
 }
 
+export interface ImageAsset {
+  id: string;
+  url: string;
+  category: string;
+  alt: string;
+}
+
 export interface ActivityItem {
   id: string;
   type: 'post' | 'join' | 'story' | 'relief_rating' | 'bookmark' | 'wishlist';
