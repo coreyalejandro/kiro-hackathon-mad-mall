@@ -14,6 +14,10 @@ export async function getPending() {
   return engine.listPending();
 }
 
+export async function getFlagged() {
+  return engine.listFlagged();
+}
+
 export async function postValidate(body: { imageId: string }) {
   const pending = await engine.listPending(100);
   const found = pending.find(p => p.imageId === body.imageId);

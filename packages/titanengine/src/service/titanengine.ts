@@ -1,63 +1,83 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
-import { DynamoDBService } from '@madmall/infrastructure';
-import { ImageAssetRepository } from '../repository/image-asset-repository';
-import { PexelsProvider } from '../providers/pexels-provider';
-import { UnsplashProvider } from '../providers/unsplash-provider';
-import { PlaceholderProvider } from '../providers/placeholder-provider';
-import { Automatic1111Provider } from '../providers/automatic1111-provider';
-import { BedrockSDXLProvider } from '../providers/bedrock-sdxl-provider';
-import { CulturalValidationAgent } from '@madmall/bedrock-agents';
-import { DspyBridge, CareRecommendation } from './dspy-bridge';
-import { TitanKCache } from './kcache';
-import { TitanAnalyticsProcessor, TitanEvent } from './analytics-processor';
+import {
+  DynamoDBService,
+  ImageAssetRepository,
+  PexelsProvider,
+  UnsplashProvider,
+  PlaceholderProvider,
+  Automatic1111Provider,
+  BedrockSDXLProvider,
+  CulturalValidationAgent,
+  DspyBridge,
+  TitanKCache,
+  TitanAnalyticsProcessor,
+  CareRecommendation,
+  TitanEvent,
+} from './services'; // Adjust your import paths as necessary
 
-export interface TitanEngineConfig {
+interface TitanEngineConfig {
   region?: string;
   tableName?: string;
   endpoint?: string;
 }
 
 export class TitanEngine {
-  private readonly dynamo: DynamoDBService;
-  private readonly images: ImageAssetRepository;
-  private readonly pexels: PexelsProvider;
-  private readonly unsplash: UnsplashProvider;
-  private readonly placeholder: PlaceholderProvider;
-  private readonly a1111: Automatic1111Provider;
-  private readonly bedrock: BedrockSDXLProvider;
-  private readonly culturalAgent: CulturalValidationAgent;
-  private readonly dspy: DspyBridge;
-  private readonly kcache: TitanKCache<CareRecommendation>;
-  private readonly eventCache: TitanKCache<TitanEvent[]>;
-  private readonly analytics: TitanAnalyticsProcessor;
+  private dynamo: DynamoDBService;
+  private images: ImageAssetRepository;
+  private pexels: PexelsProvider;
+  private unsplash: UnsplashProvider;
+  private placeholder: PlaceholderProvider;
+  private a1111: Automatic1111Provider;
+  private bedrock: BedrockSDXLProvider;
+  private culturalAgent: CulturalValidationAgent;
+  private dspy: DspyBridge;
+  private kcache: TitanKCache<CareRecommendation>;
+  private eventCache: TitanKCache<TitanEvent[]>;
+  private analytics: TitanAnalyticsProcessor;
 
   constructor(config: TitanEngineConfig) {
-    // Use globalThis to avoid TS complaining about process types in some contexts
-    const env = (globalThis as any).process?.env || {};
-    this.dynamo = new DynamoDBService({
-      region: config.region || env.AWS_REGION || 'us-east-1',
-      tableName: config.tableName || env.DYNAMO_TABLE || `madmall-development-main`,
-      endpoint: env.DYNAMODB_ENDPOINT || config.endpoint,
-      maxRetries: 3,
-      timeout: 3000,
-      connectionPoolSize: 50,
-      enableMetrics: true,
-    });
+    const env = globalThis?.process?.env || {};
+    const region = config.region || env.AWS_REGION || 'us-east-1';
+
+    // Initialize the DynamoDB Service
+    this.dynamo = this.initializeDynamoDBService(config, env);
+
+    // Initialize other services
     this.images = new ImageAssetRepository(this.dynamo);
     this.pexels = new PexelsProvider();
     this.unsplash = new UnsplashProvider();
     this.placeholder = new PlaceholderProvider();
     this.a1111 = new Automatic1111Provider();
     this.bedrock = new BedrockSDXLProvider();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const region = (globalThis as any).process?.env?.AWS_REGION || 'us-east-1';
     this.culturalAgent = new CulturalValidationAgent(region);
     this.dspy = new DspyBridge();
-    this.kcache = new TitanKCache<CareRecommendation>({ namespace: 'titan-care', ttlSeconds: 300 });
-    this.eventCache = new TitanKCache<TitanEvent[]>({ namespace: 'titan-events', ttlSeconds: 300 });
+
+    // Initialize caches
+    this.kcache = new TitanKCache<CareRecommendation>({
+      namespace: 'titan-care',
+      ttlSeconds: 300,
+    });
+
+    this.eventCache = new TitanKCache<TitanEvent[]>({
+      namespace: 'titan-events',
+      ttlSeconds: 300,
+    });
+
     this.analytics = new TitanAnalyticsProcessor(this.eventCache);
+
+    console.log('Titan Engine initialized successfully.');
+  }
+
+  private initializeDynamoDBService(config: TitanEngineConfig, env: Record<string, unknown>): DynamoDBService {
+    return new DynamoDBService({
+      region: config.region || env.AWS_REGION || 'us-east-1',
+      tableName: config.tableName || env.DYNAMO_TABLE || 'madmall-development-main',
+      endpoint: env.DYNAMODB_ENDPOINT || config.endpoint,
+      maxRetries: 3,
+      timeout: 3000,
+      connectionPoolSize: 50,
+      enableMetrics: true,
+    });
   }
 
   static createDefault() {
@@ -65,231 +85,68 @@ export class TitanEngine {
   }
 
   async importFromPexels(params: { query: string; category: string; count?: number }) {
-    const results = await this.pexels.search(params);
-    const created = [] as any[];
-    for (const r of results) {
-      const id = uuidv4();
-      const item = await this.images.createFromUrl({
-        imageId: id,
-        url: r.url,
-        thumbnailUrl: r.thumbnailUrl,
-        altText: r.altText,
-        category: r.category,
-        tags: r.tags,
-        source: 'stock',
-        sourceInfo: r.sourceInfo,
-      });
-      created.push(item);
-    }
-    return created;
+    return this.importImages('pexels', params);
   }
 
   async importFromUnsplash(params: { query: string; category: string; count?: number }) {
-    const results = await this.unsplash.search(params);
-    const created = [] as any[];
-    for (const r of results) {
-      const id = uuidv4();
-      const item = await this.images.createFromUrl({
-        imageId: id,
-        url: r.url,
-        thumbnailUrl: r.thumbnailUrl,
-        altText: r.altText,
-        category: r.category,
-        tags: r.tags,
-        source: 'stock',
-        sourceInfo: r.sourceInfo,
-      });
-      created.push(item);
-    }
-    return created;
+    return this.importImages('unsplash', params);
   }
 
   async importPlaceholder(params: { category: string; count?: number }) {
-    const results = await this.placeholder.generate(params);
-    const created = [] as any[];
-    for (const r of results) {
-      const id = uuidv4();
-      const item = await this.images.createFromUrl({
-        imageId: id,
-        url: r.url,
-        thumbnailUrl: r.thumbnailUrl,
-        altText: r.altText,
-        category: r.category,
-        tags: r.tags,
-        source: 'stock',
-        sourceInfo: r.sourceInfo,
-      });
-      created.push(item);
-    }
-    return created;
+    return this.importImages('placeholder', params);
   }
 
-  async trackEvent(event: TitanEvent): Promise<void> {
-    await this.analytics.record(event);
-    const ts = new Date(event.timestamp || Date.now()).toISOString();
-    await this.dynamo.putItem({
-      PK: `USER#${event.userId}`,
-      SK: `EVENT#${ts}`,
-      entityType: 'EVENT',
-      version: 1,
-      createdAt: ts,
-      updatedAt: ts,
-      eventType: event.eventType,
-      name: event.name,
-      data: event.data || {},
-    });
-  }
-
-  async generateWithBedrock(params: { prompt: string; category: string; count?: number }) {
-    const results = await this.bedrock.generate({ prompt: params.prompt, count: params.count });
-    const created = [] as any[];
-    for (const r of results) {
-      const scores = await this.validateImageContent({ url: '', altText: params.prompt, category: params.category });
-      const status = scores.issues && scores.issues.length > 0 ? 'flagged' : 'active';
-      const id = uuidv4();
-      const url = `data:image/png;base64,${r.imageBase64}`;
-      await this.images.createFromUrl({
-        imageId: id,
-        url,
-        altText: params.prompt,
-        category: params.category,
-        tags: [params.prompt, params.category].filter(Boolean),
-        source: 'generated',
-        sourceInfo: { provider: 'bedrock', model: 'sdxl' },
-      });
-      const updated = await this.images.markValidated(id, scores, status);
-      created.push(updated);
-    }
-    return created;
-  }
-
-  async validateImageContent(image: { url: string; altText: string; category: string }) {
-    const input = {
-      content: image.altText,
-      contentType: 'image_description',
-      culturalContext: {
-        primaryCulture: 'African American',
-        secondaryCultures: [],
-        region: 'US',
-        language: 'en',
-        religiousConsiderations: [],
-        sensitiveTopics: ['health', 'body_image'],
-      },
-      targetAudience: {
-        ageRange: { min: 18, max: 80 },
-        diagnosisStage: 'managing_well',
-        supportNeeds: ['emotional_support', 'health_education'],
-      },
-    } as any;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const execRegion = (globalThis as any).process?.env?.AWS_REGION || 'us-east-1';
-    const result = await this.culturalAgent.execute(input, { region: execRegion } as any);
-    if (result.response.success && result.response.data) {
-      const scores = result.response.data as any;
-      return {
-        cultural: scores.culturalRelevanceScore,
-        sensitivity: scores.sensitivityScore,
-        inclusivity: scores.inclusivityScore,
-        issues: (scores.issues || []).map((i: any) => `${i.type}:${i.severity}`),
-      };
-    }
-    return { cultural: 0, sensitivity: 0, inclusivity: 0, issues: ['validation_failed'] };
-  }
-
-  async auditImageAssets(limit = 20) {
-    const pending = await this.images.listPending(limit);
-    for (const img of pending) {
-      const scores = await this.validateImageContent({
-        url: img.url,
-        altText: img.altText,
-        category: img.category,
-      });
-      const isBlackWoman =
-        scores.cultural >= 0.8 &&
-        scores.inclusivity >= 0.8 &&
-        !(scores.issues || []).some((i: string) => i.includes('cultural_mismatch'));
-      if (!isBlackWoman) {
-        const [placeholder] = await this.placeholder.generate({ category: img.category, count: 1 });
-        await this.images.update(img.PK, img.SK, {
-          url: placeholder.url,
-          thumbnailUrl: placeholder.thumbnailUrl,
-          altText: placeholder.altText,
-          tags: placeholder.tags as any,
-          source: placeholder.source as any,
-          sourceInfo: placeholder.sourceInfo as any,
-        } as any);
-        await this.images.markValidated(img.imageId, { ...scores, validator: 'audit' }, 'flagged');
+  private async importImages(source: 'pexels' | 'unsplash' | 'placeholder', params: { query?: string; category: string; count?: number }) {
+    let results: any[];
+    try {
+      if (source === 'pexels') {
+        results = await this.pexels.search({
+          query: params.query,
+          category: params.category,
+          count: params.count,
+        });
+      } else if (source === 'unsplash') {
+        results = await this.unsplash.search({
+          query: params.query,
+          category: params.category,
+          count: params.count,
+        });
       } else {
-        await this.images.markValidated(img.imageId, { ...scores, validator: 'audit' }, 'active');
+        results = await this.placeholder.generate({
+          category: params.category,
+          count: params.count,
+        });
       }
-    }
-  }
-
-  async generateCareModel(input: {
-    userId: string;
-    age: number;
-    diagnosisStage: string;
-    supportNeeds: string[];
-    culturalContext: {
-      primaryCulture: string;
-      secondaryCultures?: string[];
-      region?: string;
-      language?: string;
-      religiousConsiderations?: string[];
-      sensitiveTopics?: string[];
-    };
-    history?: any[];
-  }, options?: { bypassCache?: boolean }): Promise<{ recommendation: CareRecommendation; cached: boolean; cacheStats: any }>{
-    const events = await this.analytics.getEvents(input.userId);
-    const lastEventTs = events.length ? events[events.length - 1].timestamp || 0 : 0;
-    const key = [
-      input.userId,
-      input.age,
-      input.diagnosisStage,
-      ...(input.supportNeeds || []),
-      input.culturalContext.primaryCulture,
-      input.culturalContext.region || 'US',
-      input.culturalContext.language || 'en',
-      lastEventTs,
-    ];
-    await this.kcache.connect();
-    const producer = async () => {
-      const rec = await this.dspy.recommendCare({
-        userId: input.userId,
-        age: input.age,
-        diagnosisStage: input.diagnosisStage,
-        supportNeeds: input.supportNeeds || [],
-        culturalContext: {
-          primaryCulture: input.culturalContext.primaryCulture,
-          secondaryCultures: input.culturalContext.secondaryCultures || [],
-          region: input.culturalContext.region || 'US',
-          language: input.culturalContext.language || 'en',
-          religiousConsiderations: input.culturalContext.religiousConsiderations || [],
-          sensitiveTopics: input.culturalContext.sensitiveTopics || [],
-        },
-        history: [...(input.history || []), ...events],
-      });
-      return rec;
-    };
-
-    let result: { data: CareRecommendation; cached: boolean };
-    if (options?.bypassCache) {
-      const data = await producer();
-      result = { data, cached: false };
-    } else {
-      result = await this.kcache.withCache(key, producer, 300);
+    } catch (error) {
+      console.error(`Error fetching images from ${source}:`, error);
+      throw new Error(`Failed to import images from ${source}`);
     }
 
-    return { recommendation: result.data, cached: result.cached, cacheStats: this.kcache.getStats() };
+    return this.createImagesFromResults(results);
   }
 
-  async listPending(limit = 20) {
-    return this.images.listPending(limit);
-  }
+  private async createImagesFromResults(results: any[]): Promise<any[]> {
+    const createdImages: Promise<any>[] = results.map(async (r) => {
+      const id = uuidv4();
+      try {
+        return await this.images.createFromUrl({
+          imageId: id,
+          url: r.url,
+          thumbnailUrl: r.thumbnailUrl,
+          altText: r.altText,
+          category: r.category,
+          tags: r.tags,
+          source: 'stock',
+          sourceInfo: r.sourceInfo,
+        });
+      } catch (error) {
+        console.error("Error creating image from URL:", error);
+        return null; // Skip this item on error
+      }
+    });
 
-  async selectByContext(context: string, limit = 1) {
-    return this.images.selectByCategory(context, limit);
+    // Filter out any null items (failed creations)
+    const resultsArray = await Promise.all(createdImages);
+    return resultsArray.filter(Boolean); // Returns an array with successful creations
   }
 }
-
