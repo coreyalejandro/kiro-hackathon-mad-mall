@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { validateImageContent } from '../../lib/image-validation';
 import { 
   Play, 
   Pause, 
@@ -31,6 +32,7 @@ interface ComedyContent {
   creator: string;
   duration: number; // seconds
   thumbnailUrl: string;
+  category: string;
   culturalValidation: {
     score: number;
     reviewedBy: string;
@@ -69,6 +71,7 @@ const ComedyTherapyPlayer: React.FC = () => {
   const [moodState, setMoodState] = useState<UserMoodState>({ before: 'stressed' });
   const [sessionStarted, setSessionStarted] = useState(false);
   const [showMoodTracker, setShowMoodTracker] = useState(false);
+  const [thumbnailSrc, setThumbnailSrc] = useState<string>('/images/default-placeholder.jpg');
 
   // Mock culturally-validated comedy content
   const mockContent: ComedyContent = {
@@ -78,6 +81,7 @@ const ComedyTherapyPlayer: React.FC = () => {
     creator: 'Keisha Williams',
     duration: 1247, // ~20 minutes
     thumbnailUrl: '/api/placeholder/400/225',
+    category: 'comedy',
     culturalValidation: {
       score: 0.94,
       reviewedBy: 'Dr. Asha Patel, Cultural Wellness Specialist',
@@ -120,6 +124,43 @@ const ComedyTherapyPlayer: React.FC = () => {
     setIsPlaying(!isPlaying);
     // In production, this would control actual video/audio playback
   };
+
+  useEffect(() => {
+    const runValidation = async () => {
+      if (!currentContent) return;
+      try {
+        const result = await validateImageContent({
+          url: currentContent.thumbnailUrl,
+          altText: currentContent.title,
+          category: currentContent.category,
+        });
+        const ok =
+          result.cultural >= 0.8 &&
+          result.inclusivity >= 0.8 &&
+          !(result.issues || []).some((i) => i.includes('cultural_mismatch'));
+        if (!ok) {
+          console.warn('Image failed cultural validation', {
+            src: currentContent.thumbnailUrl,
+            alt: currentContent.title,
+            category: currentContent.category,
+            result,
+          });
+          setThumbnailSrc('/images/default-placeholder.jpg');
+        } else {
+          setThumbnailSrc(currentContent.thumbnailUrl);
+        }
+      } catch (err) {
+        console.error('TitanEngine validation failed', {
+          error: err,
+          src: currentContent.thumbnailUrl,
+          alt: currentContent.title,
+          category: currentContent.category,
+        });
+        setThumbnailSrc('/images/default-placeholder.jpg');
+      }
+    };
+    runValidation();
+  }, [currentContent]);
 
   const handleMoodSelection = (mood: UserMoodState['before']) => {
     setMoodState({ before: mood });
@@ -260,8 +301,8 @@ const ComedyTherapyPlayer: React.FC = () => {
           <CardContent className="space-y-6">
             {/* Video Player Mockup */}
             <div className="relative bg-gray-900 rounded-lg overflow-hidden aspect-video">
-              <img 
-                src={currentContent.thumbnailUrl} 
+              <img
+                src={thumbnailSrc}
                 alt={currentContent.title}
                 className="w-full h-full object-cover"
               />
