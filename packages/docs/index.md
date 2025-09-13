@@ -13,3 +13,9 @@ This directory organizes all hackathon documentation in a cohesive structure. Us
 
 Each document includes inline troubleshooting and explicit validation steps.
 
+## API Reference
+
+- OpenAPI spec is generated from Smithy definitions in `packages/api-gateway`.
+- To regenerate the spec, run at repo root: `pnpm run docs:api`.
+- Output is written to `packages/docs/openapi.json`.
+

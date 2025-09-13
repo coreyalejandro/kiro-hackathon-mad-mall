@@ -10,6 +10,9 @@
     "lib": [
       "es2019"
     ],
+    "types": [
+      "node"
+    ],
     "module": "CommonJS",
     "noEmitOnError": false,
     "noFallthroughCasesInSwitch": true,

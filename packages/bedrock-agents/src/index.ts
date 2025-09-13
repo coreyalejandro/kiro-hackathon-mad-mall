@@ -10,6 +10,10 @@ export * from './workflows';
 // Export utilities
 export * from './utils';
 
+// Export benchmarking
+export * from './benchmarking/sierra-cultural-benchmark';
+export * from './benchmarking/teaching-mall-benchmarks';
+
 // Main package exports for convenience
 export {
   CulturalValidationAgent,
@@ -28,3 +32,12 @@ export {
   createConfigFromEnvironment,
   ErrorHandler,
 } from './utils';
+
+export {
+  SierraCulturalBenchmarkEngine,
+  CulturalCompetencyBenchmarks,
+} from './benchmarking/sierra-cultural-benchmark';
+
+export {
+  TeachingMallBenchmarkSystem,
+} from './benchmarking/teaching-mall-benchmarks';

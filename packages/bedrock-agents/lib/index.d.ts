@@ -2,7 +2,11 @@ export * from './types';
 export * from './agents';
 export * from './workflows';
 export * from './utils';
+export * from './benchmarking/sierra-cultural-benchmark';
+export * from './benchmarking/teaching-mall-benchmarks';
 export { CulturalValidationAgent, ContentModerationAgent, RecommendationAgent, WellnessCoachAgent, } from './agents';
 export { BedrockWorkflowOrchestrator, predefinedWorkflows, } from './workflows';
 export { ConfigManager, createConfigFromEnvironment, ErrorHandler, } from './utils';
+export { SierraCulturalBenchmarkEngine, CulturalCompetencyBenchmarks, } from './benchmarking/sierra-cultural-benchmark';
+export { TeachingMallBenchmarkSystem, } from './benchmarking/teaching-mall-benchmarks';
 //# sourceMappingURL=index.d.ts.map

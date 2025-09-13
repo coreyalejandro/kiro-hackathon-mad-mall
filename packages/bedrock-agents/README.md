@@ -339,6 +339,21 @@ The package follows a modular architecture with:
 4. Ensure all type definitions are accurate
 5. Test with real Bedrock models when possible
 
+## Credits and Acknowledgments
+
+This package builds upon several key methodologies and technologies:
+
+### Sierra AI Benchmarking Methodology
+Our benchmarking system is inspired by [Sierra's rigorous AI agent evaluation approach](https://sierra.ai/blog/benchmarking-ai-agents), extending it with cultural competency assessment for healthcare AI.
+
+### AWS Bedrock and Anthropic Claude
+Powered by AWS Bedrock foundation models, particularly Anthropic's Claude-3 Sonnet, for natural language processing with cultural sensitivity.
+
+### Teaching Hospital Model
+The collaborative learning approach is inspired by medical residency programs where senior residents mentor junior residents through supervised practice.
+
+See the main [CREDITS.md](../../CREDITS.md) file for comprehensive acknowledgments.
+
 ## License
 
 Apache-2.0 - See LICENSE file for details.

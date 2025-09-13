@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  localstack:
+    image: localstack/localstack:3.8
+    container_name: localstack
+    ports:
+      - "4566:4566"
+      - "4510-4559:4510-4559"
+    environment:
+      - SERVICES=s3,dynamodb,lambda,apigateway,sts,iam,cloudwatch,logs,secretsmanager,kms,s3control
+      - DEBUG=${DEBUG:-0}
+      - DATA_DIR=/var/lib/localstack
+      - DEFAULT_REGION=us-east-1
+      - LOCALSTACK_AUTH_TOKEN=${LOCALSTACK_AUTH_TOKEN-}
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./.localstack:/var/lib/localstack"
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+  dspy:
+    build:
+      context: ./consilium-mcp
+      dockerfile: Dockerfile.dspy
+    container_name: dspy-service
+    environment:
+      - PORT=8001
+    ports:
+      - "8001:8001"

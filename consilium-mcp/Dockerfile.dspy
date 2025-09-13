@@ -1,0 +1,15 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+COPY dspy_service /app/dspy_service
+
+ENV PORT=8001
+
+EXPOSE 8001
+
+CMD ["python", "-m", "dspy_service.main"]
+

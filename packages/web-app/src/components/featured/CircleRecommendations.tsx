@@ -371,7 +371,7 @@ const CircleRecommendations: React.FC = () => {
                   {circle.memberProfiles.map((member, idx) => (
                     <div key={idx} className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
                       <Avatar className="h-8 w-8">
-                        <AvatarImage src={member.avatar} />
+                        <AvatarImage src={member.avatar} alt={member.name} />
                         <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                       </Avatar>
                       <div className="text-xs">

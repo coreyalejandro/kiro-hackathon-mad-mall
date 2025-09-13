@@ -9,6 +9,10 @@ pnpm run dev
 
 **📖 See [DEVELOPMENT.md](./DEVELOPMENT.md) for complete development guide**
 
+## 🙏 Acknowledgments
+
+This platform builds upon the work of many organizations, methodologies, and communities. See [CREDITS.md](./CREDITS.md) for comprehensive acknowledgments and attributions.
+
 ---
 
 ## 🤝 Community & Governance
@@ -22,3 +26,5 @@ pnpm run dev
 - Open user feedback using the Feedback issue template
 - Propose designs using the RFC (Open Review) template
 - For high-impact items, add the `advisory-needed` label to request Advisory Board review
+
+---

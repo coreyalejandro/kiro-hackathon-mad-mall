@@ -59,5 +59,29 @@ export declare class DataValidator {
      * Validate batch operation
      */
     static validateBatch(items: any[], maxBatchSize?: number): ValidationResult;
+    /**
+     * Validate image asset entity
+     */
+    static validateImageAsset(image: any): ValidationResult;
+    /**
+     * Validate feedback entity
+     */
+    static validateFeedback(feedback: any): ValidationResult;
+    /**
+     * Validate incident entity
+     */
+    static validateIncident(incident: any): ValidationResult;
+    /**
+     * Validate advisory review entity
+     */
+    static validateAdvisoryReview(review: any): ValidationResult;
+    /**
+     * Validate premium source entity
+     */
+    static validatePremiumSource(source: any): ValidationResult;
+    /**
+     * Validate personalization profile entity
+     */
+    static validatePersonalization(profile: any): ValidationResult;
 }
 //# sourceMappingURL=validation.d.ts.map

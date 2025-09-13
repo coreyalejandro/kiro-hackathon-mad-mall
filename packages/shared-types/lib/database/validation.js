@@ -331,6 +331,159 @@ export class DataValidator {
         });
         return { isValid: errors.length === 0, errors, warnings };
     }
+    /**
+     * Validate image asset entity
+     */
+    static validateImageAsset(image) {
+        const errors = [];
+        const warnings = [];
+        if (!image.imageId) {
+            errors.push({ field: 'imageId', message: 'Image ID is required', code: 'REQUIRED' });
+        }
+        if (!image.url) {
+            errors.push({ field: 'url', message: 'Image URL is required', code: 'REQUIRED' });
+        }
+        else if (!this.URL_REGEX.test(image.url)) {
+            errors.push({ field: 'url', message: 'Invalid image URL format', code: 'INVALID_FORMAT', value: image.url });
+        }
+        if (image.thumbnailUrl && !this.URL_REGEX.test(image.thumbnailUrl)) {
+            warnings.push({ field: 'thumbnailUrl', message: 'Thumbnail URL format may be invalid', code: 'FORMAT_WARNING', value: image.thumbnailUrl });
+        }
+        if (!image.altText || image.altText.trim().length < 5) {
+            errors.push({ field: 'altText', message: 'Alt text must be at least 5 characters', code: 'MIN_LENGTH' });
+        }
+        if (!image.category) {
+            errors.push({ field: 'category', message: 'Category is required', code: 'REQUIRED' });
+        }
+        const validStatus = ['active', 'archived', 'flagged', 'removed', 'pending_review'];
+        if (image.status && !validStatus.includes(image.status)) {
+            errors.push({ field: 'status', message: 'Invalid status', code: 'INVALID_VALUE', value: image.status });
+        }
+        if (image.validation) {
+            ['culturalScore', 'sensitivityScore', 'inclusivityScore'].forEach((k) => {
+                if (image.validation[k] !== undefined && (typeof image.validation[k] !== 'number' || image.validation[k] < 0 || image.validation[k] > 1)) {
+                    warnings.push({ field: `validation.${k}`, message: 'Score should be between 0 and 1', code: 'RANGE_WARNING', value: image.validation[k] });
+                }
+            });
+        }
+        return { isValid: errors.length === 0, errors, warnings };
+    }
+    /**
+     * Validate feedback entity
+     */
+    static validateFeedback(feedback) {
+        const errors = [];
+        const warnings = [];
+        if (!feedback.feedbackId) {
+            errors.push({ field: 'feedbackId', message: 'Feedback ID is required', code: 'REQUIRED' });
+        }
+        if (!feedback.imageId) {
+            errors.push({ field: 'imageId', message: 'Image ID is required', code: 'REQUIRED' });
+        }
+        if (!feedback.userId) {
+            errors.push({ field: 'userId', message: 'User ID is required', code: 'REQUIRED' });
+        }
+        if (feedback.rating === undefined || feedback.rating === null) {
+            errors.push({ field: 'rating', message: 'Rating is required', code: 'REQUIRED' });
+        }
+        else if (typeof feedback.rating !== 'number' || feedback.rating < 1 || feedback.rating > 5) {
+            errors.push({ field: 'rating', message: 'Rating must be between 1 and 5', code: 'RANGE_ERROR', value: feedback.rating });
+        }
+        if (!Array.isArray(feedback.categories)) {
+            warnings.push({ field: 'categories', message: 'Categories should be an array', code: 'TYPE_WARNING' });
+        }
+        const validSeverity = ['low', 'medium', 'high', 'critical'];
+        if (feedback.severity && !validSeverity.includes(feedback.severity)) {
+            warnings.push({ field: 'severity', message: 'Invalid severity', code: 'INVALID_VALUE', value: feedback.severity });
+        }
+        const validStatus = ['new', 'acknowledged', 'in_review', 'resolved', 'dismissed'];
+        if (feedback.status && !validStatus.includes(feedback.status)) {
+            warnings.push({ field: 'status', message: 'Invalid status', code: 'INVALID_VALUE', value: feedback.status });
+        }
+        return { isValid: errors.length === 0, errors, warnings };
+    }
+    /**
+     * Validate incident entity
+     */
+    static validateIncident(incident) {
+        const errors = [];
+        const warnings = [];
+        if (!incident.incidentId) {
+            errors.push({ field: 'incidentId', message: 'Incident ID is required', code: 'REQUIRED' });
+        }
+        if (!incident.triggeredBy) {
+            errors.push({ field: 'triggeredBy', message: 'triggeredBy is required', code: 'REQUIRED' });
+        }
+        else if (!['community_report', 'automated_detection', 'staff', 'advisory_board'].includes(incident.triggeredBy)) {
+            errors.push({ field: 'triggeredBy', message: 'Invalid trigger', code: 'INVALID_VALUE', value: incident.triggeredBy });
+        }
+        if (!incident.priority || !['p1', 'p2', 'p3'].includes(incident.priority)) {
+            errors.push({ field: 'priority', message: 'Priority must be p1|p2|p3', code: 'INVALID_VALUE', value: incident.priority });
+        }
+        if (!incident.summary) {
+            errors.push({ field: 'summary', message: 'Summary is required', code: 'REQUIRED' });
+        }
+        return { isValid: errors.length === 0, errors, warnings };
+    }
+    /**
+     * Validate advisory review entity
+     */
+    static validateAdvisoryReview(review) {
+        const errors = [];
+        const warnings = [];
+        if (!review.reviewId) {
+            errors.push({ field: 'reviewId', message: 'Review ID is required', code: 'REQUIRED' });
+        }
+        if (!review.targetType || !['image', 'resource', 'story'].includes(review.targetType)) {
+            errors.push({ field: 'targetType', message: 'Invalid targetType', code: 'INVALID_VALUE', value: review.targetType });
+        }
+        if (!review.targetId) {
+            errors.push({ field: 'targetId', message: 'Target ID is required', code: 'REQUIRED' });
+        }
+        const validStatus = ['queued', 'in_review', 'approved', 'changes_requested', 'rejected'];
+        if (review.status && !validStatus.includes(review.status)) {
+            warnings.push({ field: 'status', message: 'Invalid status', code: 'INVALID_VALUE', value: review.status });
+        }
+        return { isValid: errors.length === 0, errors, warnings };
+    }
+    /**
+     * Validate premium source entity
+     */
+    static validatePremiumSource(source) {
+        const errors = [];
+        const warnings = [];
+        if (!source.sourceId) {
+            errors.push({ field: 'sourceId', message: 'Source ID is required', code: 'REQUIRED' });
+        }
+        if (!source.provider || !['createher', 'nappy', 'other'].includes(source.provider)) {
+            errors.push({ field: 'provider', message: 'Invalid provider', code: 'INVALID_VALUE', value: source.provider });
+        }
+        if (!source.displayName) {
+            errors.push({ field: 'displayName', message: 'Display name is required', code: 'REQUIRED' });
+        }
+        if (source.apiBaseUrl && !this.URL_REGEX.test(source.apiBaseUrl)) {
+            warnings.push({ field: 'apiBaseUrl', message: 'API base URL format may be invalid', code: 'FORMAT_WARNING', value: source.apiBaseUrl });
+        }
+        return { isValid: errors.length === 0, errors, warnings };
+    }
+    /**
+     * Validate personalization profile entity
+     */
+    static validatePersonalization(profile) {
+        const errors = [];
+        const warnings = [];
+        if (!profile.userId) {
+            errors.push({ field: 'userId', message: 'User ID is required', code: 'REQUIRED' });
+        }
+        if (profile.engagement) {
+            ['impressions', 'clicks'].forEach((k) => {
+                if (profile.engagement[k] !== undefined && (typeof profile.engagement[k] !== 'number' || profile.engagement[k] < 0)) {
+                    warnings.push({ field: `engagement.${k}`, message: 'Engagement values must be non-negative', code: 'RANGE_WARNING', value: profile.engagement[k] });
+                }
+            });
+        }
+        return { isValid: errors.length === 0, errors, warnings };
+    }
 }
 DataValidator.EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 DataValidator.URL_REGEX = /^https?:\/\/.+/;

@@ -5,6 +5,7 @@ import '@/styles/hero-sections.css';
 import '@/styles/concourse-interactions.css';
 import { AppLayout, TopNavigation, SideNavigation } from '@cloudscape-design/components';
 import { NavigationProvider } from '@/components/providers/NavigationProvider';
+import { QueryProvider } from '@/components/providers/QueryProvider';
 
 export const metadata: Metadata = {
   title: 'AIme - MADMall Social Wellness Hub',
@@ -37,8 +38,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NavigationProvider>
-          <div id="app">
+        <QueryProvider>
+          <NavigationProvider>
+            <div id="app">
             <TopNavigation
               identity={{
                 href: '/',
@@ -77,6 +79,7 @@ export default function RootLayout({
             />
           </div>
         </NavigationProvider>
+        </QueryProvider>
       </body>
     </html>
   );
