@@ -1,0 +1,86 @@
+:root {
+  --bg: #0e1116;
+  --panel: #151923;
+  --text: #e8ecf1;
+  --muted: #a8b2c1;
+  --primary: #4cc9f0;
+  --accent: #80ffdb;
+  --danger: #ff6b6b;
+  --focus: #ffd166;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--focus);
+  color: #000;
+  padding: 8px 12px;
+  z-index: 1000;
+}
+.skip-link:focus { top: 0; }
+
+.header, .footer { padding: 16px; text-align: center; }
+.title { margin: 8px 0 4px; font-size: 1.8rem; }
+.subtitle { margin: 0; color: var(--muted); }
+
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.step-indicator { color: var(--muted); margin-bottom: 8px; }
+.divider { border: 0; border-top: 1px solid #2a3140; margin: 16px 0; }
+.lead { font-size: 1.125rem; }
+.note { color: var(--muted); }
+
+.step {
+  background: var(--panel);
+  border: 1px solid #232a36;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 12px 0 20px;
+  display: none;
+}
+.step.active { display: block; }
+.step-title { margin-top: 0; }
+
+.bullets { margin: 0; padding-left: 20px; }
+.example {
+  margin: 12px 0;
+  padding: 12px 16px;
+  border-left: 4px solid var(--primary);
+  background: #101521;
+}
+
+.nav { display: flex; gap: 12px; justify-content: space-between; }
+.btn {
+  background: #242b38;
+  color: var(--text);
+  border: 1px solid #2f3747;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.btn:hover { background: #2a3242; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary { background: var(--primary); color: #001219; border-color: var(--primary); }
+.btn-primary:hover { filter: brightness(0.95); }
+
+:focus { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
