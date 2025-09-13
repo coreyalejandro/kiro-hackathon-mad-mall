@@ -1,7 +1,7 @@
 // Synthetic data generation for MADMall platform
-import { 
-  User, Circle, Post, ComedyClip, Product, Article, Story, 
-  ActivityItem, PlatformStats, MallSection 
+import {
+  User, Circle, Post, ComedyClip, Product, Article, Story,
+  ActivityItem, PlatformStats, MallSection, ImageAsset
 } from './types';
 
 // Culturally appropriate data sets
@@ -69,9 +69,11 @@ const PRODUCT_CATEGORIES = [
 ];
 
 const ARTICLE_CATEGORIES = [
-  'Graves Disease', 'Mental Health', 'Nutrition', 'Exercise', 'Self-Care', 
+  'Graves Disease', 'Mental Health', 'Nutrition', 'Exercise', 'Self-Care',
   'Medical Advocacy', 'Workplace Wellness', 'Relationships', 'Spirituality', 'Community'
 ];
+
+const IMAGE_CATEGORIES = ['wellness', 'community', 'empowerment', 'joy'];
 
 const BLACK_OWNED_BUSINESSES = [
   {
@@ -377,6 +379,18 @@ export const generateStory = (): Story => {
   };
 };
 
+export const generateImageAsset = (): ImageAsset => {
+  const category = randomChoice(IMAGE_CATEGORIES);
+  const id = `image-${Math.random().toString(36).substr(2, 9)}`;
+
+  return {
+    id,
+    url: `https://picsum.photos/seed/${id}/800/600`,
+    category,
+    alt: `${category} image`
+  };
+};
+
 export const generateActivityItem = (): ActivityItem => {
   const activities = [
     {
@@ -496,6 +510,7 @@ export const generateBulkData = () => {
   const articles = Array.from({ length: 300 }, generateArticle);
   const stories = Array.from({ length: 100 }, generateStory);
   const activities = Array.from({ length: 50 }, generateActivityItem);
+  const images = Array.from({ length: 120 }, generateImageAsset);
   
   // Generate posts for circles
   const posts = circles.flatMap(circle => 
@@ -513,6 +528,7 @@ export const generateBulkData = () => {
     articles,
     stories,
     activities,
+    images,
     platformStats: generatePlatformStats(),
     mallSections: generateMallSections()
   };

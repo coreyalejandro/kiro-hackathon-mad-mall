@@ -1,15 +1,15 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
-import { useState } from 'react';
 import { useComedyClips, useSubmitReliefRating } from '@/lib/queries';
 import type { ComedyClip } from '@/lib/types';
 
 export function ComedyLoungeContent() {
-  const { data: clips } = useComedyClips();
+  const { data: clips = [] } = useComedyClips(); // Using the custom hook to fetch clips
   const [currentClip, setCurrentClip] = useState<ComedyClip | null>(null);
   const [showRating, setShowRating] = useState(false);
-  const submitRating = useSubmitReliefRating();
+  const submitRating = useSubmitReliefRating(); // Custom hook for submitting ratings
 
   const handleRate = (rating: number) => {
     if (currentClip) {
@@ -54,84 +54,47 @@ export function ComedyLoungeContent() {
               <div className="hero-visual-container">
                 <div className="hero-image-container">
                   <div className="hero-image-layer hero-image-main">
-                    <div className="hero-default-content">
-                      <div className="hero-default-icon">🎪</div>
-                      <div className="hero-default-text">
-                        Laughter<br />& Joy
-                      </div>
-                    </div>
+                    {/* Optional: Placeholder for the main image, you can add a specific image component here */}
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </Container>
 
-      <Container>
-        {clips ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {clips.data.map(clip => (
-              <div
-                key={clip.id}
-                className="cursor-pointer"
-                onClick={() => {
-                  setCurrentClip(clip);
-                  setShowRating(false);
-                }}
-              >
-                <img
-                  src={clip.thumbnailUrl}
-                  alt={clip.title}
-                  className="w-full h-auto rounded"
-                />
-                <div className="mt-2 font-semibold">{clip.title}</div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div>Loading clips...</div>
-        )}
-      </Container>
-
-      {currentClip && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-white p-4 rounded max-w-2xl w-full">
-            <video
-              src={currentClip.videoUrl}
-              controls
-              autoPlay
-              className="w-full"
-              onEnded={() => setShowRating(true)}
-            />
-            {showRating && (
-              <div className="mt-4">
-                <p className="mb-2">How much relief did this clip provide?</p>
-                <div className="flex gap-2">
-                  {[1, 2, 3, 4, 5].map(n => (
-                    <button
-                      key={n}
-                      className="px-3 py-1 border rounded"
-                      onClick={() => handleRate(n)}
-                    >
-                      {n}
+            {/* Display clips if available */}
+            <div className="clips-container">
+              {clips.length > 0 ? (
+                clips.map((clip) => (
+                  <div key={clip.id} className="clip">
+                    <h2>{clip.title}</h2>
+                    <p>{clip.description}</p>
+                    <button onClick={() => {
+                      setCurrentClip(clip);
+                      setShowRating(true);
+                    }}>
+                      Rate This Clip
                     </button>
-                  ))}
+                  </div>
+                ))
+              ) : (
+                <p>No clips available at the moment.</p>
+              )}
+            </div>
+
+            {/* Rating Modal or UI could be implemented here based on showRating */}
+            {showRating && currentClip && (
+              <div className="rating-modal">
+                <h2>Rate {currentClip.title}</h2>
+                <div>
+                  <button onClick={() => handleRate(1)}>😞</button>
+                  <button onClick={() => handleRate(3)}>😐</button>
+                  <button onClick={() => handleRate(5)}>😄</button>
                 </div>
+                <button onClick={() => setShowRating(false)}>Close</button>
               </div>
             )}
-            <button
-              className="mt-4 text-sm text-gray-600"
-              onClick={() => {
-                setCurrentClip(null);
-                setShowRating(false);
-              }}
-            >
-              Close
-            </button>
           </div>
         </div>
-      )}
+      </Container>
     </ContentLayout>
   );
 }

@@ -1,104 +1,87 @@
-'use client';
+}import React, { useState } from 'react';
+import { Container, ContentLayout } from '@cloudscape-design/components'; // Make sure to import the correct component library.
+import './ComedyLounge.css'; // Assuming you have an accompanying CSS file for styles.
 
-import { Container, Header, ContentLayout } from '@cloudscape-design/components';
-import { useMallSections, useCommunityActivity } from '@/lib/queries';
-import { useRouter } from 'next/navigation';
+const ComedyLounge = ({ clips }) => {
+  const [currentClip, setCurrentClip] = useState(null);
+  const [showRating, setShowRating] = useState(false);
 
-export function ConcourseContent() {
-  const router = useRouter();
-  const { data: mallSections } = useMallSections();
-  const { data: communityActivity } = useCommunityActivity();
+  const handleRate = (rating) => {
+    // Logic for handling the rating submission
+    console.log(`Rating submitted for "${currentClip.title}": ${rating}`);
+    setShowRating(false);
+    setCurrentClip(null);
+  };
 
   return (
-    <ContentLayout
-      header={
-        <Header
-          variant="h1"
-          description="Welcome to the main hub of our social wellness community"
-        >
-          Concourse
-        </Header>
-      }
-    >
+    <ContentLayout>
       <Container>
         <div className="hero-section hero-contained">
           <div className="hero-container">
             <div className="hero-main-grid">
               <div className="hero-content">
-                <div className="hero-page-name">Community Hub</div>
-                <h1 className="hero-title">Welcome to the Concourse</h1>
+                <div className="hero-page-name">Wellness Through Laughter</div>
+                <h1 className="hero-title">Comedy Lounge</h1>
                 <p className="hero-subtitle">
-                  Your central gathering place for wellness, community, and connection.
+                  Discover the healing power of laughter and share moments of joy with our community.
                 </p>
                 <div className="hero-cta-group">
                   <button className="hero-cta hero-cta-primary">
-                    <span className="hero-cta-icon">🌟</span>
-                    Explore Communities
+                    <span className="hero-cta-icon">😄</span>
+                    Watch Comedy
                   </button>
                   <button className="hero-cta hero-cta-secondary">
-                    <span className="hero-cta-icon">💬</span>
-                    Start Conversation
+                    <span className="hero-cta-icon">🎭</span>
+                    Share a Laugh
                   </button>
                 </div>
               </div>
               <div className="hero-visual-container">
                 <div className="hero-image-container">
                   <div className="hero-image-layer hero-image-main">
-                    <div className="hero-default-content">
-                      <div className="hero-default-icon">🏛️</div>
-                      <div className="hero-default-text">
-                        Community<br />Gathering Space
-                      </div>
-                    </div>
+                    {/* Optional: Placeholder for the main image, you can add a specific image component here */}
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Display clips if available */}
+            <div className="clips-container">
+              {clips.length > 0 ? (
+                clips.map((clip) => (
+                  <div key={clip.id} className="clip">
+                    <h2>{clip.title}</h2>
+                    <p>{clip.description}</p>
+                    <button onClick={() => {
+                      setCurrentClip(clip);
+                      setShowRating(true);
+                    }}>
+                      Rate This Clip
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <p>No clips available at the moment.</p>
+              )}
+            </div>
+
+            {/* Rating Modal or UI could be implemented here based on showRating */}
+            {showRating && currentClip && (
+              <div className="rating-modal">
+                <h2>Rate {currentClip.title}</h2>
+                <div>
+                  <button onClick={() => handleRate(1)}>😞</button>
+                  <button onClick={() => handleRate(3)}>😐</button>
+                  <button onClick={() => handleRate(5)}>😄</button>
+                </div>
+                <button onClick={() => setShowRating(false)}>Close</button>
+              </div>
+            )}
           </div>
         </div>
       </Container>
-
-      <Container className="mt-8">
-        <Header variant="h2">Explore the Mall</Header>
-        {mallSections?.data ? (
-          <div className="mall-sections-grid">
-            {mallSections.data.map(section => (
-              <div
-                key={section.id}
-                className="mall-section-card"
-                role="button"
-                tabIndex={0}
-                data-testid={`mall-section-${section.id}`}
-                onClick={() => router.push(section.href)}
-                onKeyDown={e => {
-                  if (e.key === 'Enter') router.push(section.href);
-                }}
-              >
-                <div className="mall-section-icon">{section.icon}</div>
-                <h3>{section.title}</h3>
-                <p>{section.description}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div>Loading sections...</div>
-        )}
-      </Container>
-
-      <Container className="mt-8">
-        <Header variant="h2">Community Activity</Header>
-        {communityActivity?.data ? (
-          <ul className="community-activity-list">
-            {communityActivity.data.map(item => (
-              <li key={item.id} className="community-activity-item">
-                <span className="activity-user">{item.user.name}</span> {item.content}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div>Loading activity...</div>
-        )}
-      </Container>
     </ContentLayout>
   );
-}
+};
+
+export default ComedyLounge;

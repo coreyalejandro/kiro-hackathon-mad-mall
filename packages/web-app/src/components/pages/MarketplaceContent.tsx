@@ -1,8 +1,17 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { api } from '@/lib/mock-api';
+import { Product } from '@/lib/types';
 
 export function MarketplaceContent() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    api.getProducts().then(res => setProducts(res.data));
+  }, []);
+
   return (
     <ContentLayout
       header={
@@ -49,6 +58,14 @@ export function MarketplaceContent() {
               </div>
             </div>
           </div>
+        </div>
+        <div>
+          <h2>Popular Products</h2>
+          <ul>
+            {products.slice(0, 5).map(p => (
+              <li key={p.id}>{p.name}</li>
+            ))}
+          </ul>
         </div>
       </Container>
     </ContentLayout>
