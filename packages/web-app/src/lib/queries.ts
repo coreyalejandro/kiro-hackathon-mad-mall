@@ -249,6 +249,34 @@ export const useJoinCircle = () => {
   });
 };
 
+export const useLeaveCircle = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ circleId, userId }: { circleId: string; userId: string }) =>
+      api.leaveCircle(circleId, userId),
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['circles'] });
+      queryClient.invalidateQueries({ queryKey: ['circle', variables.circleId] });
+      queryClient.invalidateQueries({ queryKey: ['community-activity'] });
+      queryClient.invalidateQueries({ queryKey: ['platform-stats'] });
+    },
+  });
+};
+
+export const useCreateCirclePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ circleId, userId, content }: { circleId: string; userId: string; content: string }) =>
+      api.createCirclePost(circleId, userId, content),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['circle-posts', variables.circleId] });
+      queryClient.invalidateQueries({ queryKey: ['community-activity'] });
+    },
+  });
+};
+
 export const useToggleWishlist = () => {
   const queryClient = useQueryClient();
   
