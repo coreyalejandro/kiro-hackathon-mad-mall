@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -42,93 +43,34 @@ interface ModelOfCare {
 }
 
 const WellnessDashboard: React.FC = () => {
-  const [careModel, setCareModel] = useState<ModelOfCare | null>(null);
-  const [loading, setLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
-  // Mock TitanEngine data (in production, this would come from API)
-  const mockCareModel: ModelOfCare = {
-    careId: 'care_keisha_1757313187133',
-    userId: 'keisha_atlanta_32',
-    timestamp: new Date().toISOString(),
-    processingTimeMs: 847,
-    confidence: 0.92,
-    statisticalSignificance: 0.95,
-    clinicalValidation: 0.88,
-    therapeuticInterventions: [
-      {
-        type: 'comedy_therapy',
-        description: 'Culturally-relevant comedy content to reduce stress and improve mood',
-        frequency: '3-4 times per week',
-        duration: '15-30 minutes',
-        expectedOutcome: '25% reduction in anxiety levels within 4 weeks',
-        evidenceStrength: 0.87,
-        culturalRelevance: 'High - content specifically curated for Black women\'s experiences'
-      },
-      {
-        type: 'peer_support',
-        description: 'Connection with others experiencing similar health journeys',
-        frequency: 'Daily interactions, weekly group sessions',
-        duration: 'Ongoing community participation',
-        expectedOutcome: 'Improved treatment adherence and emotional wellbeing',
-        evidenceStrength: 0.93,
-        culturalRelevance: 'Critical - addresses isolation in healthcare experiences'
-      },
-      {
-        type: 'mindfulness',
-        description: 'Culturally-adapted mindfulness practices for stress management',
-        frequency: 'Daily 10-minute sessions',
-        duration: '8-week initial program',
-        expectedOutcome: 'Reduced cortisol levels and improved sleep quality',
-        evidenceStrength: 0.81,
-        culturalRelevance: 'Adapted for cultural practices and preferences'
-      }
-    ],
-    communitySupport: [
-      {
-        circleId: 'graves_warriors_sisterhood',
-        circleName: 'Graves\' Warriors Sisterhood',
-        matchReason: 'Diagnosis alignment and peer support focus',
-        expectedBenefit: 'Direct experience sharing and emotional support',
-        confidence: 0.94,
-        description: 'A supportive community of Black women managing Graves\' disease'
-      },
-      {
-        circleId: 'black_women_wellness_collective',
-        circleName: 'Black Women Wellness Collective',
-        matchReason: 'Holistic wellness approach and cultural identity',
-        expectedBenefit: 'Broader wellness strategies and cultural affirmation',
-        confidence: 0.89,
-        description: 'Comprehensive wellness support for Black women\'s health journeys'
-      }
-    ],
-    actionableInsights: [
-      'User shows high engagement with comedy content - prioritize humor therapy',
-      'Strong peer connection preference - recommend active community circles',
-      'Evening energy patterns - schedule activities after 6PM'
-    ],
-    followUpRecommendations: [
-      'Schedule peer circle introduction within 48 hours',
-      'Monitor comedy therapy engagement weekly',
-      'Review stress levels after community integration'
-    ]
+  const fetchCareModel = async ({ signal, meta }: { signal?: AbortSignal; meta?: any }) => {
+    const params = meta?.bypassCache ? '?bypassCache=true' : '';
+    const res = await fetch(`/api/care-model${params}`, { signal });
+    if (!res.ok) throw new Error('Failed to fetch care model');
+    return res.json();
   };
 
-  const generateNewRecommendations = async () => {
-    setLoading(true);
-    
-    // Simulate TitanEngine API call
-    setTimeout(() => {
-      setCareModel(mockCareModel);
-      setLastUpdated(new Date());
-      setLoading(false);
-    }, 1200);
+  const { data, isLoading, isError, error, refetch, isFetching } = useQuery({
+    queryKey: ['care-model'],
+    queryFn: fetchCareModel,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 5 * 60 * 1000,
+  });
+
+  const careModel = data?.recommendation as ModelOfCare | undefined;
+  const cached = data?.cached;
+
+  const generateNewRecommendations = () => {
+    refetch({ meta: { bypassCache: true } });
   };
 
   useEffect(() => {
-    // Load initial care model
-    generateNewRecommendations();
-  }, []);
+    if (careModel) {
+      setLastUpdated(new Date());
+    }
+  }, [careModel]);
 
   const getInterventionIcon = (type: string) => {
     switch (type) {
@@ -152,7 +94,28 @@ const WellnessDashboard: React.FC = () => {
     }
   };
 
-  if (loading && !careModel) {
+  if (isError) {
+    return (
+      <div className="space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-red-600">
+              <AlertCircle className="h-5 w-5" />
+              Error loading care plan
+            </CardTitle>
+            <CardDescription>Unable to load care model. Please try again.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button onClick={() => refetch()} variant="destructive">
+              Retry
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (isLoading && !careModel) {
     return (
       <div className="space-y-6">
         <Card className="animate-pulse">
@@ -179,23 +142,26 @@ const WellnessDashboard: React.FC = () => {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-2xl font-bold">Your Personalized Care Plan</CardTitle>
+              <CardTitle className="text-2xl font-bold flex items-center gap-2">
+                Your Personalized Care Plan
+                {cached && <Badge variant="secondary">Cached</Badge>}
+              </CardTitle>
               <CardDescription className="text-purple-100">
                 AI-generated recommendations based on clinical evidence and cultural context
               </CardDescription>
             </div>
-            <Button 
+            <Button
               onClick={generateNewRecommendations}
-              disabled={loading}
+              disabled={isFetching}
               variant="secondary"
               className="bg-white/20 hover:bg-white/30 text-white border-white/30"
             >
-              {loading ? (
+              {isFetching ? (
                 <Clock className="h-4 w-4 animate-spin mr-2" />
               ) : (
                 <TrendingUp className="h-4 w-4 mr-2" />
               )}
-              {loading ? 'Updating...' : 'Refresh Plan'}
+              {isFetching ? 'Updating...' : 'Refresh Plan'}
             </Button>
           </div>
         </CardHeader>
@@ -341,8 +307,8 @@ const WellnessDashboard: React.FC = () => {
       {/* Footer info */}
       {lastUpdated && (
         <div className="text-center text-sm text-gray-500">
-          Last updated: {lastUpdated.toLocaleString()} • 
-          Care plan generated by TitanEngine AI with clinical validation
+          Last updated: {lastUpdated.toLocaleString()}
+          {cached ? ' • Served from cache' : ''} • Care plan generated by TitanEngine AI with clinical validation
         </div>
       )}
     </div>
