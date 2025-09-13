@@ -1,10 +1,11 @@
 // Mock API infrastructure for MADMall platform
-import { 
-  User, Circle, Post, ComedyClip, Product, Article, Story, 
+import {
+  User, Circle, Post, ComedyClip, Product, Article, Story,
   ActivityItem, PlatformStats, MallSection, ApiResponse, PaginatedResponse,
   CircleFilters, ComedyFilters, ProductFilters, ArticleFilters, StoryFilters
 } from './types';
 import { generateBulkData } from './synthetic-data';
+import { culturalValidator, CulturalContext } from './cultural-validation';
 
 // In-memory data store
 let dataStore: ReturnType<typeof generateBulkData> | null = null;
@@ -229,6 +230,57 @@ export class MockAPI {
     return createApiResponse({ success: !!circle });
   }
 
+  static async leaveCircle(circleId: string, userId: string): Promise<ApiResponse<{ success: boolean }>> {
+    await delay(300);
+    const data = initializeDataStore();
+    const circle = data.circles.find(c => c.id === circleId);
+    if (circle && circle.memberCount > 0) {
+      circle.memberCount -= 1;
+      localStorage.setItem('madmall-data', JSON.stringify(data));
+    }
+    return createApiResponse({ success: !!circle });
+  }
+
+  static async createCirclePost(
+    circleId: string,
+    userId: string,
+    content: string
+  ): Promise<ApiResponse<{ post?: Post; validation: any }>> {
+    await delay(300);
+    const context: CulturalContext = {
+      primaryCulture: 'African American',
+      region: 'US',
+      language: 'English',
+      communicationStyle: 'informal_familial'
+    };
+    const validation = await culturalValidator.validateContent(content, context);
+    if (
+      validation.overallScore < 0.7 ||
+      validation.flags.some(f => f.severity === 'high' || f.severity === 'critical')
+    ) {
+      return {
+        data: { validation },
+        success: false,
+        message: 'Content failed cultural validation',
+        timestamp: new Date()
+      };
+    }
+    const data = initializeDataStore();
+    const newPost: Post = {
+      id: crypto.randomUUID(),
+      userId,
+      circleId,
+      content,
+      createdAt: new Date(),
+      likes: 0,
+      comments: 0,
+      isAnonymous: false
+    };
+    data.posts.unshift(newPost);
+    localStorage.setItem('madmall-data', JSON.stringify(data));
+    return createApiResponse({ post: newPost, validation });
+  }
+
   static async getCirclePosts(
     circleId: string, 
     page = 1, 
@@ -449,6 +501,8 @@ export const api = {
   getCircles: MockAPI.getCircles,
   getCircle: MockAPI.getCircle,
   joinCircle: MockAPI.joinCircle,
+  leaveCircle: MockAPI.leaveCircle,
+  createCirclePost: MockAPI.createCirclePost,
   getCirclePosts: MockAPI.getCirclePosts,
   
   // Comedy

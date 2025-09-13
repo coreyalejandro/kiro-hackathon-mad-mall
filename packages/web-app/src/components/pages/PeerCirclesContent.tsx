@@ -1,6 +1,7 @@
 'use client';
 
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { CirclesGrid } from '@/components/ui';
 
 export function PeerCirclesContent() {
   return (
@@ -51,6 +52,7 @@ export function PeerCirclesContent() {
           </div>
         </div>
       </Container>
+      <CirclesGrid />
     </ContentLayout>
   );
 }
