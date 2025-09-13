@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
 import { useComedyClips, useSubmitReliefRating } from '@/lib/queries';
+import ComedyTherapyPlayer from '@/components/featured/ComedyTherapyPlayer';
 import type { ComedyClip } from '@/lib/types';
 
 export function ComedyLoungeContent() {
@@ -58,6 +59,11 @@ export function ComedyLoungeContent() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Therapy Player */}
+            <div className="mt-8">
+              <ComedyTherapyPlayer />
             </div>
 
             {/* Display clips if available */}
