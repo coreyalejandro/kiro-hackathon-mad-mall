@@ -9,12 +9,12 @@ export type { BusinessType, BusinessStatus, CertificationType, BusinessProfile, 
 export type { ResourceType, ResourceCategory, ResourceDifficulty, ResourceStatus, ResourceAuthor, ResourceMetadata, ResourceEngagement, Resource, ResourceComment, ResourceCollection, ResourceProgress, } from './resource';
 export type * from './comedy';
 export type * from './discussion';
-export interface BaseEntity {
+export interface DomainEntity {
     id: string;
     createdAt: Date;
     updatedAt: Date;
 }
-export interface TimestampedEntity extends BaseEntity {
+export interface TimestampedEntity extends DomainEntity {
     version: number;
 }
 export interface SoftDeletableEntity extends TimestampedEntity {

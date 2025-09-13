@@ -22,7 +22,8 @@ import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Duration, RemovalPolicy, Tags } from 'aws-cdk-lib';
-import { Alias, Version, TrafficRouting, LambdaDeploymentConfig, LambdaDeploymentGroup } from 'aws-cdk-lib/aws-codedeploy';
+import { LambdaDeploymentConfig, LambdaDeploymentGroup } from 'aws-cdk-lib/aws-codedeploy';
+import { Alias, Version } from 'aws-cdk-lib/aws-lambda';
 import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { LambdaFunction as EventLambdaTarget } from 'aws-cdk-lib/aws-events-targets';
 

@@ -47,13 +47,13 @@ export type * from './comedy';
 export type * from './discussion';
 
 // Common types used across domains
-export interface BaseEntity {
+export interface DomainEntity {
   id: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface TimestampedEntity extends BaseEntity {
+export interface TimestampedEntity extends DomainEntity {
   version: number;
 }
 
