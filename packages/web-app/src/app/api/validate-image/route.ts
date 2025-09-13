@@ -9,5 +9,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'url, altText and category are required' }, { status: 400 });
   }
   const result = await engine.validateImageContent({ url, altText, category });
+  await engine.recordEvent({
+    userId: 'demo_user',
+    eventType: 'interaction',
+    name: 'validate-image',
+    data: { category },
+  });
   return NextResponse.json(result);
 }

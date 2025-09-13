@@ -14,6 +14,7 @@ jest.mock('@madmall/titanengine', () => ({
         cached: false,
         cacheStats: {},
       }),
+      recordEvent: jest.fn(),
     }),
   },
 }));
