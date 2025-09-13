@@ -7,6 +7,7 @@ import { PexelsProvider } from '../providers/pexels-provider';
 import { UnsplashProvider } from '../providers/unsplash-provider';
 import { PlaceholderProvider } from '../providers/placeholder-provider';
 import { Automatic1111Provider } from '../providers/automatic1111-provider';
+import { BedrockSDXLProvider } from '../providers/bedrock-sdxl-provider';
 import { CulturalValidationAgent } from '@madmall/bedrock-agents';
 import { DspyBridge, CareRecommendation } from './dspy-bridge';
 import { TitanKCache } from './kcache';
@@ -24,6 +25,7 @@ export class TitanEngine {
   private readonly unsplash: UnsplashProvider;
   private readonly placeholder: PlaceholderProvider;
   private readonly a1111: Automatic1111Provider;
+  private readonly bedrock: BedrockSDXLProvider;
   private readonly culturalAgent: CulturalValidationAgent;
   private readonly dspy: DspyBridge;
   private readonly kcache: TitanKCache<CareRecommendation>;
@@ -45,6 +47,7 @@ export class TitanEngine {
     this.unsplash = new UnsplashProvider();
     this.placeholder = new PlaceholderProvider();
     this.a1111 = new Automatic1111Provider();
+    this.bedrock = new BedrockSDXLProvider();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const region = (globalThis as any).process?.env?.AWS_REGION || 'us-east-1';
     this.culturalAgent = new CulturalValidationAgent(region);
@@ -112,6 +115,29 @@ export class TitanEngine {
         sourceInfo: r.sourceInfo,
       });
       created.push(item);
+    }
+    return created;
+  }
+
+  async generateWithBedrock(params: { prompt: string; category: string; count?: number }) {
+    const results = await this.bedrock.generate({ prompt: params.prompt, count: params.count });
+    const created = [] as any[];
+    for (const r of results) {
+      const scores = await this.validateImageContent({ url: '', altText: params.prompt, category: params.category });
+      const status = scores.issues && scores.issues.length > 0 ? 'flagged' : 'active';
+      const id = uuidv4();
+      const url = `data:image/png;base64,${r.imageBase64}`;
+      await this.images.createFromUrl({
+        imageId: id,
+        url,
+        altText: params.prompt,
+        category: params.category,
+        tags: [params.prompt, params.category].filter(Boolean),
+        source: 'generated',
+        sourceInfo: { provider: 'bedrock', model: 'sdxl' },
+      });
+      const updated = await this.images.markValidated(id, scores, status);
+      created.push(updated);
     }
     return created;
   }

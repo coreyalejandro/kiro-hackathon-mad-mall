@@ -1,6 +1,6 @@
 # TitanEngine
 
-Image curation and generation service with AWS Bedrock integration. Provides importers for Pexels, Unsplash, Automatic1111, and a Placeholder provider. Persists `DynamoDBImageAsset` entities via the shared DynamoDB single-table design and runs cultural validation using Bedrock agents.
+Image curation and generation service with AWS Bedrock integration. Provides importers for Pexels, Unsplash, Automatic1111, a Bedrock SDXL generator, and a Placeholder provider. Persists `DynamoDBImageAsset` entities via the shared DynamoDB single-table design and runs cultural validation using Bedrock agents.
 
 ## Env Vars
 
