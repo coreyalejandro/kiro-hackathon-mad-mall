@@ -50,15 +50,31 @@ export default function CommunityImage({
     const runValidation = async () => {
       if (!src) return;
       try {
-        const result = await validateImageContent({ url: src, altText: alt || '', category });
+        const result = await validateImageContent({
+          url: src,
+          altText: alt || '',
+          category,
+        });
         const ok =
           result.cultural >= 0.8 &&
           result.inclusivity >= 0.8 &&
           !(result.issues || []).some((i) => i.includes('cultural_mismatch'));
         if (!ok) {
+          console.warn('Image failed cultural validation', {
+            src,
+            alt,
+            category,
+            result,
+          });
           setImageUrl(getPlaceholderImage());
         }
       } catch (err) {
+        console.error('TitanEngine validation failed', {
+          error: err,
+          src,
+          alt,
+          category,
+        });
         setImageUrl(getPlaceholderImage());
       }
     };
