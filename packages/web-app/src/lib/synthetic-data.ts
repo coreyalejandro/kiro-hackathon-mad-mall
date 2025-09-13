@@ -323,6 +323,8 @@ export const generateArticle = (): Article => {
       avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${id}`
     },
     category: article.category,
+    format: randomChoice(['article', 'video', 'podcast']),
+    credibility: randomChoice(['peer-reviewed', 'expert', 'community']),
     tags: randomChoices(['graves-disease', 'thyroid', 'wellness', 'mental-health', 'nutrition', 'advocacy', 'community'], randomInt(2, 5)),
     readingTime: randomInt(3, 15),
     publishedAt: randomDate(new Date(2023, 0, 1), new Date()),

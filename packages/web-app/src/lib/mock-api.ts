@@ -139,7 +139,9 @@ const filterProducts = (products: Product[], filters: ProductFilters): Product[]
 const filterArticles = (articles: Article[], filters: ArticleFilters): Article[] => {
   return articles.filter(article => {
     if (filters.category && article.category !== filters.category) return false;
-    if (filters.tags && filters.tags.length > 0 && 
+    if (filters.format && article.format !== filters.format) return false;
+    if (filters.credibility && article.credibility !== filters.credibility) return false;
+    if (filters.tags && filters.tags.length > 0 &&
         !filters.tags.some(tag => article.tags.includes(tag))) return false;
     if (filters.readingTime) {
       const time = article.readingTime;
@@ -377,6 +379,20 @@ export class MockAPI {
     return createApiResponse(categories);
   }
 
+  static async getArticleFormats(): Promise<ApiResponse<string[]>> {
+    await delay(50);
+    const data = initializeDataStore();
+    const formats = [...new Set(data.articles.map(article => article.format))];
+    return createApiResponse(formats);
+  }
+
+  static async getArticleCredibilityLevels(): Promise<ApiResponse<string[]>> {
+    await delay(50);
+    const data = initializeDataStore();
+    const levels = [...new Set(data.articles.map(article => article.credibility))];
+    return createApiResponse(levels);
+  }
+
   // Story Booth
   static async getStories(
     filters: StoryFilters = {}, 
@@ -552,6 +568,8 @@ export const api = {
   getArticles: MockAPI.getArticles,
   getArticle: MockAPI.getArticle,
   getArticleCategories: MockAPI.getArticleCategories,
+  getArticleFormats: MockAPI.getArticleFormats,
+  getArticleCredibilityLevels: MockAPI.getArticleCredibilityLevels,
   
   // Stories
   getStories: MockAPI.getStories,
