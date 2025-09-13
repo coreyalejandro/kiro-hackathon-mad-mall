@@ -2,15 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
-import { api } from '@/lib/mock-api';
-import { Circle } from '@/lib/types';
+import { CirclesGrid } from '@/components/ui'; // Importing CirclesGrid for displaying circles
+import type { Circle } from '@/lib/types'; // Ensuring Circle type is imported
+import { useCircles } from '@/lib/queries'; // Fetching circles via a custom hook
 
 export function PeerCirclesContent() {
-  const [circles, setCircles] = useState<Circle[]>([]);
-
-  useEffect(() => {
-    api.getCircles().then(res => setCircles(res.data));
-  }, []);
+  const { data: circles = [] } = useCircles(); // Using custom hook to fetch circles data
 
   return (
     <ContentLayout
@@ -44,28 +41,18 @@ export function PeerCirclesContent() {
                   </button>
                 </div>
               </div>
-              <div className="hero-visual-container">
-                <div className="hero-image-container">
-                  <div className="hero-image-layer hero-image-main">
-                    <div className="hero-default-content">
-                      <div className="hero-default-icon">🤝</div>
-                      <div className="hero-default-text">
-                        Supportive<br />Communities
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
-        <div>
-          <h2>Featured Circles</h2>
-          <ul>
-            {circles.slice(0, 5).map(c => (
-              <li key={c.id}>{c.name}</li>
-            ))}
-          </ul>
+
+        {/* Display the circles using CirclesGrid */}
+        <div className="circles-section">
+          <h2>Available Peer Circles</h2>
+          {circles.length > 0 ? (
+            <CirclesGrid circles={circles} /> // Pass circles to CirclesGrid component
+          ) : (
+            <p>No peer circles available at this time. Please check back later.</p>
+          )}
         </div>
       </Container>
     </ContentLayout>

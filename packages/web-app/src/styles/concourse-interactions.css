@@ -1,5 +1,25 @@
 /* Concourse Interactive Hover Effects and Visual Feedback */
 
+/* Mall Sections grid layout */
+.mall-sections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Community activity list */
+.community-activity-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.community-activity-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
 /* Mall Section Cards - Enhanced Hover Effects */
 .mall-section-card {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

@@ -1,73 +1,123 @@
-'use client';
-
 import { useEffect, useState } from 'react';
-import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import {
+  Container,
+  Header,
+  ContentLayout,
+  SpaceBetween,
+  FormField,
+  Input,
+  Textarea,
+  Toggle,
+  Button,
+  Alert,
+} from '@cloudscape-design/components';
 import { api } from '@/lib/mock-api';
 import { ActivityItem } from '@/lib/types';
 
+interface ProfileData {
+  firstName: string;
+  lastName: string;
+  bio: string;
+}
+
+interface NotificationPrefs {
+  email: boolean;
+  sms: boolean;
+}
+
 export function UserProfileContent() {
   const [activity, setActivity] = useState<ActivityItem[]>([]);
+  const [profile, setProfile] = useState<ProfileData>({
+    firstName: '',
+    lastName: '',
+    bio: '',
+  });
+  const [notifications, setNotifications] = useState<NotificationPrefs>({
+    email: false,
+    sms: false,
+  });
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
+    // Fetch community activity
     api.getCommunityActivity().then(res => setActivity(res.data));
+
+    // Fetch user profile data
+    api.getUserProfile().then(res => {
+      setProfile(res.data);
+      // Optionally set notifications based on user preferences
+      setNotifications({
+        email: res.data.notifications.email,
+        sms: res.data.notifications.sms,
+      });
+    });
   }, []);
 
+  const handleProfileSubmit = (event) => {
+    event.preventDefault();
+    // Handle profile update logic here
+    api.updateUserProfile(profile, notifications).then(() => {
+      setMessage('Profile updated successfully!');
+    }).catch(err => {
+      setMessage('Failed to update profile.');
+    });
+  };
+
   return (
-    <ContentLayout
-      header={
-        <Header
-          variant="h1"
-          description="Manage your profile and account settings"
-        >
-          User Profile
-        </Header>
-      }
-    >
+    <SpaceBetween size="l">
       <Container>
-        <div className="hero-section hero-contained">
-          <div className="hero-container">
-            <div className="hero-main-grid">
-              <div className="hero-content">
-                <div className="hero-page-name">Account Management</div>
-                <h1 className="hero-title">Your Profile</h1>
-                <p className="hero-subtitle">
-                  Manage your account settings, preferences, and community profile.
-                </p>
-                <div className="hero-cta-group">
-                  <button className="hero-cta hero-cta-primary">
-                    <span className="hero-cta-icon">⚙️</span>
-                    Edit Profile
-                  </button>
-                  <button className="hero-cta hero-cta-secondary">
-                    <span className="hero-cta-icon">🔒</span>
-                    Privacy Settings
-                  </button>
-                </div>
-              </div>
-              <div className="hero-visual-container">
-                <div className="hero-image-container">
-                  <div className="hero-image-layer hero-image-main">
-                    <div className="hero-default-content">
-                      <div className="hero-default-icon">👤</div>
-                      <div className="hero-default-text">
-                        Your<br />Profile
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <h2>Recent Activity</h2>
+        <Header variant="h1">User Profile</Header>
+        <form onSubmit={handleProfileSubmit}>
+          <FormField label="First Name">
+            <Input
+              value={profile.firstName}
+              onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
+              required
+            />
+          </FormField>
+          <FormField label="Last Name">
+            <Input
+              value={profile.lastName}
+              onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
+              required
+            />
+          </FormField>
+          <FormField label="Bio">
+            <Textarea
+              value={profile.bio}
+              onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+              resize="vertical"
+            />
+          </FormField>
+          <FormField label="Notification Preferences">
+            <Toggle
+              checked={notifications.email}
+              onChange={() => setNotifications({...notifications, email: !notifications.email})}
+              label="Email Notifications"
+            />
+            <Toggle
+              checked={notifications.sms}
+              onChange={() => setNotifications({...notifications, sms: !notifications.sms})}
+              label="SMS Notifications"
+            />
+          </FormField>
+          <Button type="submit">Save Changes</Button>
+        </form>
+
+        {message && (
+          <Alert type="success" onDismiss={() => setMessage('')}>
+            {message}
+          </Alert>
+        )}
+
+        <ContentLayout header={<Header variant="h2">Community Activity</Header>}>
           <ul>
-            {activity.slice(0, 5).map(a => (
+            {activity.map(a => (
               <li key={a.id}>{a.content}</li>
             ))}
           </ul>
-        </div>
+        </ContentLayout>
       </Container>
-    </ContentLayout>
+    </SpaceBetween>
   );
 }

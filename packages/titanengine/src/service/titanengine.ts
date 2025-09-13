@@ -7,6 +7,7 @@ import { PexelsProvider } from '../providers/pexels-provider';
 import { UnsplashProvider } from '../providers/unsplash-provider';
 import { PlaceholderProvider } from '../providers/placeholder-provider';
 import { Automatic1111Provider } from '../providers/automatic1111-provider';
+import { BedrockSDXLProvider } from '../providers/bedrock-sdxl-provider';
 import { CulturalValidationAgent } from '@madmall/bedrock-agents';
 import { DspyBridge, CareRecommendation } from './dspy-bridge';
 import { TitanKCache } from './kcache';
@@ -24,6 +25,7 @@ export class TitanEngine {
   private readonly unsplash: UnsplashProvider;
   private readonly placeholder: PlaceholderProvider;
   private readonly a1111: Automatic1111Provider;
+  private readonly bedrock: BedrockSDXLProvider;
   private readonly culturalAgent: CulturalValidationAgent;
   private readonly dspy: DspyBridge;
   private readonly kcache: TitanKCache<CareRecommendation>;
@@ -45,6 +47,7 @@ export class TitanEngine {
     this.unsplash = new UnsplashProvider();
     this.placeholder = new PlaceholderProvider();
     this.a1111 = new Automatic1111Provider();
+    this.bedrock = new BedrockSDXLProvider();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const region = (globalThis as any).process?.env?.AWS_REGION || 'us-east-1';
     this.culturalAgent = new CulturalValidationAgent(region);
@@ -116,6 +119,29 @@ export class TitanEngine {
     return created;
   }
 
+  async generateWithBedrock(params: { prompt: string; category: string; count?: number }) {
+    const results = await this.bedrock.generate({ prompt: params.prompt, count: params.count });
+    const created = [] as any[];
+    for (const r of results) {
+      const scores = await this.validateImageContent({ url: '', altText: params.prompt, category: params.category });
+      const status = scores.issues && scores.issues.length > 0 ? 'flagged' : 'active';
+      const id = uuidv4();
+      const url = `data:image/png;base64,${r.imageBase64}`;
+      await this.images.createFromUrl({
+        imageId: id,
+        url,
+        altText: params.prompt,
+        category: params.category,
+        tags: [params.prompt, params.category].filter(Boolean),
+        source: 'generated',
+        sourceInfo: { provider: 'bedrock', model: 'sdxl' },
+      });
+      const updated = await this.images.markValidated(id, scores, status);
+      created.push(updated);
+    }
+    return created;
+  }
+
   async validateImageContent(image: { url: string; altText: string; category: string }) {
     const input = {
       content: image.altText,
@@ -148,6 +174,35 @@ export class TitanEngine {
       };
     }
     return { cultural: 0, sensitivity: 0, inclusivity: 0, issues: ['validation_failed'] };
+  }
+
+  async auditImageAssets(limit = 20) {
+    const pending = await this.images.listPending(limit);
+    for (const img of pending) {
+      const scores = await this.validateImageContent({
+        url: img.url,
+        altText: img.altText,
+        category: img.category,
+      });
+      const isBlackWoman =
+        scores.cultural >= 0.8 &&
+        scores.inclusivity >= 0.8 &&
+        !(scores.issues || []).some((i: string) => i.includes('cultural_mismatch'));
+      if (!isBlackWoman) {
+        const [placeholder] = await this.placeholder.generate({ category: img.category, count: 1 });
+        await this.images.update(img.PK, img.SK, {
+          url: placeholder.url,
+          thumbnailUrl: placeholder.thumbnailUrl,
+          altText: placeholder.altText,
+          tags: placeholder.tags as any,
+          source: placeholder.source as any,
+          sourceInfo: placeholder.sourceInfo as any,
+        } as any);
+        await this.images.markValidated(img.imageId, { ...scores, validator: 'audit' }, 'flagged');
+      } else {
+        await this.images.markValidated(img.imageId, { ...scores, validator: 'audit' }, 'active');
+      }
+    }
   }
 
   async generateCareModel(input: {

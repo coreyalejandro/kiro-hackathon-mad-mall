@@ -92,6 +92,8 @@ export interface Article {
     avatar: string;
   };
   category: string;
+  format: 'article' | 'video' | 'podcast';
+  credibility: 'peer-reviewed' | 'expert' | 'community';
   tags: string[];
   readingTime: number;
   publishedAt: Date;
@@ -214,6 +216,8 @@ export interface ProductFilters {
 
 export interface ArticleFilters {
   category?: string;
+  format?: string;
+  credibility?: string;
   tags?: string[];
   readingTime?: 'short' | 'medium' | 'long';
   author?: string;
