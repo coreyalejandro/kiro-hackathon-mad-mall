@@ -4,27 +4,24 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug Local Bootstrap Script",
-      "program": "${workspaceFolder}/node_modules/ts-node/dist/bin.js",
-      "args": [
-        "${workspaceFolder}/scripts/bootstrap-local.ts"
-      ],
+      "name": "Lambda: healthHandler (local)",
+      "cwd": "${workspaceFolder}/packages/api-gateway",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["run", "dev-local"],
+      "console": "integratedTerminal",
+      "autoAttachChildProcesses": true,
       "env": {
-        "ENVIRONMENT": "development",
-        "AWS_REGION": "us-east-1",
-        "AWS_DEFAULT_REGION": "us-east-1",
-        "LOCALSTACK_URL": "http://localhost:4566",
-        "DYNAMODB_ENDPOINT": "http://localhost:4566",
-        "DYNAMODB_TABLE_NAME": "madmall-development-main",
-        "USER_CONTENT_BUCKET": "madmall-development-user-content"
+        "HANDLER": "healthHandler"
       },
-      "cwd": "${workspaceFolder}"
+      "port": 9229
     },
     {
-      "type": "node-terminal",
-      "name": "Next.js Web App Dev",
-      "request": "launch",
-      "command": "pnpm --filter @madmall/web-app dev"
+      "type": "pwa-node",
+      "request": "attach",
+      "name": "Attach to Node (9229)",
+      "port": 9229,
+      "restart": true,
+      "autoAttachChildProcesses": true
     },
     {
       "type": "node",
