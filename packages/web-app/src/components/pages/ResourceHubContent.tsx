@@ -1,8 +1,41 @@
 'use client';
 
-import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { useState } from 'react';
+import Link from 'next/link';
+import {
+  Container,
+  Header,
+  ContentLayout,
+  SpaceBetween,
+  Select,
+  Spinner,
+} from '@cloudscape-design/components';
+import {
+  useArticles,
+  useArticleCategories,
+  useArticleFormats,
+  useArticleCredibilityLevels,
+} from '@/lib/queries';
 
 export function ResourceHubContent() {
+  const [topic, setTopic] = useState<string | null>(null);
+  const [format, setFormat] = useState<string | null>(null);
+  const [credibility, setCredibility] = useState<string | null>(null);
+
+  const { data, isLoading } = useArticles({
+    category: topic || undefined,
+    format: format || undefined,
+    credibility: credibility || undefined,
+  });
+
+  const { data: categoriesData } = useArticleCategories();
+  const { data: formatsData } = useArticleFormats();
+  const { data: credibilityData } = useArticleCredibilityLevels();
+
+  const categoryOptions = (categoriesData?.data || []).map((c) => ({ label: c, value: c }));
+  const formatOptions = (formatsData?.data || []).map((f) => ({ label: f, value: f }));
+  const credibilityOptions = (credibilityData?.data || []).map((c) => ({ label: c, value: c }));
+
   return (
     <ContentLayout
       header={
@@ -50,6 +83,46 @@ export function ResourceHubContent() {
             </div>
           </div>
         </div>
+      </Container>
+
+      <Container>
+        <SpaceBetween size="l">
+          <SpaceBetween direction="horizontal" size="s">
+            <Select
+              placeholder="Topic"
+              selectedOption={topic ? { label: topic, value: topic } : null}
+              onChange={({ detail }) => setTopic(detail.selectedOption?.value || null)}
+              options={categoryOptions}
+            />
+            <Select
+              placeholder="Format"
+              selectedOption={format ? { label: format, value: format } : null}
+              onChange={({ detail }) => setFormat(detail.selectedOption?.value || null)}
+              options={formatOptions}
+            />
+            <Select
+              placeholder="Credibility"
+              selectedOption={credibility ? { label: credibility, value: credibility } : null}
+              onChange={({ detail }) => setCredibility(detail.selectedOption?.value || null)}
+              options={credibilityOptions}
+            />
+          </SpaceBetween>
+
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <SpaceBetween size="m">
+              {(data?.data || []).map((article) => (
+                <div key={article.id}>
+                  <h3>
+                    <Link href={`/resources/${article.id}`}>{article.title}</Link>
+                  </h3>
+                  <p>{article.excerpt}</p>
+                </div>
+              ))}
+            </SpaceBetween>
+          )}
+        </SpaceBetween>
       </Container>
     </ContentLayout>
   );
