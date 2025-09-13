@@ -105,8 +105,9 @@ export interface Story {
   id: string;
   title: string;
   content: string;
-  type: 'text' | 'audio';
+  type: 'text' | 'audio' | 'video';
   audioUrl?: string;
+  videoUrl?: string;
   author: {
     name: string;
     avatar: string;
@@ -117,6 +118,9 @@ export interface Story {
     likes: number;
     comments: number;
     shares: number;
+    views: number;
+    saves: number;
+    helpfulVotes: number;
   };
   isAnonymous: boolean;
 }

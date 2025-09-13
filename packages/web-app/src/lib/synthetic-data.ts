@@ -362,8 +362,9 @@ export const generateStory = (): Story => {
     id,
     title: story.title,
     content: story.content,
-    type: randomChoice(['text', 'audio']),
+    type: randomChoice(['text', 'audio', 'video']),
     audioUrl: Math.random() > 0.5 ? `https://example.com/audio/${id}.mp3` : undefined,
+    videoUrl: Math.random() > 0.5 ? `https://example.com/video/${id}.mp4` : undefined,
     author: {
       name: Math.random() > 0.3 ? randomChoice(BLACK_WOMEN_NAMES) : 'Anonymous Sister',
       avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${id}`
@@ -373,7 +374,10 @@ export const generateStory = (): Story => {
     engagement: {
       likes: randomInt(5, 50),
       comments: randomInt(2, 20),
-      shares: randomInt(0, 15)
+      shares: randomInt(0, 15),
+      views: randomInt(20, 200),
+      saves: randomInt(0, 10),
+      helpfulVotes: randomInt(0, 5),
     },
     isAnonymous: Math.random() > 0.7
   };

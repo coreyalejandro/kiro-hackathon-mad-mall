@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { StoryUploader } from '@/components/stories/StoryUploader';
+import { StoryList } from '@/components/stories/StoryList';
 import { api } from '@/lib/mock-api';
 import { Story } from '@/lib/types';
 
@@ -59,6 +61,7 @@ export function StoryBoothContent() {
             </div>
           </div>
         </div>
+
         <div>
           <h2>Recent Stories</h2>
           <ul>
@@ -68,6 +71,9 @@ export function StoryBoothContent() {
           </ul>
         </div>
       </Container>
+
+      <StoryUploader />
+      <StoryList />
     </ContentLayout>
   );
 }
