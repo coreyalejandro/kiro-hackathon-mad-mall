@@ -1,779 +1,191 @@
 {
-  "components": [
-    {
-      "id": "uthform",
-      "name": "AuthForm",
-      "codeName": "AuthForm",
-      "type": "component",
-      "filePath": "components/AuthForm.tsx",
-      "description": "Auto-generated entry for AuthForm",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [],
-      "usedComponents": [
-        "void",
-        "AuthFormData",
-        "Record",
-        "string",
-        "Container",
-        "SpaceBetween",
-        "Box",
-        "Header",
-        "Alert",
-        "form",
-        "FormField",
-        "Input",
-        "Checkbox",
-        "Link",
-        "Button"
-      ],
-      "usedOn": [
-        "Authentication"
-      ],
-      "props": []
-    },
-    {
-      "id": "ommunityimage",
-      "name": "CommunityImage",
-      "codeName": "CommunityImage",
-      "type": "component",
-      "filePath": "components/CommunityImage.tsx",
-      "description": "Auto-generated entry for CommunityImage",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [
-        "imageLibrary"
-      ],
-      "usedComponents": [
-        "img"
-      ],
-      "usedOn": [],
-      "props": []
-    },
-    {
-      "id": "ommunitytestimonials",
-      "name": "CommunityTestimonials",
-      "codeName": "CommunityTestimonials",
-      "type": "component",
-      "filePath": "components/CommunityTestimonials.tsx",
-      "description": "Auto-generated entry for CommunityTestimonials",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [
-        "CommunityImage"
-      ],
-      "usedComponents": [
-        "Container",
-        "SpaceBetween",
-        "Box",
-        "Header",
-        "Grid",
-        "CommunityImage"
-      ],
-      "usedOn": [
-        "Concourse"
-      ],
-      "props": []
-    },
-    {
-      "id": "eaturedbrands",
-      "name": "FeaturedBrands",
-      "codeName": "FeaturedBrands",
-      "type": "component",
-      "filePath": "components/FeaturedBrands.tsx",
-      "description": "Auto-generated entry for FeaturedBrands",
-      "status": "active",
-      "lastModified": "2025-08-29",
-      "issues": [],
-      "dependencies": [],
-      "usedComponents": [
-        "Container",
-        "Header",
-        "Cards",
-        "SpaceBetween",
-        "Icon",
-        "Badge",
-        "Box",
-        "Button"
-      ],
-      "usedOn": [],
-      "props": []
-    },
-    {
-      "id": "eaturedbusinesses",
-      "name": "FeaturedBusinesses",
-      "codeName": "FeaturedBusinesses",
-      "type": "component",
-      "filePath": "components/FeaturedBusinesses.tsx",
-      "description": "Auto-generated entry for FeaturedBusinesses",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [
-        "CommunityImage"
-      ],
-      "usedComponents": [
-        "Container",
-        "SpaceBetween",
-        "Box",
-        "Header",
-        "Grid",
-        "CommunityImage",
-        "Badge",
-        "Button"
-      ],
-      "usedOn": [
-        "Marketplace"
-      ],
-      "props": []
-    },
-    {
-      "id": "eaturedcircles",
-      "name": "FeaturedCircles",
-      "codeName": "FeaturedCircles",
-      "type": "component",
-      "filePath": "components/FeaturedCircles.tsx",
-      "description": "Auto-generated entry for FeaturedCircles",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [
-        "CommunityImage"
-      ],
-      "usedComponents": [
-        "Container",
-        "Header",
-        "Grid",
-        "Box",
-        "SpaceBetween",
-        "CommunityImage",
-        "Badge",
-        "Button"
-      ],
-      "usedOn": [
-        "PeerCircles"
-      ],
-      "props": []
-    },
-    {
-      "id": "erosection",
-      "name": "HeroSection",
-      "codeName": "HeroSection",
-      "type": "component",
-      "filePath": "components/HeroSection.tsx",
-      "description": "Auto-generated entry for HeroSection",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [
-        "imageLibrary"
-      ],
-      "usedComponents": [
-        "h1",
-        "p",
-        "button",
-        "img"
-      ],
-      "usedOn": [
-        "Authentication",
-        "ComedyLounge",
-        "Concourse",
-        "Marketplace",
-        "PeerCircles",
-        "ResourceHub",
-        "StoryBooth"
-      ],
-      "props": []
-    },
-    {
-      "id": "nteractivestats",
-      "name": "InteractiveStats",
-      "codeName": "InteractiveStats",
-      "type": "component",
-      "filePath": "components/InteractiveStats.tsx",
-      "description": "Auto-generated entry for InteractiveStats",
-      "status": "active",
-      "lastModified": "2025-08-29",
-      "issues": [],
-      "dependencies": [],
-      "usedComponents": [
-        "StatItem",
-        "SpaceBetween",
-        "Box"
-      ],
-      "usedOn": [
-        "Concourse"
-      ],
-      "props": []
-    },
-    {
-      "id": "oadingcard",
-      "name": "LoadingCard",
-      "codeName": "LoadingCard",
-      "type": "component",
-      "filePath": "components/LoadingCard.tsx",
-      "description": "Auto-generated entry for LoadingCard",
-      "status": "active",
-      "lastModified": "2025-08-29",
-      "issues": [],
-      "dependencies": [],
-      "usedComponents": [
-        "Box",
-        "SpaceBetween"
-      ],
-      "usedOn": [
-        "ComedyLounge",
-        "Marketplace",
-        "ResourceHub",
-        "StoryBooth"
-      ],
-      "props": []
-    },
-    {
-      "id": "nboardingflow",
-      "name": "OnboardingFlow",
-      "codeName": "OnboardingFlow",
-      "type": "component",
-      "filePath": "components/OnboardingFlow.tsx",
-      "description": "Auto-generated entry for OnboardingFlow",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [],
-      "usedComponents": [
-        "void",
-        "OnboardingData",
-        "SpaceBetween",
-        "Box",
-        "Header",
-        "FormField",
-        "Multiselect",
-        "RadioGroup",
-        "Container",
-        "ProgressBar",
-        "Alert",
-        "Button"
-      ],
-      "usedOn": [
-        "Authentication"
-      ],
-      "props": []
-    },
-    {
-      "id": "earchwithfilters",
-      "name": "SearchWithFilters",
-      "codeName": "SearchWithFilters",
-      "type": "component",
-      "filePath": "components/SearchWithFilters.tsx",
-      "description": "Auto-generated entry for SearchWithFilters",
-      "status": "active",
-      "lastModified": "2025-08-29",
-      "issues": [],
-      "dependencies": [],
-      "usedComponents": [
-        "string",
-        "SpaceBetween",
-        "Input",
-        "Button"
-      ],
-      "usedOn": [],
-      "props": []
-    },
-    {
-      "id": "keletonloader",
-      "name": "SkeletonLoader",
-      "codeName": "SkeletonLoader",
-      "type": "component",
-      "filePath": "components/SkeletonLoader.tsx",
-      "description": "Auto-generated entry for SkeletonLoader",
-      "status": "active",
-      "lastModified": "2025-08-29",
-      "issues": [],
-      "dependencies": [],
-      "usedComponents": [
-        "Box",
-        "SpaceBetween",
-        "style"
-      ],
-      "usedOn": [],
-      "props": []
-    },
-    {
-      "id": "estcomponent",
-      "name": "TestComponent",
-      "codeName": "TestComponent",
-      "type": "component",
-      "filePath": "components/TestComponent.tsx",
-      "description": "Auto-generated entry for TestComponent",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [],
-      "usedComponents": [
-        "Box",
-        "Header"
-      ],
-      "usedOn": [],
-      "props": []
-    },
-    {
-      "id": "oastnotification",
-      "name": "ToastNotification",
-      "codeName": "ToastNotification",
-      "type": "component",
-      "filePath": "components/ToastNotification.tsx",
-      "description": "Auto-generated entry for ToastNotification",
-      "status": "active",
-      "lastModified": "2025-08-29",
-      "issues": [],
-      "dependencies": [],
-      "usedComponents": [
-        "SpaceBetween",
-        "button"
-      ],
-      "usedOn": [
-        "Authentication",
-        "ComedyLounge",
-        "Marketplace",
-        "ResourceHub",
-        "StoryBooth"
-      ],
-      "props": []
-    },
-    {
-      "id": "serprofile",
-      "name": "UserProfile",
-      "codeName": "UserProfile",
-      "type": "component",
-      "filePath": "components/UserProfile.tsx",
-      "description": "Auto-generated entry for UserProfile",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [],
-      "usedComponents": [
-        "void",
-        "UserProfileData",
-        "SpaceBetween",
-        "Header",
-        "FormField",
-        "Input",
-        "Textarea",
-        "RadioGroup",
-        "Multiselect",
-        "Alert",
-        "Toggle",
-        "Box",
-        "Button",
-        "Container",
-        "Tabs"
-      ],
-      "usedOn": [],
-      "props": []
+    "components": [
+        {
+            "id": "hero-section",
+            "name": "HeroSection",
+            "codeName": "HeroSection",
+            "type": "component",
+            "filePath": "src/components/HeroSection.tsx",
+            "usedOn": [
+                "Concourse",
+                "PeerCircles",
+                "ComedyLounge",
+                "StoryBooth",
+                "Marketplace",
+                "ResourceHub"
+            ],
+            "description": "Main hero banner with page name, title, subtitle, and CTAs",
+            "props": [
+                "pageName",
+                "title",
+                "subtitle",
+                "primaryCTA",
+                "secondaryCTA",
+                "backgroundGradient",
+                "floatingElements"
+            ],
+            "status": "active",
+            "lastModified": "2025-01-27",
+            "issues": [],
+            "dependencies": [
+                "hero-sections.css"
+            ]
+        },
+        {
+            "id": "featured-brands",
+            "name": "FeaturedBrands",
+            "codeName": "FeaturedBrands",
+            "type": "component",
+            "filePath": "src/components/FeaturedBrands.tsx",
+            "usedOn": [
+                "Concourse",
+                "PeerCircles",
+                "ComedyLounge",
+                "StoryBooth",
+                "Marketplace",
+                "ResourceHub"
+            ],
+            "description": "Displays featured Black-owned wellness brands",
+            "props": [],
+            "status": "active",
+            "lastModified": "2025-01-27",
+            "issues": [],
+            "dependencies": []
+        }
+    ],
+    "pages": [
+        {
+            "id": "concourse",
+            "name": "Concourse",
+            "codeName": "Concourse",
+            "type": "page",
+            "filePath": "src/pages/Concourse.tsx",
+            "route": "/",
+            "description": "Main landing page - wellness mall overview",
+            "components": [
+                "HeroSection",
+                "FeaturedBrands"
+            ],
+            "status": "active",
+            "lastModified": "2025-01-27",
+            "issues": []
+        },
+        {
+            "id": "peer-circles",
+            "name": "Peer Circles",
+            "codeName": "PeerCircles",
+            "type": "page",
+            "filePath": "src/pages/PeerCircles.tsx",
+            "route": "/circles",
+            "description": "Community support groups and peer connections",
+            "components": [
+                "HeroSection",
+                "FeaturedBrands"
+            ],
+            "status": "active",
+            "lastModified": "2025-01-27",
+            "issues": []
+        },
+        {
+            "id": "comedy-lounge",
+            "name": "Comedy Lounge",
+            "codeName": "ComedyLounge",
+            "type": "page",
+            "filePath": "src/pages/ComedyLounge.tsx",
+            "route": "/comedy",
+            "description": "Therapeutic comedy content and mood tracking",
+            "components": [
+                "HeroSection",
+                "FeaturedBrands"
+            ],
+            "status": "active",
+            "lastModified": "2025-01-27",
+            "issues": []
+        },
+        {
+            "id": "story-booth",
+            "name": "Story Booth",
+            "codeName": "StoryBooth",
+            "type": "page",
+            "filePath": "src/pages/StoryBooth.tsx",
+            "route": "/stories",
+            "description": "Community storytelling and experience sharing",
+            "components": [
+                "HeroSection",
+                "FeaturedBrands"
+            ],
+            "status": "active",
+            "lastModified": "2025-01-27",
+            "issues": []
+        },
+        {
+            "id": "marketplace",
+            "name": "Marketplace",
+            "codeName": "Marketplace",
+            "type": "page",
+            "filePath": "src/pages/Marketplace.tsx",
+            "route": "/marketplace",
+            "description": "Black-owned wellness brands and products",
+            "components": [
+                "HeroSection",
+                "FeaturedBrands"
+            ],
+            "status": "active",
+            "lastModified": "2025-01-27",
+            "issues": []
+        },
+        {
+            "id": "resource-hub",
+            "name": "Resource Hub",
+            "codeName": "ResourceHub",
+            "type": "page",
+            "filePath": "src/pages/ResourceHub.tsx",
+            "route": "/resources",
+            "description": "Educational content and wellness resources",
+            "components": [
+                "HeroSection",
+                "FeaturedBrands"
+            ],
+            "status": "active",
+            "lastModified": "2025-01-27",
+            "issues": []
+        }
+    ],
+    "styles": [
+        {
+            "id": "hero-sections-css",
+            "name": "Hero Sections CSS",
+            "codeName": "hero-sections.css",
+            "type": "stylesheet",
+            "filePath": "src/styles/hero-sections.css",
+            "usedBy": [
+                "HeroSection"
+            ],
+            "description": "AWS-style hero sections with neural depth motion effects",
+            "status": "active",
+            "lastModified": "2025-01-27",
+            "issues": []
+        },
+        {
+            "id": "kadir-nelson-theme",
+            "name": "Kadir Nelson Theme",
+            "codeName": "kadir-nelson-theme.css",
+            "type": "stylesheet",
+            "filePath": "src/styles/kadir-nelson-theme.css",
+            "usedBy": [
+                "All pages"
+            ],
+            "description": "Kadir Nelson-inspired color palette and theme variables",
+            "status": "active",
+            "lastModified": "2025-01-27",
+            "issues": []
+        }
+    ],
+    "metadata": {
+        "lastUpdated": "2025-01-27",
+        "version": "1.0.0",
+        "totalComponents": 2,
+        "totalPages": 6,
+        "totalStyles": 2
     }
-  ],
-  "pages": [
-    {
-      "id": "uthentication",
-      "name": "Authentication",
-      "codeName": "Authentication",
-      "type": "page",
-      "filePath": "pages/Authentication.tsx",
-      "description": "Auto-generated entry for Authentication",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [
-        "HeroSection",
-        "AuthForm",
-        "OnboardingFlow",
-        "ToastNotification"
-      ],
-      "usedComponents": [
-        "AuthStep",
-        "HeroSection",
-        "br",
-        "SpaceBetween",
-        "ToastNotification",
-        "AuthForm",
-        "Container",
-        "Box",
-        "Header",
-        "OnboardingFlow"
-      ],
-      "route": "/authentication",
-      "components": [
-        "AuthStep",
-        "HeroSection",
-        "br",
-        "SpaceBetween",
-        "ToastNotification",
-        "AuthForm",
-        "Container",
-        "Box",
-        "Header",
-        "OnboardingFlow"
-      ]
-    },
-    {
-      "id": "omedylounge",
-      "name": "ComedyLounge",
-      "codeName": "ComedyLounge",
-      "type": "page",
-      "filePath": "pages/ComedyLounge.tsx",
-      "description": "Auto-generated entry for ComedyLounge",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [
-        "HeroSection",
-        "LoadingCard",
-        "ToastNotification",
-        "useApiData",
-        "timeUtils"
-      ],
-      "usedComponents": [
-        "HeroSection",
-        "SpaceBetween",
-        "ToastNotification",
-        "Container",
-        "Header",
-        "Grid",
-        "Input",
-        "select",
-        "option",
-        "Box",
-        "Badge",
-        "Alert",
-        "LoadingCard",
-        "Button",
-        "Cards"
-      ],
-      "route": "/comedylounge",
-      "components": [
-        "HeroSection",
-        "SpaceBetween",
-        "ToastNotification",
-        "Container",
-        "Header",
-        "Grid",
-        "Input",
-        "select",
-        "option",
-        "Box",
-        "Badge",
-        "Alert",
-        "LoadingCard",
-        "Button",
-        "Cards"
-      ]
-    },
-    {
-      "id": "oncourse",
-      "name": "Concourse",
-      "codeName": "Concourse",
-      "type": "page",
-      "filePath": "pages/Concourse.tsx",
-      "description": "Auto-generated entry for Concourse",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [
-        "HeroSection",
-        "InteractiveStats",
-        "CommunityTestimonials"
-      ],
-      "usedComponents": [
-        "HeroSection",
-        "SpaceBetween",
-        "Container",
-        "Box",
-        "Header",
-        "InteractiveStats",
-        "Grid",
-        "Badge",
-        "Button",
-        "CommunityTestimonials"
-      ],
-      "route": "/concourse",
-      "components": [
-        "HeroSection",
-        "SpaceBetween",
-        "Container",
-        "Box",
-        "Header",
-        "InteractiveStats",
-        "Grid",
-        "Badge",
-        "Button",
-        "CommunityTestimonials"
-      ]
-    },
-    {
-      "id": "arketplace",
-      "name": "Marketplace",
-      "codeName": "Marketplace",
-      "type": "page",
-      "filePath": "pages/Marketplace.tsx",
-      "description": "Auto-generated entry for Marketplace",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [
-        "HeroSection",
-        "LoadingCard",
-        "ToastNotification",
-        "FeaturedBusinesses",
-        "useApiData"
-      ],
-      "usedComponents": [
-        "HeroSection",
-        "SpaceBetween",
-        "ToastNotification",
-        "Container",
-        "Header",
-        "Grid",
-        "Input",
-        "select",
-        "option",
-        "Badge",
-        "Alert",
-        "LoadingCard",
-        "Box",
-        "Button",
-        "Cards",
-        "strong",
-        "em",
-        "FeaturedBusinesses"
-      ],
-      "route": "/marketplace",
-      "components": [
-        "HeroSection",
-        "SpaceBetween",
-        "ToastNotification",
-        "Container",
-        "Header",
-        "Grid",
-        "Input",
-        "select",
-        "option",
-        "Badge",
-        "Alert",
-        "LoadingCard",
-        "Box",
-        "Button",
-        "Cards",
-        "strong",
-        "em",
-        "FeaturedBusinesses"
-      ]
-    },
-    {
-      "id": "eercircles",
-      "name": "PeerCircles",
-      "codeName": "PeerCircles",
-      "type": "page",
-      "filePath": "pages/PeerCircles.tsx",
-      "description": "Auto-generated entry for PeerCircles",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [
-        "HeroSection",
-        "FeaturedCircles"
-      ],
-      "usedComponents": [
-        "HeroSection",
-        "SpaceBetween",
-        "FeaturedCircles",
-        "Container",
-        "Header",
-        "Grid",
-        "Box",
-        "Badge",
-        "Button",
-        "strong",
-        "em"
-      ],
-      "route": "/peercircles",
-      "components": [
-        "HeroSection",
-        "SpaceBetween",
-        "FeaturedCircles",
-        "Container",
-        "Header",
-        "Grid",
-        "Box",
-        "Badge",
-        "Button",
-        "strong",
-        "em"
-      ]
-    },
-    {
-      "id": "esourcehub",
-      "name": "ResourceHub",
-      "codeName": "ResourceHub",
-      "type": "page",
-      "filePath": "pages/ResourceHub.tsx",
-      "description": "Auto-generated entry for ResourceHub",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [
-        "HeroSection",
-        "LoadingCard",
-        "ToastNotification",
-        "useApiData"
-      ],
-      "usedComponents": [
-        "HeroSection",
-        "SpaceBetween",
-        "ToastNotification",
-        "Container",
-        "Header",
-        "Grid",
-        "Input",
-        "select",
-        "option",
-        "Badge",
-        "Alert",
-        "LoadingCard",
-        "Box",
-        "Button",
-        "Cards",
-        "strong"
-      ],
-      "route": "/resourcehub",
-      "components": [
-        "HeroSection",
-        "SpaceBetween",
-        "ToastNotification",
-        "Container",
-        "Header",
-        "Grid",
-        "Input",
-        "select",
-        "option",
-        "Badge",
-        "Alert",
-        "LoadingCard",
-        "Box",
-        "Button",
-        "Cards",
-        "strong"
-      ]
-    },
-    {
-      "id": "torybooth",
-      "name": "StoryBooth",
-      "codeName": "StoryBooth",
-      "type": "page",
-      "filePath": "pages/StoryBooth.tsx",
-      "description": "Auto-generated entry for StoryBooth",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [
-        "HeroSection",
-        "LoadingCard",
-        "ToastNotification",
-        "useApiData",
-        "timeUtils"
-      ],
-      "usedComponents": [
-        "HeroSection",
-        "SpaceBetween",
-        "ToastNotification",
-        "Container",
-        "Header",
-        "Grid",
-        "Input",
-        "select",
-        "option",
-        "Badge",
-        "Alert",
-        "LoadingCard",
-        "Box",
-        "Button",
-        "Cards",
-        "Textarea"
-      ],
-      "route": "/storybooth",
-      "components": [
-        "HeroSection",
-        "SpaceBetween",
-        "ToastNotification",
-        "Container",
-        "Header",
-        "Grid",
-        "Input",
-        "select",
-        "option",
-        "Badge",
-        "Alert",
-        "LoadingCard",
-        "Box",
-        "Button",
-        "Cards",
-        "Textarea"
-      ]
-    }
-  ],
-  "styles": [
-    {
-      "id": "oncourse-interactions",
-      "name": "concourse-interactions",
-      "codeName": "concourse-interactions",
-      "type": "stylesheet",
-      "filePath": "styles/concourse-interactions.css",
-      "description": "Auto-generated entry for concourse-interactions",
-      "status": "active",
-      "lastModified": "2025-08-29",
-      "issues": [],
-      "dependencies": [],
-      "usedComponents": [],
-      "usedBy": [
-        "Concourse"
-      ]
-    },
-    {
-      "id": "ero-sections",
-      "name": "hero-sections",
-      "codeName": "hero-sections",
-      "type": "stylesheet",
-      "filePath": "styles/hero-sections.css",
-      "description": "Auto-generated entry for hero-sections",
-      "status": "active",
-      "lastModified": "2025-08-30",
-      "issues": [],
-      "dependencies": [],
-      "usedComponents": [],
-      "usedBy": []
-    },
-    {
-      "id": "adir-nelson-theme",
-      "name": "kadir-nelson-theme",
-      "codeName": "kadir-nelson-theme",
-      "type": "stylesheet",
-      "filePath": "styles/kadir-nelson-theme.css",
-      "description": "Auto-generated entry for kadir-nelson-theme",
-      "status": "active",
-      "lastModified": "2025-08-29",
-      "issues": [],
-      "dependencies": [],
-      "usedComponents": [],
-      "usedBy": []
-    }
-  ],
-  "metadata": {
-    "lastUpdated": "2025-08-30",
-    "version": "1.0.0",
-    "totalComponents": 15,
-    "totalPages": 7,
-    "totalStyles": 3
-  }
 }
