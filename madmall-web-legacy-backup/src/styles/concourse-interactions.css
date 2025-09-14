@@ -291,6 +291,29 @@
   }
 }
 
+/* Floating Elements Styles */
+.floating-element-sparkle {
+  font-size: 2rem;
+  opacity: 0.6;
+}
+
+.floating-element-star {
+  font-size: 1.5rem;
+  opacity: 0.7;
+}
+
+.floating-element-glow {
+  font-size: 1.8rem;
+  opacity: 0.5;
+}
+
+/* Mall Section Container Styles */
+.mall-section-container {
+  padding: 1.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
 /* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
   .mall-section-card:hover {

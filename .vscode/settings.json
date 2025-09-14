@@ -7,5 +7,5 @@
     "files.exclude": {
         "**/madmall-web-legacy-backup": true
     },
-    "kiroAgent.configureMCP": "Disabled"
+    "kiroAgent.configureMCP": "Enabled"
 }

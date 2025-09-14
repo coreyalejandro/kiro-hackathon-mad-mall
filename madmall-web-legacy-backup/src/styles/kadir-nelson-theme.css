@@ -248,3 +248,83 @@
   border: 1px solid rgba(255, 255, 255, 0.6) !important;
   color: white !important;
 }
+
+/* Story Booth Specific Styles */
+.story-container {
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+
+.story-category-select {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  background-color: white;
+  color: var(--color-warm-charcoal);
+}
+
+.story-category-select:focus {
+  outline: 2px solid var(--color-burnt-sienna);
+  outline-offset: 2px;
+  border-color: var(--color-burnt-sienna);
+}
+
+/* Floating Elements for Story Booth */
+.floating-element-microphone {
+  font-size: 2rem;
+  opacity: 0.6;
+}
+
+.floating-element-writing {
+  font-size: 1.5rem;
+  opacity: 0.7;
+}
+
+.floating-element-sparkle {
+  font-size: 1.8rem;
+  opacity: 0.5;
+}
+
+/* Comedy Lounge Specific Styles */
+.comedy-container {
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+
+.comedy-category-select {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  background-color: white;
+  color: var(--color-warm-charcoal);
+}
+
+.comedy-category-select:focus {
+  outline: 2px solid var(--color-burnt-sienna);
+  outline-offset: 2px;
+  border-color: var(--color-burnt-sienna);
+}
+
+/* Floating Elements for Comedy Lounge */
+.floating-element-laugh {
+  font-size: 2rem;
+  opacity: 0.6;
+}
+
+.floating-element-theater {
+  font-size: 1.5rem;
+  opacity: 0.7;
+}
+
+/* Responsive Design for Story Booth */
+@media (max-width: 768px) {
+  .story-container {
+    padding: 1rem;
+  }
+  
+  .comedy-container {
+    padding: 1rem;
+  }
+}

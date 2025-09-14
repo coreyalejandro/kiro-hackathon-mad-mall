@@ -40,9 +40,9 @@ export default function Concourse() {
   ];
 
   const floatingElements = [
-    <div style={{ fontSize: '2rem', opacity: 0.6 }}>✨</div>,
-    <div style={{ fontSize: '1.5rem', opacity: 0.7 }}>💫</div>,
-    <div style={{ fontSize: '1.8rem', opacity: 0.5 }}>🌟</div>
+    <div key="sparkle" className="floating-element-sparkle">✨</div>,
+    <div key="star" className="floating-element-star">💫</div>,
+    <div key="glow" className="floating-element-glow">🌟</div>
   ];
 
   return (
@@ -120,7 +120,7 @@ export default function Concourse() {
               tabIndex={0}
               role="button"
               aria-label="Visit Peer Circles"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
+              className="mall-section-container"
             >
               <Box padding="l">
               <SpaceBetween size="m">
@@ -160,7 +160,7 @@ export default function Concourse() {
               tabIndex={0}
               role="button"
               aria-label="Visit Comedy Lounge"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
+              className="mall-section-container"
             >
               <Box padding="l">
               <SpaceBetween size="m">
@@ -204,7 +204,7 @@ export default function Concourse() {
               tabIndex={0}
               role="button"
               aria-label="Visit Story Booth"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
+              className="mall-section-container"
             >
               <Box padding="l">
               <SpaceBetween size="m">
@@ -239,7 +239,7 @@ export default function Concourse() {
               tabIndex={0}
               role="button"
               aria-label="Visit Marketplace"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
+              className="mall-section-container"
             >
               <Box padding="l">
               <SpaceBetween size="m">
@@ -274,7 +274,7 @@ export default function Concourse() {
               tabIndex={0}
               role="button"
               aria-label="Visit Resource Hub"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
+              className="mall-section-container"
             >
               <Box padding="l">
               <SpaceBetween size="m">
@@ -317,7 +317,7 @@ export default function Concourse() {
               tabIndex={0}
               role="button"
               aria-label="Join Active Discussion"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
+              className="mall-section-container"
             >
               <Box padding="l">
               <SpaceBetween size="s">
@@ -346,7 +346,7 @@ export default function Concourse() {
               tabIndex={0}
               role="button"
               aria-label="Watch Comedy Content"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
+              className="mall-section-container"
             >
               <Box padding="l">
               <SpaceBetween size="s">
@@ -376,7 +376,7 @@ export default function Concourse() {
               tabIndex={0}
               role="button"
               aria-label="Shop Featured Brand"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
+              className="mall-section-container"
             >
               <Box padding="l">
               <SpaceBetween size="s">

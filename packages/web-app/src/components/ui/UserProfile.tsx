@@ -225,7 +225,13 @@ export default function UserProfile({
 
       <Header variant="h3">Data & Account</Header>
       
-      <Box padding="l" className="kadir-nelson-secondary">
+      <Box padding="l"
+        style={{
+          border: '1px solid var(--color-border-divider-default, #e9ebed)',
+          borderRadius: 8,
+          background: 'var(--color-background-container-content, #fff)'
+        }}
+      >
         <SpaceBetween size="s">
           <Header variant="h3">Account Actions</Header>
           <Box>
@@ -241,7 +247,13 @@ export default function UserProfile({
         </SpaceBetween>
       </Box>
 
-      <Box padding="l" className="kadir-nelson-gradient-warm">
+      <Box padding="l"
+        style={{
+          border: '1px solid var(--color-border-divider-default, #e9ebed)',
+          borderRadius: 8,
+          background: 'var(--color-background-warning, #fff7ed)'
+        }}
+      >
         <SpaceBetween size="s">
           <Header variant="h3">Danger Zone</Header>
           <Box>

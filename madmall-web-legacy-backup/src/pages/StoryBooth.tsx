@@ -17,6 +17,7 @@ import LoadingCard from '../components/LoadingCard';
 import ToastNotification from '../components/ToastNotification';
 import { useFeaturedStories, useUserStories, useContentInteraction } from '../hooks/useApiData';
 import { formatTimeAgo } from '../utils/timeUtils';
+import '../styles/kadir-nelson-theme.css';
 
 // Type definitions
 interface Story {
@@ -92,9 +93,9 @@ export default function StoryBooth() {
   }) || [];
 
   const floatingElements = [
-    <div style={{ fontSize: '2rem', opacity: 0.6 }}>🎤</div>,
-    <div style={{ fontSize: '1.5rem', opacity: 0.7 }}>📝</div>,
-    <div style={{ fontSize: '1.8rem', opacity: 0.5 }}>✨</div>
+    <div key="microphone" className="floating-element-microphone">🎤</div>,
+    <div key="writing" className="floating-element-writing">📝</div>,
+    <div key="sparkle" className="floating-element-sparkle">✨</div>
   ];
 
   return (
@@ -143,7 +144,7 @@ export default function StoryBooth() {
         />
 
         <Container>
-          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+          <div className="kadir-nelson-gradient-sage story-container">
             <Header variant="h2" className="text-rich-umber">Search Stories</Header>
           <SpaceBetween size="m">
             <Grid gridDefinition={[{ colspan: 8 }, { colspan: 4 }]}>
@@ -156,12 +157,9 @@ export default function StoryBooth() {
               <select 
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                style={{
-                  padding: '8px 12px',
-                  borderRadius: '4px',
-                  border: '1px solid #ccc',
-                  fontSize: '14px'
-                }}
+                aria-label="Select story category"
+                title="Choose a story category to filter by"
+                className="story-category-select"
               >
                 <option value="all">All Categories</option>
                 <option value="diagnosis">Diagnosis Journey</option>
@@ -185,7 +183,7 @@ export default function StoryBooth() {
         </Container>
 
         <Container>
-          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+          <div className="kadir-nelson-gradient-sage story-container">
             <Header variant="h2" className="text-rich-umber">Featured Stories</Header>
           {featuredError && (
             <Alert type="error">
@@ -252,7 +250,7 @@ export default function StoryBooth() {
         </Container>
 
         <Container>
-          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+          <div className="kadir-nelson-gradient-sage story-container">
             <Header variant="h2" className="text-rich-umber" id="community-stories">Story Collection ({filteredStories.length} stories)</Header>
           {storiesError && (
             <Alert type="error">
@@ -351,7 +349,7 @@ export default function StoryBooth() {
         </Container>
 
         <Container>
-          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+          <div className="kadir-nelson-gradient-sage story-container">
             <Header variant="h2" className="text-rich-umber" id="share-story">Share Your Story</Header>
           <SpaceBetween size="m">
             <Box padding="l" className="kadir-nelson-secondary">

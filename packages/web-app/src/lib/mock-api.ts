@@ -19,11 +19,7 @@ import {
 import {
   generateBulkData,
   generateActivityItem,
-  generateArticle,
-  generateComedyClip,
   generateMallSections,
-  generatePlatformStats,
-  generateProduct,
   generateStory
 } from './synthetic-data';
 

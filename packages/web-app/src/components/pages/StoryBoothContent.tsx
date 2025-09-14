@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { Container, ContentLayout } from '@cloudscape-design/components';
+import PageHeader from '@/components/ui/PageHeader';
 import { StoryUploader } from '@/components/stories/StoryUploader';
 import { StoryList } from '@/components/stories/StoryList';
 // import { api } from '@/lib/mock-api';
@@ -39,16 +40,7 @@ export function StoryBoothContent() {
   }, []);
 
   return (
-    <ContentLayout
-      header={
-        <Header
-          variant="h1"
-          description="Share and discover inspiring personal stories"
-        >
-          Story Booth
-        </Header>
-      }
-    >
+    <ContentLayout header={<PageHeader title="Story Booth" description="Share and discover inspiring personal stories" primaryAction={{ text: 'Share Your Story', onClick: () => {}, iconName: 'edit' }} secondaryAction={{ text: 'Read Stories', onClick: () => {}, iconName: 'document' }} />}>
       <Container>
         <div>
           <h2>Recent Stories</h2>

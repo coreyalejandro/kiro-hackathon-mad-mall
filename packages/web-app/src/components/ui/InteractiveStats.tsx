@@ -89,44 +89,13 @@ export default function InteractiveStats({
         {animatedStats.map((stat, index) => (
           <div 
             key={index}
-            className="stat-card"
-            style={{
-              padding: 'var(--space-scaled-m)',
-              textAlign: 'center',
-              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-              cursor: 'default'
-            }}
-            onMouseEnter={(e) => {
-              const target = e.currentTarget as HTMLElement;
-              target.style.transform = 'translateY(-4px)';
-              target.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
-            }}
-            onMouseLeave={(e) => {
-              const target = e.currentTarget as HTMLElement;
-              target.style.transform = 'translateY(0)';
-              target.style.boxShadow = 'none';
-            }}
+            className="stat-card stat-card-interactive"
           >
             <SpaceBetween size="xs">
-              <div 
-                style={{
-                  fontSize: 'var(--font-size-heading-xl)',
-                  filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))'
-                }}
-              >
+              <div className="stat-icon">
                 {stat.icon}
               </div>
-              <div 
-                className="stat-number" 
-                style={{
-                  fontSize: 'var(--font-size-heading-l)',
-                  fontWeight: 'bold',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text'
-                }}
-              >
+              <div className="stat-number stat-number-gradient">
                 {stat.value.toLocaleString()}{stat.suffix || ''}
               </div>
               <Box fontSize="body-s" color="text-body-secondary">

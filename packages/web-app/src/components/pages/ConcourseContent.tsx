@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Container, ContentLayout, Cards, SpaceBetween, Box, Button, Badge, Header } from '@cloudscape-design/components';
 import CloudscapeHero from '../ui/CloudscapeHero';
 import CommunityTestimonials from '../ui/CommunityTestimonials';
@@ -16,6 +17,10 @@ import {
   Button,
   Badge
 } from '@cloudscape-design/components';
+=======
+import { Container, ContentLayout, Cards, SpaceBetween, Box, Button, Badge } from '@cloudscape-design/components';
+import PageHeader from '../ui/PageHeader';
+>>>>>>> b014672 (feat(web): add Cloudscape PageHeader, migrate all pages, remove legacy hero/Kadir assets, add preview route)
 import CommunityTestimonials from '../ui/CommunityTestimonials';
 
 
@@ -119,6 +124,7 @@ export function ConcourseContent() {
 
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
     <ContentLayout header={
       <CloudscapeHero
         eyebrow="New"
@@ -147,8 +153,11 @@ export function ConcourseContent() {
         </Header>
       }
     >
+=======
+    <ContentLayout header={<PageHeader title="Concourse" description="Welcome to your wellness sanctuary. Explore community, joy, and trusted resources." primaryAction={{ text: 'Join a Circle', onClick: () => router.push('/circles'), iconName: 'users' }} secondaryAction={{ text: 'Explore Mall', onClick: () => document.getElementById('explore-start')?.scrollIntoView({ behavior: 'smooth' }), iconName: 'search' }} />}>
+>>>>>>> b014672 (feat(web): add Cloudscape PageHeader, migrate all pages, remove legacy hero/Kadir assets, add preview route)
       <SpaceBetween size="l">
-        <Container>
+        <Container id="explore-start">
           <Header variant="h2">Explore Your Wellness Mall</Header>
           <Cards
             cardDefinition={cardDefinition}

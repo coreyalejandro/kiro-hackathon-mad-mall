@@ -92,16 +92,15 @@ export default function FeaturedCircles({
           {circles.map((circle) => (
             <div 
               key={circle.id}
-              className="kadir-nelson-gradient-warm"
               style={{ 
-                borderRadius: '16px',
-                position: 'relative',
-                overflow: 'hidden',
-                minHeight: '350px',
+                borderRadius: '8px',
+                border: '1px solid var(--color-border-divider-default, #e9ebed)',
+                background: 'var(--color-background-container-content, #fff)',
+                minHeight: '320px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                padding: '1.5rem'
+                padding: '1rem'
               }}
             >
               <SpaceBetween size="m">
@@ -120,26 +119,10 @@ export default function FeaturedCircles({
                 </Box>
 
                 <Box textAlign="center">
-                  <div 
-                    style={{ 
-                      fontSize: '1.3rem',
-                      fontWeight: 'bold',
-                      color: 'white',
-                      marginBottom: '0.5rem',
-                      textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)'
-                    }}
-                  >
+                  <div style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.25rem' }}>
                     {circle.name}
                   </div>
-                  <div 
-                    style={{ 
-                      fontSize: '1rem',
-                      lineHeight: '1.5',
-                      color: 'rgba(255, 255, 255, 0.95)',
-                      textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)',
-                      marginBottom: '1rem'
-                    }}
-                  >
+                  <div style={{ fontSize: '0.95rem', lineHeight: 1.5, color: 'var(--color-text-body-default)' }}>
                     {circle.description}
                   </div>
                 </Box>

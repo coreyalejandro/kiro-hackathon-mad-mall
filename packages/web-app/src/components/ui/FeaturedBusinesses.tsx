@@ -94,22 +94,11 @@ export default function FeaturedBusinesses({
           {businesses.map((business) => (
             <div 
               key={business.id}
-              className="kadir-nelson-gradient-sage"
               style={{ 
-                borderRadius: '16px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                position: 'relative',
-                overflow: 'hidden',
-                padding: '1.5rem'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-4px)';
-                e.currentTarget.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.2)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
+                borderRadius: '8px',
+                border: '1px solid var(--color-border-divider-default, #e9ebed)',
+                background: 'var(--color-background-container-content, #fff)',
+                padding: '1rem'
               }}
             >
               <SpaceBetween size="m">
@@ -134,7 +123,7 @@ export default function FeaturedBusinesses({
                     <Badge color="grey">{business.category}</Badge>
                   </SpaceBetween>
                   
-                  <div style={{ fontSize: '1.3rem', fontWeight: 'bold', color: 'white', marginBottom: '0.5rem' }}>
+                  <div style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.25rem' }}>
                     {business.name}
                   </div>
                   
@@ -149,18 +138,11 @@ export default function FeaturedBusinesses({
                     Founded by {business.owner}
                   </div>
                   
-                  <div 
-                    style={{ 
-                      fontSize: '1rem',
-                      color: 'white',
-                      lineHeight: '1.5',
-                      marginBottom: '1rem'
-                    }}
-                  >
+                  <div style={{ fontSize: '0.95rem', color: 'var(--color-text-body-default)', lineHeight: 1.5 }}>
                     {business.description}
                   </div>
                   
-                  <div style={{ color: 'rgba(255, 255, 255, 0.9)', marginBottom: '1rem' }}>
+                  <div style={{ color: 'var(--color-text-status-info)', marginBottom: '0.5rem' }}>
                     ⭐ {business.rating} ({business.reviews} reviews)
                   </div>
                 </SpaceBetween>

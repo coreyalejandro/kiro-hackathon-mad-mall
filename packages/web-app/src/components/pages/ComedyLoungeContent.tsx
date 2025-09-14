@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { Container, ContentLayout } from '@cloudscape-design/components';
+import PageHeader from '@/components/ui/PageHeader';
 import { useComedyClips, useSubmitReliefRating } from '@/lib/queries';
 import ComedyTherapyPlayer from '@/components/featured/ComedyTherapyPlayer';
 import type { ComedyClip } from '@/lib/types';
@@ -21,16 +22,7 @@ export function ComedyLoungeContent() {
   };
 
   return (
-    <ContentLayout
-      header={
-        <Header
-          variant="h1"
-          description="Find joy and laughter in our comedy community space"
-        >
-          Comedy Lounge
-        </Header>
-      }
-    >
+    <ContentLayout header={<PageHeader title="Comedy Lounge" description="Find joy and laughter in our comedy community space" primaryAction={{ text: 'Watch Comedy', onClick: () => {}, iconName: 'play' }} secondaryAction={{ text: 'Share a Laugh', onClick: () => {}, iconName: 'share' }} />}>
       <Container>
         {/* Featured player */}
         <div className="mt-8">

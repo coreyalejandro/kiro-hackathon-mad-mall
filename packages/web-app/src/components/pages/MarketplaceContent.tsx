@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { Container, ContentLayout } from '@cloudscape-design/components';
+import PageHeader from '@/components/ui/PageHeader';
 // import { api } from '@/lib/mock-api';
 import { Product } from '@/lib/types';
 
@@ -54,16 +55,7 @@ export function MarketplaceContent() {
   }, []);
 
   return (
-    <ContentLayout
-      header={
-        <Header
-          variant="h1"
-          description="Discover wellness products and services from community businesses"
-        >
-          Marketplace
-        </Header>
-      }
-    >
+    <ContentLayout header={<PageHeader title="Marketplace" description="Discover wellness products and services from community businesses" primaryAction={{ text: 'Browse Products', onClick: () => {}, iconName: 'cart' }} secondaryAction={{ text: 'List Business', onClick: () => {}, iconName: 'upload' }} />}>
       <Container>
         <div>
           <h2>Popular Products</h2>

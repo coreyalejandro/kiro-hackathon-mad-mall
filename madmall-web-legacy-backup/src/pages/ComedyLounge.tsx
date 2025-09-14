@@ -17,6 +17,7 @@ import LoadingCard from '../components/LoadingCard';
 import ToastNotification from '../components/ToastNotification';
 import { useFeaturedComedy, useComedyContent, useContentInteraction } from '../hooks/useApiData';
 import { formatTimeAgo } from '../utils/timeUtils';
+import '../styles/kadir-nelson-theme.css';
 
 export default function ComedyLounge() {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -65,9 +66,9 @@ export default function ComedyLounge() {
   ) : [];
 
   const floatingElements = [
-    <div style={{ fontSize: '2rem', opacity: 0.6 }}>😂</div>,
-    <div style={{ fontSize: '1.5rem', opacity: 0.7 }}>🎭</div>,
-    <div style={{ fontSize: '1.8rem', opacity: 0.5 }}>✨</div>
+    <div key="laugh" className="floating-element-laugh">😂</div>,
+    <div key="theater" className="floating-element-theater">🎭</div>,
+    <div key="sparkle" className="floating-element-sparkle">✨</div>
   ];
 
   return (
@@ -116,9 +117,9 @@ export default function ComedyLounge() {
         />
 
         <Container>
-          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+          <div className="kadir-nelson-gradient-sage comedy-container">
             <Header variant="h2" className="text-rich-umber">Search Comedy</Header>
-          <div className="kadir-nelson-gradient-sage" style={{ padding: '1.5rem', borderRadius: '12px' }}>
+          <div className="kadir-nelson-gradient-sage comedy-container">
             <SpaceBetween size="m">
               <Grid gridDefinition={[{ colspan: 6 }, { colspan: 3 }, { colspan: 3 }]}>
                 <Input
@@ -130,12 +131,9 @@ export default function ComedyLounge() {
                 <select 
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  style={{
-                    padding: '8px 12px',
-                    borderRadius: '4px',
-                    border: '1px solid #ccc',
-                    fontSize: '14px'
-                  }}
+                  aria-label="Select comedy category"
+                  title="Choose a comedy category to filter by"
+                  className="comedy-category-select"
                 >
                   <option value="">All Categories</option>
                   <option value="Thyroid Life">Thyroid Life</option>
@@ -153,7 +151,7 @@ export default function ComedyLounge() {
         </Container>
 
         <Container>
-          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+          <div className="kadir-nelson-gradient-sage comedy-container">
             <Header variant="h2" id="featured-comedy" className="text-rich-umber">Featured Comedy</Header>
           {featuredError && (
             <Alert type="error">
@@ -232,7 +230,7 @@ export default function ComedyLounge() {
         </Container>
 
         <Container>
-          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+          <div className="kadir-nelson-gradient-sage comedy-container">
             <SpaceBetween size="m">
               <SpaceBetween direction="horizontal" size="s" alignItems="center">
                 <Header variant="h2" className="text-rich-umber">Comedy Collection</Header>
@@ -348,7 +346,7 @@ export default function ComedyLounge() {
         </Container>
 
         <Container>
-          <div className="kadir-nelson-gradient-sage" style={{ padding: "1.5rem", borderRadius: "12px" }}>
+          <div className="kadir-nelson-gradient-sage comedy-container">
             <Header variant="h2" className="text-rich-umber" id="mood-rating">How Are You Feeling?</Header>
           <Box padding="l" className="kadir-nelson-gradient-earth">
             <SpaceBetween size="s">

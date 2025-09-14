@@ -38,15 +38,27 @@ export function StoryUploader() {
             <Textarea value={content} onChange={({ detail }) => setContent(detail.value)} />
           </FormField>
           <FormField label="Audio Upload">
-            <input type="file" accept="audio/*" onChange={e => setAudioFile(e.target.files?.[0] || null)} />
+            <input 
+              type="file" 
+              accept="audio/*" 
+              onChange={e => setAudioFile(e.target.files?.[0] || null)}
+              aria-label="Upload audio file for your story"
+              title="Select an audio file to upload"
+            />
           </FormField>
           <FormField label="Video Upload">
-            <input type="file" accept="video/*" onChange={e => setVideoFile(e.target.files?.[0] || null)} />
+            <input 
+              type="file" 
+              accept="video/*" 
+              onChange={e => setVideoFile(e.target.files?.[0] || null)}
+              aria-label="Upload video file for your story"
+              title="Select a video file to upload"
+            />
           </FormField>
           <Button formAction="none" variant="primary" loading={isPending} disabled={!title || !content}>
             Submit
           </Button>
-          {data?.message && <div>{data.message}</div>}
+          {Boolean(data) && <div>Story uploaded successfully!</div>}
           {error && <div>Upload failed</div>}
         </SpaceBetween>
       </form>
