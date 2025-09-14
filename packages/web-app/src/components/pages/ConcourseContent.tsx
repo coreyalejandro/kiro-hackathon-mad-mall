@@ -1,14 +1,31 @@
 "use client";
 
 import { useRouter } from 'next/navigation';
+<<<<<<< HEAD
 import { Container, ContentLayout, Cards, SpaceBetween, Box, Button, Badge, Header } from '@cloudscape-design/components';
 import CloudscapeHero from '../ui/CloudscapeHero';
 import CommunityTestimonials from '../ui/CommunityTestimonials';
+=======
+import {
+  Container,
+  Header,
+  ContentLayout,
+  Cards,
+  SpaceBetween,
+  Box,
+  Button,
+  Badge
+} from '@cloudscape-design/components';
+import CommunityTestimonials from '../ui/CommunityTestimonials';
+
+
+>>>>>>> 978a1c5 (refactor(web): standardize pages on Cloudscape, remove custom Kadir/hero UI)
 
 export function ConcourseContent() {
   const router = useRouter();
 
   const primaryItems = [
+<<<<<<< HEAD
     { id: 'circles', name: 'Peer Circles', description: 'Connect with sisters who understand your journey.', href: '/circles', meta: ['127 active members', '5 new this week'], icon: '👥' },
     { id: 'comedy', name: 'Comedy Lounge', description: 'Find relief through laughter with curated clips.', href: '/comedy', meta: ['45 new clips', '⭐ 4.9 rating'], icon: '😂' },
   ];
@@ -17,6 +34,51 @@ export function ConcourseContent() {
     { id: 'stories', name: 'Story Booth', description: 'Share audio stories and inspire others.', href: '/stories', meta: ['23 stories today'], icon: '🎤' },
     { id: 'marketplace', name: 'Marketplace', description: 'Support Black-owned wellness brands.', href: '/marketplace', meta: ['89 featured brands'], icon: '🛍️' },
     { id: 'resources', name: 'Resource Hub', description: 'Curated health information and wellness tips.', href: '/resources', meta: ['156 articles available'], icon: '📚' },
+=======
+    {
+      id: 'circles',
+      name: 'Peer Circles',
+      description: 'Connect with sisters who understand your journey.',
+      href: '/circles',
+      meta: ['127 active members', '5 new this week'],
+      icon: '👥',
+    },
+    {
+      id: 'comedy',
+      name: 'Comedy Lounge',
+      description: 'Find relief through laughter with curated clips.',
+      href: '/comedy',
+      meta: ['45 new clips', '⭐ 4.9 rating'],
+      icon: '😂',
+    },
+  ];
+
+  const secondaryItems = [
+    {
+      id: 'stories',
+      name: 'Story Booth',
+      description: 'Share audio stories and inspire others.',
+      href: '/stories',
+      meta: ['23 stories today'],
+      icon: '🎤',
+    },
+    {
+      id: 'marketplace',
+      name: 'Marketplace',
+      description: 'Support Black-owned wellness brands.',
+      href: '/marketplace',
+      meta: ['89 featured brands'],
+      icon: '🛍️',
+    },
+    {
+      id: 'resources',
+      name: 'Resource Hub',
+      description: 'Curated health information and wellness tips.',
+      href: '/resources',
+      meta: ['156 articles available'],
+      icon: '📚',
+    },
+>>>>>>> 978a1c5 (refactor(web): standardize pages on Cloudscape, remove custom Kadir/hero UI)
   ];
 
   const cardDefinition = {
@@ -38,7 +100,15 @@ export function ConcourseContent() {
                 ))}
               </SpaceBetween>
             )}
+<<<<<<< HEAD
             <Button variant="primary" onClick={() => router.push(item.href)} data-testid={item.id === 'circles' ? 'mall-section-peer-circles' : undefined}>
+=======
+            <Button
+              variant="primary"
+              onClick={() => router.push(item.href)}
+              data-testid={item.id === 'circles' ? 'mall-section-peer-circles' : undefined}
+            >
+>>>>>>> 978a1c5 (refactor(web): standardize pages on Cloudscape, remove custom Kadir/hero UI)
               Visit {item.name}
             </Button>
           </SpaceBetween>
@@ -48,6 +118,7 @@ export function ConcourseContent() {
   } as const;
 
   return (
+<<<<<<< HEAD
     <ContentLayout header={
       <CloudscapeHero
         eyebrow="New"
@@ -65,6 +136,34 @@ export function ConcourseContent() {
           <Cards cardDefinition={cardDefinition} items={primaryItems} selectionType="none" trackBy="id" />
           <Box padding={{ top: 'l' }}>
             <Cards cardDefinition={cardDefinition} items={secondaryItems} selectionType="none" trackBy="id" />
+=======
+    <ContentLayout
+      header={
+        <Header
+          variant="h1"
+          description="Welcome to your wellness sanctuary. Explore community, joy, and trusted resources."
+        >
+          Concourse
+        </Header>
+      }
+    >
+      <SpaceBetween size="l">
+        <Container>
+          <Header variant="h2">Explore Your Wellness Mall</Header>
+          <Cards
+            cardDefinition={cardDefinition}
+            items={primaryItems}
+            selectionType="none"
+            trackBy="id"
+          />
+          <Box padding={{ top: 'l' }}>
+            <Cards
+              cardDefinition={cardDefinition}
+              items={secondaryItems}
+              selectionType="none"
+              trackBy="id"
+            />
+>>>>>>> 978a1c5 (refactor(web): standardize pages on Cloudscape, remove custom Kadir/hero UI)
           </Box>
         </Container>
 

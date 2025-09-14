@@ -2,14 +2,55 @@
 
 import { useEffect, useState } from 'react';
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
-import { api } from '@/lib/mock-api';
+// import { api } from '@/lib/mock-api';
 import { Product } from '@/lib/types';
 
 export function MarketplaceContent() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    api.getProducts().then(res => setProducts(res.data));
+    // Mock data for now - replace with actual API call when available
+    const mockProducts: Product[] = [
+      {
+        id: '1',
+        name: 'Thyroid Support Tea',
+        description: 'Herbal tea blend designed to support thyroid health',
+        price: 24.99,
+        imageUrl: '/products/thyroid-tea.jpg',
+        affiliateUrl: 'https://example.com/thyroid-tea',
+        business: {
+          name: 'Melanin Wellness Co.',
+          ownerName: 'Dr. Sarah Johnson',
+          story: 'Founded by a Black endocrinologist to provide culturally-informed wellness products',
+          logoUrl: '/businesses/melanin-wellness.jpg',
+          isBlackOwned: true
+        },
+        category: 'Supplements',
+        tags: ['thyroid', 'herbal', 'wellness'],
+        rating: 4.8,
+        reviewCount: 127
+      },
+      {
+        id: '2',
+        name: 'Stress Relief Candle',
+        description: 'Lavender and sage candle for relaxation and stress relief',
+        price: 18.50,
+        imageUrl: '/products/stress-candle.jpg',
+        affiliateUrl: 'https://example.com/stress-candle',
+        business: {
+          name: 'Sisterhood Scents',
+          ownerName: 'Maria Rodriguez',
+          story: 'A Latina-owned business creating aromatherapy products for women of color',
+          logoUrl: '/businesses/sisterhood-scents.jpg',
+          isBlackOwned: false
+        },
+        category: 'Aromatherapy',
+        tags: ['stress-relief', 'candles', 'aromatherapy'],
+        rating: 4.6,
+        reviewCount: 89
+      }
+    ];
+    setProducts(mockProducts);
   }, []);
 
   return (
@@ -24,46 +65,15 @@ export function MarketplaceContent() {
       }
     >
       <Container>
-        <div className="hero-section hero-contained">
-          <div className="hero-container">
-            <div className="hero-main-grid">
-              <div className="hero-content">
-                <div className="hero-page-name">Community Commerce</div>
-                <h1 className="hero-title">Marketplace</h1>
-                <p className="hero-subtitle">
-                  Support community businesses and discover wellness products and services.
-                </p>
-                <div className="hero-cta-group">
-                  <button className="hero-cta hero-cta-primary">
-                    <span className="hero-cta-icon">🛍️</span>
-                    Browse Products
-                  </button>
-                  <button className="hero-cta hero-cta-secondary">
-                    <span className="hero-cta-icon">🏪</span>
-                    List Business
-                  </button>
-                </div>
-              </div>
-              <div className="hero-visual-container">
-                <div className="hero-image-container">
-                  <div className="hero-image-layer hero-image-main">
-                    <div className="hero-default-content">
-                      <div className="hero-default-icon">🏬</div>
-                      <div className="hero-default-text">
-                        Community<br />Marketplace
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         <div>
           <h2>Popular Products</h2>
           <ul>
             {products.slice(0, 5).map(p => (
-              <li key={p.id}>{p.name}</li>
+              <li key={p.id}>
+                <strong>{p.name}</strong> - ${p.price}
+                <br />
+                <small>{p.business.name} • ⭐ {p.rating} ({p.reviewCount} reviews)</small>
+              </li>
             ))}
           </ul>
         </div>

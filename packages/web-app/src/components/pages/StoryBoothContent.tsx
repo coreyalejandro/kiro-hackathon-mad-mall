@@ -4,14 +4,38 @@ import { useEffect, useState } from 'react';
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
 import { StoryUploader } from '@/components/stories/StoryUploader';
 import { StoryList } from '@/components/stories/StoryList';
-import { api } from '@/lib/mock-api';
+// import { api } from '@/lib/mock-api';
 import { Story } from '@/lib/types';
 
 export function StoryBoothContent() {
   const [stories, setStories] = useState<Story[]>([]);
 
   useEffect(() => {
-    api.getStories().then(res => setStories(res.data));
+    // Mock data for now - replace with actual API call when available
+    const mockStories: Story[] = [
+      {
+        id: '1',
+        title: 'My Journey with Graves Disease',
+        content: 'A personal story about living with Graves Disease...',
+        type: 'text',
+        author: {
+          name: 'Sarah M.',
+          avatar: '/avatars/sarah.jpg'
+        },
+        tags: ['diagnosis', 'journey'],
+        publishedAt: new Date(),
+        engagement: {
+          likes: 12,
+          comments: 3,
+          shares: 1,
+          views: 45,
+          saves: 8,
+          helpfulVotes: 5
+        },
+        isAnonymous: false
+      }
+    ];
+    setStories(mockStories);
   }, []);
 
   return (
@@ -26,47 +50,15 @@ export function StoryBoothContent() {
       }
     >
       <Container>
-        <div className="hero-section hero-contained">
-          <div className="hero-container">
-            <div className="hero-main-grid">
-              <div className="hero-content">
-                <div className="hero-page-name">Personal Narratives</div>
-                <h1 className="hero-title">Story Booth</h1>
-                <p className="hero-subtitle">
-                  Share your journey and be inspired by the stories of others in our community.
-                </p>
-                <div className="hero-cta-group">
-                  <button className="hero-cta hero-cta-primary">
-                    <span className="hero-cta-icon">📖</span>
-                    Read Stories
-                  </button>
-                  <button className="hero-cta hero-cta-secondary">
-                    <span className="hero-cta-icon">✍️</span>
-                    Share Your Story
-                  </button>
-                </div>
-              </div>
-              <div className="hero-visual-container">
-                <div className="hero-image-container">
-                  <div className="hero-image-layer hero-image-main">
-                    <div className="hero-default-content">
-                      <div className="hero-default-icon">📚</div>
-                      <div className="hero-default-text">
-                        Personal<br />Stories
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div>
           <h2>Recent Stories</h2>
           <ul>
             {stories.slice(0, 5).map(s => (
-              <li key={s.id}>{s.title}</li>
+              <li key={s.id}>
+                <strong>{s.title}</strong> by {s.author.name}
+                <br />
+                <small>{s.engagement.likes} likes • {s.engagement.comments} comments</small>
+              </li>
             ))}
           </ul>
         </div>

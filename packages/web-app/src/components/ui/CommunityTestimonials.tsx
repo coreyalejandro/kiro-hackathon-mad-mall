@@ -69,29 +69,7 @@ export default function CommunityTestimonials({
 
         <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
           {testimonials.map((testimonial) => (
-            <div 
-              key={testimonial.id}
-              className="kadir-nelson-gradient-warm"
-              style={{ 
-                borderRadius: '16px',
-                position: 'relative',
-                overflow: 'hidden',
-                minHeight: '300px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                padding: '1.5rem',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-4px)';
-                e.currentTarget.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.2)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
-            >
+            <div key={testimonial.id}>
               <SpaceBetween size="m">
                 <Box textAlign="center">
                   <CommunityImage 
@@ -107,45 +85,19 @@ export default function CommunityTestimonials({
                 </Box>
 
                 <Box textAlign="center">
-                  <div 
-                    style={{ 
-                      fontSize: '1.1rem',
-                      fontStyle: 'italic',
-                      lineHeight: '1.6',
-                      color: 'white',
-                      textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)'
-                    }}
-                  >
+                  <div className="testimonial-quote">
                     "{testimonial.quote}"
                   </div>
                 </Box>
 
                 <Box textAlign="center">
-                  <div 
-                    style={{ 
-                      fontSize: '1.2rem',
-                      fontWeight: 'bold',
-                      color: 'white',
-                      marginBottom: '0.25rem'
-                    }}
-                  >
+                  <div className="testimonial-name">
                     {testimonial.name}
                   </div>
-                  <div 
-                    style={{ 
-                      fontSize: '0.9rem',
-                      color: 'rgba(255, 255, 255, 0.9)',
-                      marginBottom: '0.25rem'
-                    }}
-                  >
+                  <div className="testimonial-role">
                     {testimonial.role}
                   </div>
-                  <div 
-                    style={{ 
-                      fontSize: '0.9rem',
-                      color: 'rgba(255, 255, 255, 0.8)'
-                    }}
-                  >
+                  <div className="testimonial-location">
                     {testimonial.location} • Member since {testimonial.memberSince}
                   </div>
                 </Box>

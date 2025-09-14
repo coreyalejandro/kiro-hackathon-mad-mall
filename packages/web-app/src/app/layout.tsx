@@ -1,8 +1,5 @@
 import type { Metadata } from 'next';
 import '@cloudscape-design/global-styles/index.css';
-import '@/styles/kadir-nelson-theme.css';
-import '@/styles/hero-sections.css';
-import '@/styles/concourse-interactions.css';
 import { AppLayout, TopNavigation, SideNavigation } from '@cloudscape-design/components';
 import { NavigationProvider } from '@/components/providers/NavigationProvider';
 import { QueryProvider } from '@/components/providers/QueryProvider';
