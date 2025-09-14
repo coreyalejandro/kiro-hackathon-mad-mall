@@ -291,6 +291,28 @@
   }
 }
 
+/* Additional CSS classes for inline style replacement */
+.floating-element-large {
+  font-size: 2rem;
+  opacity: 0.6;
+}
+
+.floating-element-medium {
+  font-size: 1.5rem;
+  opacity: 0.7;
+}
+
+.floating-element-small {
+  font-size: 1.8rem;
+  opacity: 0.5;
+}
+
+.mall-section-container {
+  padding: 1.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
 /* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
   .mall-section-card:hover {

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import React from 'react';
 import {
   Container,
   Header,
@@ -40,9 +41,9 @@ export default function Concourse() {
   ];
 
   const floatingElements = [
-    <div style={{ fontSize: '2rem', opacity: 0.6 }}>✨</div>,
-    <div style={{ fontSize: '1.5rem', opacity: 0.7 }}>💫</div>,
-    <div style={{ fontSize: '1.8rem', opacity: 0.5 }}>🌟</div>
+    <div className="floating-element-large">✨</div>,
+    <div className="floating-element-medium">💫</div>,
+    <div className="floating-element-small">🌟</div>
   ];
 
   return (
@@ -115,12 +116,11 @@ export default function Concourse() {
           <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
             {/* Peer Circles */}
             <div 
-              className="kadir-nelson-gradient-warm mall-section-card ripple-effect"
+              className="kadir-nelson-gradient-warm mall-section-card ripple-effect mall-section-container"
               onClick={() => handleSectionClick('Peer Circles', '/circles')}
               tabIndex={0}
               role="button"
               aria-label="Visit Peer Circles"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
               <Box padding="l">
               <SpaceBetween size="m">
@@ -155,12 +155,11 @@ export default function Concourse() {
 
             {/* Comedy Lounge */}
             <div 
-              className="kadir-nelson-gradient-sage mall-section-card ripple-effect"
+              className="kadir-nelson-gradient-sage mall-section-card ripple-effect mall-section-container"
               onClick={() => handleSectionClick('Comedy Lounge', '/comedy')}
               tabIndex={0}
               role="button"
               aria-label="Visit Comedy Lounge"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
               <Box padding="l">
               <SpaceBetween size="m">
@@ -199,12 +198,11 @@ export default function Concourse() {
           <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
             {/* Story Booth */}
             <div 
-              className="kadir-nelson-gradient-earth mall-section-card ripple-effect"
+              className="kadir-nelson-gradient-earth mall-section-card ripple-effect mall-section-container"
               onClick={() => handleSectionClick('Story Booth', '/stories')}
               tabIndex={0}
               role="button"
               aria-label="Visit Story Booth"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
               <Box padding="l">
               <SpaceBetween size="m">
@@ -234,12 +232,11 @@ export default function Concourse() {
 
             {/* Marketplace */}
             <div 
-              className="kadir-nelson-accent mall-section-card ripple-effect"
+              className="kadir-nelson-accent mall-section-card ripple-effect mall-section-container"
               onClick={() => handleSectionClick('Marketplace', '/marketplace')}
               tabIndex={0}
               role="button"
               aria-label="Visit Marketplace"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
               <Box padding="l">
               <SpaceBetween size="m">
@@ -269,12 +266,11 @@ export default function Concourse() {
 
             {/* Resource Hub */}
             <div 
-              className="kadir-nelson-secondary mall-section-card ripple-effect"
+              className="kadir-nelson-secondary mall-section-card ripple-effect mall-section-container"
               onClick={() => handleSectionClick('Resource Hub', '/resources')}
               tabIndex={0}
               role="button"
               aria-label="Visit Resource Hub"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
               <Box padding="l">
               <SpaceBetween size="m">
@@ -312,12 +308,11 @@ export default function Concourse() {
         <div className="interactive-grid">
           <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
             <div 
-              className="kadir-nelson-gradient-warm highlight-card"
+              className="kadir-nelson-gradient-warm highlight-card mall-section-container"
               onClick={() => showInteractionFeedback('Joining discussion...')}
               tabIndex={0}
               role="button"
               aria-label="Join Active Discussion"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
               <Box padding="l">
               <SpaceBetween size="s">
@@ -338,7 +333,7 @@ export default function Concourse() {
             </div>
             
             <div 
-              className="kadir-nelson-gradient-sage highlight-card"
+              className="kadir-nelson-gradient-sage highlight-card mall-section-container"
               onClick={() => {
                 showInteractionFeedback('Loading comedy content...');
                 setTimeout(() => window.location.href = '/comedy', 500);
@@ -346,7 +341,6 @@ export default function Concourse() {
               tabIndex={0}
               role="button"
               aria-label="Watch Comedy Content"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
               <Box padding="l">
               <SpaceBetween size="s">
@@ -368,7 +362,7 @@ export default function Concourse() {
             </div>
             
             <div 
-              className="kadir-nelson-gradient-earth highlight-card"
+              className="kadir-nelson-gradient-earth highlight-card mall-section-container"
               onClick={() => {
                 showInteractionFeedback('Opening marketplace...');
                 setTimeout(() => window.location.href = '/marketplace', 500);
@@ -376,7 +370,6 @@ export default function Concourse() {
               tabIndex={0}
               role="button"
               aria-label="Shop Featured Brand"
-              style={{ padding: '1.5rem', borderRadius: '12px', cursor: 'pointer' }}
             >
               <Box padding="l">
               <SpaceBetween size="s">
