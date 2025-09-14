@@ -75,5 +75,6 @@ export declare class LambdaConstruct extends Construct {
     private createCommonFunctions;
     createFunction(config: LambdaFunctionConfig, environment: string, vpc: Vpc, securityGroup: SecurityGroup): IFunction;
     getFunction(name: string): IFunction | undefined;
+    private scheduleAudit;
     getAllFunctions(): IFunction[];
 }

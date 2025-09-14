@@ -22,5 +22,6 @@ export declare class ImageAssetRepository extends BaseDynamoDAO<DynamoDBImageAss
         validator?: string;
     }, status?: 'active' | 'flagged' | 'removed'): Promise<DynamoDBImageAsset>;
     listPending(limit?: number): Promise<DynamoDBImageAsset[]>;
+    listFlagged(limit?: number): Promise<DynamoDBImageAsset[]>;
     selectByCategory(category: string, limit?: number): Promise<DynamoDBImageAsset[]>;
 }

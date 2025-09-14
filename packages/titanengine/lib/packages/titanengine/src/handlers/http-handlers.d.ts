@@ -8,10 +8,11 @@ export declare function postImportUnsplash(body: {
     category: string;
     count?: number;
 }): Promise<any[]>;
-export declare function getPending(): Promise<import("@madmall/shared-types/database").DynamoDBImageAsset[]>;
+export declare function getPending(): Promise<any>;
+export declare function getFlagged(): Promise<any>;
 export declare function postValidate(body: {
     imageId: string;
 }): Promise<any>;
 export declare function getSelect(query: {
     context: string;
-}): Promise<import("@madmall/shared-types/database").DynamoDBImageAsset>;
+}): Promise<any>;

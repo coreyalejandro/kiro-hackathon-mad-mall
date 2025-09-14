@@ -30,6 +30,8 @@ declare const CareInputSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     userId: string;
     diagnosisStage: string;
+    age: number;
+    supportNeeds: string[];
     culturalContext: {
         region: string;
         primaryCulture: string;
@@ -38,12 +40,11 @@ declare const CareInputSchema: z.ZodObject<{
         religiousConsiderations: string[];
         sensitiveTopics: string[];
     };
-    supportNeeds: string[];
-    age: number;
     history: any[];
 }, {
     userId: string;
     diagnosisStage: string;
+    age: number;
     culturalContext: {
         primaryCulture: string;
         region?: string | undefined;
@@ -52,7 +53,6 @@ declare const CareInputSchema: z.ZodObject<{
         religiousConsiderations?: string[] | undefined;
         sensitiveTopics?: string[] | undefined;
     };
-    age: number;
     supportNeeds?: string[] | undefined;
     history?: any[] | undefined;
 }>;

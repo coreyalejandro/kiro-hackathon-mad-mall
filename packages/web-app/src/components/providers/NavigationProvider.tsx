@@ -15,14 +15,16 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
   const [currentPath, setCurrentPath] = useState('/');
 
   useEffect(() => {
-    // Configure Amplify Auth (Cognito Hosted UI)
-    if (env.AUTH_DOMAIN && env.AUTH_CLIENT_ID) {
+    // Configure Amplify Auth (Cognito Hosted UI) only when all required vars are present
+    const userPoolId = process.env.NEXT_PUBLIC_USER_POOL_ID;
+    const hasAuthConfig = Boolean(env.AUTH_DOMAIN && env.AUTH_CLIENT_ID && userPoolId);
+    if (hasAuthConfig) {
       try {
         Amplify.configure({
           Auth: {
             Cognito: {
               userPoolClientId: env.AUTH_CLIENT_ID,
-              userPoolId: process.env.NEXT_PUBLIC_USER_POOL_ID,
+              userPoolId,
               loginWith: {
                 oauth: {
                   domain: env.AUTH_DOMAIN.replace(/^https?:\/\//, ''),
@@ -39,6 +41,9 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
         // eslint-disable-next-line no-console
         console.warn('Amplify configuration failed', e);
       }
+    } else {
+      // eslint-disable-next-line no-console
+      console.info('Auth not configured: missing NEXT_PUBLIC_AUTH_DOMAIN / NEXT_PUBLIC_AUTH_CLIENT_ID / NEXT_PUBLIC_USER_POOL_ID');
     }
   }, []);
 

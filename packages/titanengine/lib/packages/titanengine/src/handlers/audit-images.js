@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.handler = handler;
+const titanengine_1 = require("../service/titanengine");
+const engine = titanengine_1.TitanEngine.createDefault();
+async function handler() {
+    await engine.auditImageAssets();
+    return { statusCode: 200, body: 'audit complete' };
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXVkaXQtaW1hZ2VzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vc3JjL2hhbmRsZXJzL2F1ZGl0LWltYWdlcy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUlBLDBCQUdDO0FBUEQsd0RBQXFEO0FBRXJELE1BQU0sTUFBTSxHQUFHLHlCQUFXLENBQUMsYUFBYSxFQUFFLENBQUM7QUFFcEMsS0FBSyxVQUFVLE9BQU87SUFDM0IsTUFBTSxNQUFNLENBQUMsZ0JBQWdCLEVBQUUsQ0FBQztJQUNoQyxPQUFPLEVBQUUsVUFBVSxFQUFFLEdBQUcsRUFBRSxJQUFJLEVBQUUsZ0JBQWdCLEVBQUUsQ0FBQztBQUNyRCxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgVGl0YW5FbmdpbmUgfSBmcm9tICcuLi9zZXJ2aWNlL3RpdGFuZW5naW5lJztcblxuY29uc3QgZW5naW5lID0gVGl0YW5FbmdpbmUuY3JlYXRlRGVmYXVsdCgpO1xuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gaGFuZGxlcigpIHtcbiAgYXdhaXQgZW5naW5lLmF1ZGl0SW1hZ2VBc3NldHMoKTtcbiAgcmV0dXJuIHsgc3RhdHVzQ29kZTogMjAwLCBib2R5OiAnYXVkaXQgY29tcGxldGUnIH07XG59XG4iXX0=
