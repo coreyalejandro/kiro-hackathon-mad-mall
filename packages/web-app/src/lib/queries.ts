@@ -215,7 +215,20 @@ export const useArticleCredibilityLevels = () => {
 export const useStories = (filters?: StoryFilters, page = 1, limit = 20) => {
   return useQuery({
     queryKey: queryKeys.stories(filters, page, limit),
-    queryFn: () => api.getStories(filters, page, limit),
+    queryFn: () => {
+      const items = api.getStories(filters, page, limit);
+      return {
+        data: items,
+        pagination: {
+          page,
+          limit,
+          total: undefined as unknown as number, // not tracked in mock
+          hasMore: items.length === limit,
+        },
+        success: true,
+        timestamp: new Date(),
+      } as any;
+    },
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 15 * 60 * 1000, // 15 minutes
     keepPreviousData: true,

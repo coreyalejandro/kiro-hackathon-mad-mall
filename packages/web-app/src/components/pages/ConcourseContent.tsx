@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Container, ContentLayout, Cards, SpaceBetween, Box, Button, Badge, Header } from '@cloudscape-design/components';
 import CloudscapeHero from '../ui/CloudscapeHero';
 import CommunityTestimonials from '../ui/CommunityTestimonials';
@@ -21,6 +22,11 @@ import {
 import { Container, ContentLayout, Cards, SpaceBetween, Box, Button, Badge } from '@cloudscape-design/components';
 import PageHeader from '../ui/PageHeader';
 >>>>>>> b014672 (feat(web): add Cloudscape PageHeader, migrate all pages, remove legacy hero/Kadir assets, add preview route)
+=======
+import { Container, ContentLayout, Cards, SpaceBetween, Box, Button, Badge, Header } from '@cloudscape-design/components';
+import PageHeader from '../ui/PageHeader';
+import CloudscapeHero from '../ui/CloudscapeHero';
+>>>>>>> 8085799 (chore: sync local changes before rebase)
 import CommunityTestimonials from '../ui/CommunityTestimonials';
 
 
@@ -125,9 +131,14 @@ export function ConcourseContent() {
   return (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <ContentLayout header={
       <CloudscapeHero
         eyebrow="New"
+=======
+    <ContentLayout header={
+      <CloudscapeHero
+>>>>>>> 8085799 (chore: sync local changes before rebase)
         title="Concourse"
         description="Welcome to your wellness sanctuary. Explore community, joy, and trusted resources."
         primaryAction={{ text: 'Join a Circle', onClick: () => router.push('/circles'), iconName: 'users' }}
@@ -136,6 +147,7 @@ export function ConcourseContent() {
         images={['/images/hero/community-1.png','/images/hero/community-2.png','/images/hero/community-3.png']}
       />
     }>
+<<<<<<< HEAD
       <SpaceBetween size="l">
         <Container id="explore-start">
           <Header variant="h2">Explore Your Wellness Mall</Header>
@@ -156,6 +168,8 @@ export function ConcourseContent() {
 =======
     <ContentLayout header={<PageHeader title="Concourse" description="Welcome to your wellness sanctuary. Explore community, joy, and trusted resources." primaryAction={{ text: 'Join a Circle', onClick: () => router.push('/circles'), iconName: 'users' }} secondaryAction={{ text: 'Explore Mall', onClick: () => document.getElementById('explore-start')?.scrollIntoView({ behavior: 'smooth' }), iconName: 'search' }} />}>
 >>>>>>> b014672 (feat(web): add Cloudscape PageHeader, migrate all pages, remove legacy hero/Kadir assets, add preview route)
+=======
+>>>>>>> 8085799 (chore: sync local changes before rebase)
       <SpaceBetween size="l">
         <Container id="explore-start">
           <Header variant="h2">Explore Your Wellness Mall</Header>

@@ -78,6 +78,7 @@ const load = (): DataStore => {
   }
 };
 
+<<<<<<< HEAD
 let store: DataStore;
 if (typeof window !== 'undefined') {
   store = load();
@@ -88,6 +89,16 @@ if (typeof window !== 'undefined') {
 
 function paginate<T>(items: T[], page = 1, limit = 20): PaginatedResponse<T> {
   const total = items.length;
+=======
+const setStore = (data: DataStore) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('madmall-data', JSON.stringify(data));
+  }
+};
+
+// Helpers
+const paginate = <T>(items: T[], page = 1, limit = 20): T[] => {
+>>>>>>> 8085799 (chore: sync local changes before rebase)
   const start = (page - 1) * limit;
   const end = start + limit;
   return {
@@ -103,6 +114,7 @@ function ok<T>(data: T, message?: string): ApiResponse<T> {
 }
 
 export const api = {
+<<<<<<< HEAD
   // Platform overview
   getMallSections: async (): Promise<ApiResponse<ReturnType<typeof generateMallSections>>> => ok(store.mallSections),
   getCommunityActivity: async (limit = 20): Promise<ApiResponse<ActivityItem[]>> => {
@@ -132,10 +144,46 @@ export const api = {
     const posts = store.posts
       .filter((p) => p.circleId === circleId)
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+=======
+  // Home / Dashboard
+  getMallSections: (): MallSection[] => {
+    const store = getStore();
+    return store.mallSections;
+  },
+  getCommunityActivity: (limit = 20): ActivityItem[] => {
+    const store = getStore();
+    return store.activities.slice(0, limit);
+  },
+  getPlatformStats: (): PlatformStats => {
+    const store = getStore();
+    return store.platformStats;
+  },
+
+  // Circles
+  getCircles: (filters?: CircleFilters, page = 1, limit = 20): Circle[] => {
+    const store = getStore();
+    let results = [...(store.circles as unknown as Circle[])];
+    if ((filters as any)?.activityLevel) {
+      results = results.filter((c: any) => c.activityLevel === (filters as any).activityLevel);
+    }
+    if ((filters as any)?.tags?.length) {
+      results = results.filter((c: any) => (c.tags || []).some((t: string) => (filters as any).tags.includes(t)));
+    }
+    return paginate(results, page, limit);
+  },
+  getCircle: (id: string): Circle | undefined => {
+    const store = getStore();
+    return (store.circles as unknown as Circle[]).find((c: any) => c.id === id);
+  },
+  getCirclePosts: (circleId: string, page = 1, limit = 20): any[] => {
+    const store = getStore();
+    const posts = store.posts.filter((p: any) => p.circleId === circleId);
+>>>>>>> 8085799 (chore: sync local changes before rebase)
     return paginate(posts, page, limit);
   },
 
   // Comedy
+<<<<<<< HEAD
   getComedyClips: async (filters?: ComedyFilters, page = 1, limit = 20) => {
     let clips = [...store.comedyClips];
     if (filters?.category) clips = clips.filter((c) => c.category === filters.category);
@@ -188,6 +236,44 @@ export const api = {
     return ok({ success: true });
   },
 
+=======
+  getComedyClips: (filters?: any, page = 1, limit = 20): ComedyClip[] => {
+    const store = getStore();
+    let clips = [...store.comedyClips];
+    if (filters?.category) {
+      clips = clips.filter(c => c.category === filters.category);
+    }
+    return paginate(clips, page, limit);
+  },
+  getComedyClip: (id: string): ComedyClip | undefined => {
+    const store = getStore();
+    return store.comedyClips.find(c => c.id === id);
+  },
+  getComedyCategories: (): { data: string[] } => {
+    const store = getStore();
+    const categories = Array.from(new Set(store.comedyClips.map(c => c.category)));
+    return { data: categories };
+  },
+
+  // Marketplace
+  getProducts: (filters?: any, page = 1, limit = 20): Product[] => {
+    const store = getStore();
+    let products = [...store.products];
+    if (filters?.category) {
+      products = products.filter(p => p.category === filters.category);
+    }
+    return paginate(products, page, limit);
+  },
+  getProduct: (id: string): Product | undefined => {
+    const store = getStore();
+    return store.products.find(p => p.id === id);
+  },
+  getProductCategories: (): { data: string[] } => {
+    const store = getStore();
+    const cats = Array.from(new Set(store.products.map(p => p.category)));
+    return { data: cats };
+  },
+>>>>>>> 8085799 (chore: sync local changes before rebase)
   // Resource Hub
   getArticles: async (_filters?: ArticleFilters, page = 1, limit = 20) => paginate([...store.articles], page, limit),
   getArticle: async (id: string): Promise<ApiResponse<Article>> => ok(store.articles.find((a) => a.id === id) as Article),
@@ -270,11 +356,95 @@ export const api = {
       localStorage.removeItem(STORAGE_KEY);
     } catch {}
   },
+<<<<<<< HEAD
   regenerateData: async (): Promise<void> => {
     const fresh = generateBulkData();
     store = { ...fresh, reliefRatings: [], userProfile: store.userProfile };
     persist(store);
   }
 };
+=======
+
+  // Stories
+  getStories: (filters?: any, page = 1, limit = 20): Story[] => {
+    const store = getStore();
+    let stories = [...store.stories];
+    if (filters?.type) {
+      stories = stories.filter(s => s.type === filters.type);
+    }
+    return paginate(stories, page, limit);
+  },
+  getStory: (id: string): Story | undefined => {
+    const store = getStore();
+    return store.stories.find(s => s.id === id);
+  },
+  getStoryTags: (): { data: string[] } => {
+    const store = getStore();
+    const tags = Array.from(new Set(store.stories.flatMap(s => s.tags)));
+    return { data: tags };
+  },
+
+  // Search (simple)
+  searchAll: (query: string, limit = 10): any[] => {
+    const store = getStore();
+    const q = query.toLowerCase();
+    const results = [
+      ...(store.circles as any[]).filter(c => (c.name || '').toLowerCase().includes(q)),
+      ...store.comedyClips.filter(c => c.title.toLowerCase().includes(q)),
+      ...store.products.filter(p => p.name.toLowerCase().includes(q)),
+      ...store.articles.filter(a => a.title.toLowerCase().includes(q)),
+      ...store.stories.filter(s => s.title.toLowerCase().includes(q)),
+    ];
+    return results.slice(0, limit);
+  },
+
+  // Mutations (mock)
+  joinCircle: (circleId: string, userId: string) => ({ circleId, userId, status: 'joined' } as const),
+  leaveCircle: (circleId: string, userId: string) => ({ circleId, userId, status: 'left' } as const),
+  createCirclePost: (circleId: string, userId: string, content: string) => {
+    const store = getStore();
+    const post: any = {
+      id: `post-${Math.random().toString(36).slice(2)}`,
+      userId,
+      circleId,
+      content,
+      createdAt: new Date(),
+      likes: 0,
+      comments: 0,
+      isAnonymous: false,
+    };
+    store.posts.unshift(post);
+    setStore(store);
+    return post;
+  },
+  toggleWishlist: (productId: string, userId: string) => ({ productId, userId, wishlisted: true }),
+  toggleBookmark: (articleId: string, userId: string) => ({ articleId, userId, bookmarked: true }),
+  uploadStory: ({ title, content, type, audioUrl, videoUrl, isAnonymous }: any) => {
+    const store = getStore();
+    const story: Story = {
+      id: `story-${Math.random().toString(36).slice(2)}`,
+      title,
+      content,
+      type,
+      audioUrl,
+      videoUrl,
+      author: { name: 'You', avatar: '' },
+      tags: [],
+      publishedAt: new Date(),
+      engagement: { likes: 0, comments: 0, shares: 0, views: 0, saves: 0, helpfulVotes: 0 },
+      isAnonymous: !!isAnonymous,
+    };
+    store.stories.unshift(story);
+    setStore(store);
+    return story;
+  },
+  trackStoryEngagement: (storyId: string, type: 'view' | 'like' | 'share' | 'comment') => ({ storyId, type }),
+  submitReliefRating: (clipId: string, userId: string, rating: number, notes?: string) => ({ clipId, userId, rating, notes }),
+
+  // Data maintenance
+  clearData: () => { if (typeof window !== 'undefined') localStorage.removeItem('madmall-data'); },
+  regenerateData: () => { const data = generateBulkData(); setStore(data); },
+} as const;
+>>>>>>> 8085799 (chore: sync local changes before rebase)
 
 export default api;
