@@ -1,6 +1,8 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { Amplify } from 'aws-amplify';
+import { env } from '@/lib/env';
 
 interface NavigationContextType {
   currentPath: string;
@@ -11,6 +13,34 @@ const NavigationContext = createContext<NavigationContextType | undefined>(undef
 
 export function NavigationProvider({ children }: { children: ReactNode }) {
   const [currentPath, setCurrentPath] = useState('/');
+
+  useEffect(() => {
+    // Configure Amplify Auth (Cognito Hosted UI)
+    if (env.AUTH_DOMAIN && env.AUTH_CLIENT_ID) {
+      try {
+        Amplify.configure({
+          Auth: {
+            Cognito: {
+              userPoolClientId: env.AUTH_CLIENT_ID,
+              userPoolId: process.env.NEXT_PUBLIC_USER_POOL_ID,
+              loginWith: {
+                oauth: {
+                  domain: env.AUTH_DOMAIN.replace(/^https?:\/\//, ''),
+                  scopes: ['email', 'openid', 'profile'],
+                  redirectSignIn: `${window.location.origin}/auth/callback`,
+                  redirectSignOut: `${window.location.origin}/auth/logout`,
+                  responseType: 'code',
+                },
+              },
+            },
+          },
+        });
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('Amplify configuration failed', e);
+      }
+    }
+  }, []);
 
   return (
     <NavigationContext.Provider value={{ currentPath, setCurrentPath }}>

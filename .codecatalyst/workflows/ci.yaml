@@ -1,0 +1,28 @@
+SchemaVersion: 1.0
+Name: CI - Build, Lint, Test
+Triggers:
+  - Type: PullRequest
+    Branches:
+      - "*"
+  - Type: Push
+    Branches:
+      - main
+Compute:
+  Type: EC2
+  Fleet: Linux.x86-64.large
+Actions:
+  BuildAndTest:
+    Identifier: aws/build@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Configuration:
+      Steps:
+        - Run: corepack enable
+        - Run: pnpm -v || npm i -g pnpm@8
+        - Run: pnpm install --frozen-lockfile
+        - Run: pnpm run lint:all
+        - Run: pnpm run test:all -- --ci --reporters=default --reporters=jest-junit
+        - Run: pnpm audit --prod --audit-level=high || true
+        - Run: pnpm dlx depcheck || true
+        - Run: pnpm run build:all

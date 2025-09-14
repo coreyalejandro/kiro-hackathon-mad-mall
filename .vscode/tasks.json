@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "LocalStack: up",
+      "type": "shell",
+      "command": "docker compose up -d localstack",
+      "problemMatcher": []
+    },
+    {
+      "label": "LocalStack: logs",
+      "type": "shell",
+      "command": "docker compose logs -f localstack",
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev: all",
+      "type": "shell",
+      "command": "pnpm dev",
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev: web",
+      "type": "shell",
+      "command": "pnpm -w nx run @madmall/web-app:dev",
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev: lambda local",
+      "type": "shell",
+      "command": "pnpm -w nx run @madmall/api-gateway:dev-local",
+      "problemMatcher": []
+    }
+  ]
+}
+

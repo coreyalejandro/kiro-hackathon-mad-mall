@@ -10,12 +10,12 @@
     {
       "type": "run_script",
       "script": "scripts/update-inventory.js",
-      "workingDirectory": "madmall-web",
+      "workingDirectory": "packages/web-app",
       "showOutput": true
     }
   ],
   "settings": {
-    "enabled": true,
+    "enabled": false,
     "confirmBeforeRun": false
   }
 }

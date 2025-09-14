@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
-import { App, Environment } from 'aws-cdk-lib';
+import { App, Environment, Aspects } from 'aws-cdk-lib';
 import { MainStack } from './stacks/main-stack';
+import { AwsSolutionsChecks } from 'cdk-nag';
 
 const app = new App();
 
@@ -90,18 +91,10 @@ new MainStack(app, `MADMallStack-${environment}`, {
 });
 
 // Add global tags to all resources
-app.node.applyAspect({
-  visit: (node) => {
-    if (node.node.id !== 'Tree') {
-      const tags = node.node.tryGetContext('tags') || {};
-      Object.entries(tags).forEach(([key, value]) => {
-        if (typeof value === 'string') {
-          node.node.addMetadata(`tag:${key}`, value);
-        }
-      });
-    }
-  },
-});
+// Global tagging could be implemented via Aspects or stack-level tags already set.
 
 // Synthesize the app
+// Enable cdk-nag AwsSolutions checks
+Aspects.of(app).add(new AwsSolutionsChecks({ verbose: true }));
+
 app.synth();

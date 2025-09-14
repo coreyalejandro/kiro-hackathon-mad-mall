@@ -1,8 +1,19 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { StoryUploader } from '@/components/stories/StoryUploader';
+import { StoryList } from '@/components/stories/StoryList';
+import { api } from '@/lib/mock-api';
+import { Story } from '@/lib/types';
 
 export function StoryBoothContent() {
+  const [stories, setStories] = useState<Story[]>([]);
+
+  useEffect(() => {
+    api.getStories().then(res => setStories(res.data));
+  }, []);
+
   return (
     <ContentLayout
       header={
@@ -50,7 +61,19 @@ export function StoryBoothContent() {
             </div>
           </div>
         </div>
+
+        <div>
+          <h2>Recent Stories</h2>
+          <ul>
+            {stories.slice(0, 5).map(s => (
+              <li key={s.id}>{s.title}</li>
+            ))}
+          </ul>
+        </div>
       </Container>
+
+      <StoryUploader />
+      <StoryList />
     </ContentLayout>
   );
 }

@@ -1,0 +1,28 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "lib",
+    "rootDir": "../..",
+    "composite": false,
+    "declaration": true,
+    "sourceMap": false,
+    "module": "commonjs",
+    "target": "ES2020",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@madmall/shared-types/*": ["../shared-types/src/*"],
+      "@madmall/shared-types": ["../shared-types/src/index.ts"],
+      "@madmall/bedrock-agents/*": ["../bedrock-agents/src/*"],
+      "@madmall/bedrock-agents": ["../bedrock-agents/src/index.ts"],
+      "@madmall/infrastructure/*": ["../infrastructure/src/*"],
+      "@madmall/infrastructure": ["../infrastructure/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "lib"]
+}
+

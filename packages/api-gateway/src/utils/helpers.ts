@@ -1,3 +1,24 @@
+import { APIGatewayProxyEvent } from 'aws-lambda';
+
+/**
+ * Extract or create a correlation ID for request tracing
+ */
+export function getCorrelationId(event: APIGatewayProxyEvent): string {
+  const headerId = event.headers['X-Correlation-Id'] || event.headers['x-correlation-id'];
+  const requestId = (event.requestContext as any)?.requestId;
+  return (headerId as string) || requestId || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+/**
+ * Create structured log entry
+ */
+export function logInfo(message: string, details: Record<string, unknown> = {}): void {
+  console.log(JSON.stringify({ level: 'INFO', message, ...details }));
+}
+
+export function logError(message: string, details: Record<string, unknown> = {}): void {
+  console.error(JSON.stringify({ level: 'ERROR', message, ...details }));
+}
 /**
  * Helper utilities for API Gateway
  */

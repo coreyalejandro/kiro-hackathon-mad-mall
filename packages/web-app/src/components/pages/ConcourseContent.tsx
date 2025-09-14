@@ -1,56 +1,47 @@
-'use client';
-
-import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import '../../styles/concourse-interactions.css';
 
 export function ConcourseContent() {
+  const router = useRouter();
+
+  const handlePeerCirclesClick = () => {
+    router.push('/circles');
+  };
+
+  const communityActivity: Array<string> = [
+    'Tasha joined Peer Circles',
+    'New discussion: Managing Anxiety Together',
+    '5 new comedy clips this week',
+  ];
+
   return (
-    <ContentLayout
-      header={
-        <Header
-          variant="h1"
-          description="Welcome to the main hub of our social wellness community"
+    <div>
+      <section className="mall-sections-grid">
+        <div
+          data-testid="mall-section-peer-circles"
+          className="mall-section-card"
+          onClick={handlePeerCirclesClick}
+          role="button"
+          aria-label="Visit Peer Circles"
+          tabIndex={0}
         >
-          Concourse
-        </Header>
-      }
-    >
-      <Container>
-        <div className="hero-section hero-contained">
-          <div className="hero-container">
-            <div className="hero-main-grid">
-              <div className="hero-content">
-                <div className="hero-page-name">Community Hub</div>
-                <h1 className="hero-title">Welcome to the Concourse</h1>
-                <p className="hero-subtitle">
-                  Your central gathering place for wellness, community, and connection.
-                </p>
-                <div className="hero-cta-group">
-                  <button className="hero-cta hero-cta-primary">
-                    <span className="hero-cta-icon">🌟</span>
-                    Explore Communities
-                  </button>
-                  <button className="hero-cta hero-cta-secondary">
-                    <span className="hero-cta-icon">💬</span>
-                    Start Conversation
-                  </button>
-                </div>
-              </div>
-              <div className="hero-visual-container">
-                <div className="hero-image-container">
-                  <div className="hero-image-layer hero-image-main">
-                    <div className="hero-default-content">
-                      <div className="hero-default-icon">🏛️</div>
-                      <div className="hero-default-text">
-                        Community<br />Gathering Space
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div className="mall-section-icon" aria-hidden>👥</div>
+          <h2>Peer Circles</h2>
+          <p>Connect with sisters who understand your journey.</p>
         </div>
-      </Container>
-    </ContentLayout>
+      </section>
+
+      <section>
+        <h3>Community Activity</h3>
+        <ul className="community-activity-list">
+          {communityActivity.map((item, index) => (
+            <li key={index} className="community-activity-item">{item}</li>
+          ))}
+        </ul>
+      </section>
+    </div>
   );
 }
+
+export default ConcourseContent;

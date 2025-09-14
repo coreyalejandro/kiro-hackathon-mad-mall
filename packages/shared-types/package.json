@@ -10,6 +10,11 @@
       "import": "./lib/index.js",
       "require": "./lib/index.js"
     },
+    "./database": {
+      "types": "./lib/database/index.d.ts",
+      "import": "./lib/database/index.js",
+      "require": "./lib/database/index.js"
+    },
     "./domain": {
       "types": "./lib/domain/index.d.ts",
       "import": "./lib/domain/index.js",

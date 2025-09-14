@@ -18,7 +18,12 @@ import { RestApi } from 'aws-cdk-lib/aws-apigateway';
 import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import { UserPool } from 'aws-cdk-lib/aws-cognito';
 import { LogGroup, MetricFilter, FilterPattern } from 'aws-cdk-lib/aws-logs';
-import { Duration, Tags } from 'aws-cdk-lib';
+import { Duration, Tags, RemovalPolicy } from 'aws-cdk-lib';
+import { Canary, Runtime, Test } from 'aws-cdk-lib/aws-synthetics';
+import { Code as SyntheticsCode } from 'aws-cdk-lib/aws-synthetics';
+import { Schedule as SyntheticsSchedule } from 'aws-cdk-lib/aws-synthetics';
+import { Bucket, BlockPublicAccess, BucketEncryption } from 'aws-cdk-lib/aws-s3';
+import { Key, KeySpec, KeyUsage } from 'aws-cdk-lib/aws-kms';
 
 export interface MonitoringConstructProps {
   /**
@@ -55,6 +60,11 @@ export interface MonitoringConstructProps {
    * Slack webhook URL for notifications (optional)
    */
   slackWebhookUrl?: string;
+
+  /**
+   * Public health-check URL for synthetic monitoring
+   */
+  healthCheckUrl?: string;
 }
 
 export class MonitoringConstruct extends Construct {
@@ -73,6 +83,7 @@ export class MonitoringConstruct extends Construct {
       userPool,
       alertEmails,
       slackWebhookUrl,
+      healthCheckUrl,
     } = props;
 
     // Create SNS topic for alerts
@@ -86,6 +97,11 @@ export class MonitoringConstruct extends Construct {
 
     // Create custom metrics and log-based metrics
     this.createCustomMetrics(environment, lambdaFunctions);
+
+    // Create synthetic canary for health checks if URL provided
+    if (healthCheckUrl) {
+      this.createSyntheticsCanary(environment, healthCheckUrl);
+    }
   }
 
   private createAlertTopic(environment: string, alertEmails: string[], slackWebhookUrl?: string): Topic {
@@ -464,7 +480,7 @@ export class MonitoringConstruct extends Construct {
     dashboard.addWidgets(
       new LogQueryWidget({
         title: 'Recent Errors',
-        logGroups: [`/aws/lambda/madmall-${environment}-*`],
+        logGroupNames: [`/aws/lambda/madmall-${environment}-*`],
         queryLines: [
           'fields @timestamp, @message',
           'filter @message like /ERROR/',
@@ -629,5 +645,53 @@ export class MonitoringConstruct extends Construct {
         defaultValue: 0,
       });
     });
+  }
+
+  private createSyntheticsCanary(environment: string, healthCheckUrl: string): void {
+    // KMS key for Synthetics artifacts bucket
+    const canaryKmsKey = new Key(this, 'SyntheticsKmsKey', {
+      description: `MADMall ${environment} KMS key for Synthetics artifacts`,
+      enableKeyRotation: true,
+      keyUsage: KeyUsage.ENCRYPT_DECRYPT,
+      keySpec: KeySpec.SYMMETRIC_DEFAULT,
+      removalPolicy: environment === 'prod' ? RemovalPolicy.RETAIN : RemovalPolicy.DESTROY,
+    });
+
+    const artifactsBucket = new Bucket(this, 'SyntheticsBucket', {
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+      enforceSSL: true,
+      encryption: BucketEncryption.KMS,
+      encryptionKey: canaryKmsKey,
+      versioned: true,
+      removalPolicy: environment === 'prod' ? RemovalPolicy.RETAIN : RemovalPolicy.DESTROY,
+      autoDeleteObjects: environment !== 'prod',
+    });
+
+    const canary = new Canary(this, 'HealthCanary', {
+      canaryName: `madmall-${environment}-health`,
+      schedule: SyntheticsSchedule.rate(Duration.minutes(5)),
+      runtime: Runtime.SYNTHETICS_NODEJS_PUPPETEER_6_2,
+      test: Test.custom({
+        code: SyntheticsCode.fromInline(`const synthetics = require('Synthetics');
+const log = require('SyntheticsLogger');
+const https = require('https');
+const url = '${healthCheckUrl}';
+const request = async function () {
+  let requestOptions = { hostname: new URL(url).hostname, path: new URL(url).pathname, method: 'GET' };
+  let headers = { 'User-Agent': 'MADMall-Canary' };
+  requestOptions['headers'] = headers;
+  let stepConfig = { includeRequestHeaders: true, includeResponseHeaders: true, restrictedHeaders: [] };
+  await synthetics.executeHttpStep('HealthCheck', requestOptions, stepConfig);
+};
+exports.handler = async () => { return await request(); };`),
+        handler: 'index.handler',
+      }),
+      environmentVariables: { ENVIRONMENT: environment },
+      artifactsBucketLocation: { bucket: artifactsBucket },
+      startAfterCreation: true,
+    });
+
+    Tags.of(canary).add('Name', `madmall-${environment}-health-canary`);
+    Tags.of(canary).add('Environment', environment);
   }
 }

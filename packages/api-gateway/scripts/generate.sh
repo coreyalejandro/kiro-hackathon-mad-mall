@@ -257,6 +257,11 @@ echo "✅ Code generation complete!"
 echo "📦 Mock TypeScript client: lib/"
 echo "📋 Mock OpenAPI spec: generated/"
 echo ""
+echo "🔁 Syncing OpenAPI to docs..."
+mkdir -p ../docs
+cp -f generated/openapi.json ../docs/openapi.json || true
+echo "📄 OpenAPI copied to packages/docs/openapi.json"
+echo ""
 echo "⚠️  Note: These are mock implementations."
 echo "   To generate actual code from Smithy models:"
 echo "   1. Install Smithy CLI: https://smithy.io/2.0/guides/smithy-cli/cli_installation.html"

@@ -75,3 +75,12 @@ export interface HeroSectionProps extends BaseComponentProps {
   }>;
   imageContent?: React.ReactNode;
 }
+
+// Auth types
+export interface AuthUser {
+  id: string;
+  email?: string;
+  givenName?: string;
+  familyName?: string;
+  groups?: string[];
+}

@@ -1,0 +1,50 @@
+name: RFC (Open Review)
+description: Propose a non-trivial design or product change for open review
+labels: [rfc]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to propose a design or user-facing change.
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      placeholder: Short, descriptive title
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why is this needed? Who benefits?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Describe the design/approach. Include diagrams if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks and mitigations
+      description: Security, safety, performance, maintainability, fairness, etc.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: advisory
+    attributes:
+      label: Advisory Board
+      options:
+        - label: This RFC is high-impact or sensitive; request Advisory Board review (`advisory-needed`)
+  - type: textarea
+    id: rollout
+    attributes:
+      label: Rollout plan
+      description: Milestones, flags, migration, docs, and comms.
+

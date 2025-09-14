@@ -5,13 +5,21 @@ import '@/styles/hero-sections.css';
 import '@/styles/concourse-interactions.css';
 import { AppLayout, TopNavigation, SideNavigation } from '@cloudscape-design/components';
 import { NavigationProvider } from '@/components/providers/NavigationProvider';
+import { QueryProvider } from '@/components/providers/QueryProvider';
+import { env } from '@/lib/env';
+
+void env; // trigger environment validation on bootstrap
 
 export const metadata: Metadata = {
   title: 'AIme - MADMall Social Wellness Hub',
   description: 'A culturally-centered social wellness platform for mental health support and community connection',
   keywords: ['mental health', 'wellness', 'community', 'support', 'cultural'],
   authors: [{ name: 'MADMall Team' }],
-  viewport: 'width=device-width, initial-scale=1',
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 const navigationItems = [
@@ -33,8 +41,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NavigationProvider>
-          <div id="app">
+        <QueryProvider>
+          <NavigationProvider>
+            <div id="app">
             <TopNavigation
               identity={{
                 href: '/',
@@ -73,6 +82,7 @@ export default function RootLayout({
             />
           </div>
         </NavigationProvider>
+        </QueryProvider>
       </body>
     </html>
   );

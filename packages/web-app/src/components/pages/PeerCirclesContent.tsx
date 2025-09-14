@@ -1,8 +1,14 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Container, Header, ContentLayout } from '@cloudscape-design/components';
+import { CirclesGrid } from '@/components/ui'; // Importing CirclesGrid for displaying circles
+import type { Circle } from '@/lib/types'; // Ensuring Circle type is imported
+import { useCircles } from '@/lib/queries'; // Fetching circles via a custom hook
 
 export function PeerCirclesContent() {
+  const { data: circles = [] } = useCircles(); // Using custom hook to fetch circles data
+
   return (
     <ContentLayout
       header={
@@ -35,20 +41,18 @@ export function PeerCirclesContent() {
                   </button>
                 </div>
               </div>
-              <div className="hero-visual-container">
-                <div className="hero-image-container">
-                  <div className="hero-image-layer hero-image-main">
-                    <div className="hero-default-content">
-                      <div className="hero-default-icon">🤝</div>
-                      <div className="hero-default-text">
-                        Supportive<br />Communities
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
+        </div>
+
+        {/* Display the circles using CirclesGrid */}
+        <div className="circles-section">
+          <h2>Available Peer Circles</h2>
+          {circles.length > 0 ? (
+            <CirclesGrid circles={circles} /> // Pass circles to CirclesGrid component
+          ) : (
+            <p>No peer circles available at this time. Please check back later.</p>
+          )}
         </div>
       </Container>
     </ContentLayout>

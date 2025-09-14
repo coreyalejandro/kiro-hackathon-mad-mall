@@ -31,3 +31,12 @@ export { searchHandler, getRecommendationsHandler, getCategoriesHandler } from '
 
 // Interaction handlers
 export { interactWithContentHandler } from './interactions';
+
+// Cultural image system handlers (to be implemented)
+export { submitImageFeedbackHandler, listImageFeedbackHandler } from './feedback';
+export { enqueueAdvisoryReviewHandler, listAdvisoryQueueHandler } from './advisory';
+export { createIncidentHandler, listIncidentsHandler } from './incidents';
+export { listPremiumSourcesHandler } from './premium-sources';
+export { getPersonalizationHandler, updatePersonalizationHandler } from './personalization';
+export { getCareRecommendationsHandler, getCareStatsHandler } from './recommendations';
+export { compareCareRecommendationHandler } from './recommendations-demo';

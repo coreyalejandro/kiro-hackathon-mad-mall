@@ -6,6 +6,8 @@ import { LambdaConstruct } from '../constructs/lambda';
 import { ApiGatewayConstruct } from '../constructs/api-gateway';
 import { AuthenticationConstruct } from '../constructs/authentication';
 import { MonitoringConstruct } from '../constructs/monitoring';
+import { SecurityConstruct } from '../constructs/security';
+import { StorageConstruct } from '../constructs/storage';
 
 export interface MainStackProps extends StackProps {
   /**
@@ -61,6 +63,8 @@ export class MainStack extends Stack {
   public readonly apiGateway: ApiGatewayConstruct;
   public readonly authentication: AuthenticationConstruct;
   public readonly monitoring: MonitoringConstruct;
+  public readonly security: SecurityConstruct;
+  public readonly storage: StorageConstruct;
 
   constructor(scope: Construct, id: string, props: MainStackProps) {
     super(scope, id, props);
@@ -99,6 +103,16 @@ export class MainStack extends Stack {
       enableStreams: true,
     });
 
+    // Create authentication infrastructure (must precede API so authorizer can bind)
+    this.authentication = new AuthenticationConstruct(this, 'Authentication', {
+      environment,
+      customDomain: authDomainName,
+      callbackUrls,
+      logoutUrls,
+      enableSocialLogin,
+      requireMfa,
+    });
+
     // Create Lambda functions
     this.lambda = new LambdaConstruct(this, 'Lambda', {
       environment,
@@ -112,11 +126,18 @@ export class MainStack extends Stack {
       },
     });
 
+    // Create storage (S3 user content with KMS)
+    this.storage = new StorageConstruct(this, 'Storage', {
+      environment,
+      authenticatedRole: this.authentication.authenticatedRole,
+    });
+
     // Create API Gateway
     this.apiGateway = new ApiGatewayConstruct(this, 'ApiGateway', {
       environment,
       lambdaFunctions: this.lambda.functions,
       domainName: apiDomainName,
+      userPool: this.authentication.userPool,
       corsOptions: {
         allowOrigins: this.getCorsOriginsForEnvironment(environment).split(','),
         allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -134,15 +155,8 @@ export class MainStack extends Stack {
       throttleSettings: this.getThrottleSettingsForEnvironment(environment),
     });
 
-    // Create authentication infrastructure
-    this.authentication = new AuthenticationConstruct(this, 'Authentication', {
-      environment,
-      customDomain: authDomainName,
-      callbackUrls,
-      logoutUrls,
-      enableSocialLogin,
-      requireMfa,
-    });
+    // Now that authentication is created, wire the authorizer-backed API methods
+    // Note: API construct already reads the userPool provided above.
 
     // Create monitoring infrastructure
     this.monitoring = new MonitoringConstruct(this, 'Monitoring', {
@@ -153,6 +167,14 @@ export class MainStack extends Stack {
       userPool: this.authentication.userPool,
       alertEmails,
       slackWebhookUrl,
+      healthCheckUrl: `${this.apiGateway.restApi.url}health`,
+    });
+
+    // Security hardening (WAF, CloudTrail, AWS Config, Security Hub)
+    this.security = new SecurityConstruct(this, 'Security', {
+      environment,
+      restApi: this.apiGateway.restApi,
+      additionalS3Buckets: [this.storage.userContentBucket],
     });
 
     // Create usage plans for API Gateway
@@ -265,7 +287,7 @@ export class MainStack extends Stack {
 
     // Monitoring outputs
     new CfnOutput(this, 'DashboardUrl', {
-      value: `https://console.aws.amazon.com/cloudwatch/home?region=${this.region}#dashboards:name=${this.monitoring.dashboard.dashboardName}`,
+      value: `https://console.aws.amazon.com/cloudwatch/home?region=${Stack.of(this).region}#dashboards:name=${this.monitoring.dashboard.dashboardName}`,
       description: 'CloudWatch Dashboard URL',
       exportName: `madmall-${environment}-dashboard-url`,
     });
@@ -274,6 +296,19 @@ export class MainStack extends Stack {
       value: this.monitoring.alertTopic.topicArn,
       description: 'SNS Alert Topic ARN',
       exportName: `madmall-${environment}-alert-topic-arn`,
+    });
+
+    // Storage outputs
+    new CfnOutput(this, 'UserContentBucketName', {
+      value: this.storage.userContentBucket.bucketName,
+      description: 'S3 bucket for user content',
+      exportName: `madmall-${environment}-user-content-bucket`,
+    });
+
+    new CfnOutput(this, 'UserContentKmsKeyArn', {
+      value: this.storage.contentKmsKey.keyArn,
+      description: 'KMS key ARN for user content bucket',
+      exportName: `madmall-${environment}-user-content-kms-arn`,
     });
   }
 }

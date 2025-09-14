@@ -5,6 +5,7 @@ export { default as CommunityTestimonials } from './CommunityTestimonials';
 export { default as FeaturedBrands } from './FeaturedBrands';
 export { default as FeaturedBusinesses } from './FeaturedBusinesses';
 export { default as FeaturedCircles } from './FeaturedCircles';
+export { default as CirclesGrid } from './CirclesGrid';
 export { default as HeroSection } from './HeroSection';
 export { default as InteractiveStats } from './InteractiveStats';
 export { default as LoadingCard } from './LoadingCard';

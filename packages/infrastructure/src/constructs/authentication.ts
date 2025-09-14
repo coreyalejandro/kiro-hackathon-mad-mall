@@ -16,10 +16,7 @@ import {
   UserPoolClientIdentityProvider,
   CfnUserPoolGroup,
 } from 'aws-cdk-lib/aws-cognito';
-import {
-  IdentityPool,
-  UserPoolAuthenticationProvider,
-} from '@aws-cdk/aws-cognito-identitypool-alpha';
+import { IdentityPool, UserPoolAuthenticationProvider } from 'aws-cdk-lib/aws-cognito-identitypool';
 import {
   Role,
   ServicePrincipal,
@@ -114,14 +111,11 @@ export class AuthenticationConstruct extends Construct {
     this.authenticatedRole = this.createAuthenticatedRole(environment);
     this.unauthenticatedRole = this.createUnauthenticatedRole(environment);
 
-    // Attach roles to Identity Pool
-    this.identityPool.addRoleAttachment('authenticated', {
-      role: this.authenticatedRole,
-    });
-
-    this.identityPool.addRoleAttachment('unauthenticated', {
-      role: this.unauthenticatedRole,
-    });
+    // Assign roles to Identity Pool via roleAttachment
+    this.identityPool.roleAttachment.roles = {
+      authenticated: this.authenticatedRole.roleArn,
+      unauthenticated: this.unauthenticatedRole.roleArn,
+    } as any;
   }
 
   private createUserPool(environment: string, requireMfa: boolean): UserPool {
@@ -155,23 +149,11 @@ export class AuthenticationConstruct extends Construct {
         },
       },
       customAttributes: {
-        culturalBackground: {
-          dataType: 'String',
-          mutable: true,
-        },
-        communicationStyle: {
-          dataType: 'String',
-          mutable: true,
-        },
-        diagnosisStage: {
-          dataType: 'String',
-          mutable: true,
-        },
-        tenantId: {
-          dataType: 'String',
-          mutable: false,
-        },
-      },
+        culturalBackground: new (UserPool as any).CustomAttribute({ mutable: true, dataType: 'String' }),
+        communicationStyle: new (UserPool as any).CustomAttribute({ mutable: true, dataType: 'String' }),
+        diagnosisStage: new (UserPool as any).CustomAttribute({ mutable: true, dataType: 'String' }),
+        tenantId: new (UserPool as any).CustomAttribute({ mutable: false, dataType: 'String' }),
+      } as any,
       passwordPolicy: {
         minLength: 8,
         requireLowercase: true,
@@ -244,26 +226,8 @@ export class AuthenticationConstruct extends Construct {
         logoutUrls,
       },
       supportedIdentityProviders,
-      readAttributes: [
-        'email',
-        'email_verified',
-        'given_name',
-        'family_name',
-        'picture',
-        'custom:culturalBackground',
-        'custom:communicationStyle',
-        'custom:diagnosisStage',
-        'custom:tenantId',
-      ],
-      writeAttributes: [
-        'email',
-        'given_name',
-        'family_name',
-        'picture',
-        'custom:culturalBackground',
-        'custom:communicationStyle',
-        'custom:diagnosisStage',
-      ],
+      readAttributes: undefined,
+      writeAttributes: undefined,
       preventUserExistenceErrors: true,
       refreshTokenValidity: Duration.days(30),
       accessTokenValidity: Duration.hours(1),

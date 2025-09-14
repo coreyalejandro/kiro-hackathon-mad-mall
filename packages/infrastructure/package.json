@@ -5,8 +5,9 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "watch": "tsc -w",
+    "dev": "tsc -w -p tsconfig.build.json",
     "test": "jest",
     "cdk": "cdk",
     "deploy": "cdk deploy",
@@ -14,9 +15,7 @@
     "synth": "cdk synth"
   },
   "dependencies": {
-    "@aws-cdk/aws-apigatewayv2-alpha": "^2.100.0-alpha.0",
-    "@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.100.0-alpha.0",
-    "aws-cdk-lib": "^2.100.0",
+    "aws-cdk-lib": "^2.214.0",
     "constructs": "^10.3.0",
     "@madmall/shared-types": "workspace:*"
   },
