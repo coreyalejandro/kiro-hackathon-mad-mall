@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { TitanEngine } from '@madmall/titanengine';
+import { TitanEngine } from '@/lib/titan-engine';
 
 const engine = TitanEngine.createDefault();
 
@@ -18,16 +18,12 @@ export async function GET(request: Request) {
     } as any;
     const bypassCache = searchParams.get('bypassCache') === 'true';
 
-    const result = await engine.generateCareModel(
-      {
-        userId,
-        age,
-        diagnosisStage,
-        supportNeeds,
-        culturalContext,
-      },
-      { bypassCache },
-    );
+    const result = await engine.generateCareModel({
+      userId,
+      culturalBackground: [culturalContext.primaryCulture, ...culturalContext.secondaryCultures],
+      supportNeeds,
+      context: `Age: ${age}, Stage: ${diagnosisStage}, Region: ${culturalContext.region}`
+    });
     await engine.recordEvent({
       userId,
       eventType: 'interaction',

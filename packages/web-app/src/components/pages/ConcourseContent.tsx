@@ -1,51 +1,14 @@
 "use client";
 
 import { useRouter } from 'next/navigation';
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Container, ContentLayout, Cards, SpaceBetween, Box, Button, Badge, Header } from '@cloudscape-design/components';
-import CloudscapeHero from '../ui/CloudscapeHero';
-import CommunityTestimonials from '../ui/CommunityTestimonials';
-=======
-import {
-  Container,
-  Header,
-  ContentLayout,
-  Cards,
-  SpaceBetween,
-  Box,
-  Button,
-  Badge
-} from '@cloudscape-design/components';
-=======
-import { Container, ContentLayout, Cards, SpaceBetween, Box, Button, Badge } from '@cloudscape-design/components';
-import PageHeader from '../ui/PageHeader';
->>>>>>> b014672 (feat(web): add Cloudscape PageHeader, migrate all pages, remove legacy hero/Kadir assets, add preview route)
-=======
 import { Container, ContentLayout, Cards, SpaceBetween, Box, Button, Badge, Header } from '@cloudscape-design/components';
 import PageHeader from '../ui/PageHeader';
-import CloudscapeHero from '../ui/CloudscapeHero';
->>>>>>> 8085799 (chore: sync local changes before rebase)
 import CommunityTestimonials from '../ui/CommunityTestimonials';
-
-
->>>>>>> 978a1c5 (refactor(web): standardize pages on Cloudscape, remove custom Kadir/hero UI)
 
 export function ConcourseContent() {
   const router = useRouter();
 
   const primaryItems = [
-<<<<<<< HEAD
-    { id: 'circles', name: 'Peer Circles', description: 'Connect with sisters who understand your journey.', href: '/circles', meta: ['127 active members', '5 new this week'], icon: '👥' },
-    { id: 'comedy', name: 'Comedy Lounge', description: 'Find relief through laughter with curated clips.', href: '/comedy', meta: ['45 new clips', '⭐ 4.9 rating'], icon: '😂' },
-  ];
-
-  const secondaryItems = [
-    { id: 'stories', name: 'Story Booth', description: 'Share audio stories and inspire others.', href: '/stories', meta: ['23 stories today'], icon: '🎤' },
-    { id: 'marketplace', name: 'Marketplace', description: 'Support Black-owned wellness brands.', href: '/marketplace', meta: ['89 featured brands'], icon: '🛍️' },
-    { id: 'resources', name: 'Resource Hub', description: 'Curated health information and wellness tips.', href: '/resources', meta: ['156 articles available'], icon: '📚' },
-=======
     {
       id: 'circles',
       name: 'Peer Circles',
@@ -89,16 +52,9 @@ export function ConcourseContent() {
       meta: ['156 articles available'],
       icon: '📚',
     },
->>>>>>> 978a1c5 (refactor(web): standardize pages on Cloudscape, remove custom Kadir/hero UI)
   ];
 
   const cardDefinition = {
-    header: (item: any) => (
-      <SpaceBetween direction="horizontal" size="s" alignItems="center">
-        <Box>{item.icon}</Box>
-        <Header variant="h3">{item.name}</Header>
-      </SpaceBetween>
-    ),
     sections: [
       {
         content: (item: any) => (
@@ -106,121 +62,55 @@ export function ConcourseContent() {
             <Box>{item.description}</Box>
             {item.meta && (
               <SpaceBetween direction="horizontal" size="xs">
-                {item.meta.map((m: string, i: number) => (
-                  <Badge key={i} color="grey">{m}</Badge>
+                {item.meta.map((meta: string, index: number) => (
+                  <Badge key={index} color="blue">
+                    {meta}
+                  </Badge>
                 ))}
               </SpaceBetween>
             )}
-<<<<<<< HEAD
-            <Button variant="primary" onClick={() => router.push(item.href)} data-testid={item.id === 'circles' ? 'mall-section-peer-circles' : undefined}>
-=======
             <Button
               variant="primary"
               onClick={() => router.push(item.href)}
-              data-testid={item.id === 'circles' ? 'mall-section-peer-circles' : undefined}
             >
->>>>>>> 978a1c5 (refactor(web): standardize pages on Cloudscape, remove custom Kadir/hero UI)
-              Visit {item.name}
+              Enter {item.name}
             </Button>
           </SpaceBetween>
         ),
       },
     ],
-  } as const;
+  };
 
   return (
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <ContentLayout header={
-      <CloudscapeHero
-        eyebrow="New"
-=======
-    <ContentLayout header={
-      <CloudscapeHero
->>>>>>> 8085799 (chore: sync local changes before rebase)
-        title="Concourse"
-        description="Welcome to your wellness sanctuary. Explore community, joy, and trusted resources."
-        primaryAction={{ text: 'Join a Circle', onClick: () => router.push('/circles'), iconName: 'users' }}
-        secondaryAction={{ text: 'Explore Mall', onClick: () => document.getElementById('explore-start')?.scrollIntoView({ behavior: 'smooth' }), iconName: 'search' }}
-        highlights={[{ icon: '👥', label: 'Members', value: '1.2k' }, { icon: '⭐', label: 'Relief Rating', value: '4.8/5' }]}
-        images={['/images/hero/community-1.png','/images/hero/community-2.png','/images/hero/community-3.png']}
-      />
-    }>
-<<<<<<< HEAD
-      <SpaceBetween size="l">
-        <Container id="explore-start">
-          <Header variant="h2">Explore Your Wellness Mall</Header>
-          <Cards cardDefinition={cardDefinition} items={primaryItems} selectionType="none" trackBy="id" />
-          <Box padding={{ top: 'l' }}>
-            <Cards cardDefinition={cardDefinition} items={secondaryItems} selectionType="none" trackBy="id" />
-=======
     <ContentLayout
       header={
-        <Header
-          variant="h1"
-          description="Welcome to your wellness sanctuary. Explore community, joy, and trusted resources."
-        >
-          Concourse
-        </Header>
+        <PageHeader
+          title="Welcome to MADMall"
+          description="Your wellness journey starts here. Connect, share, and grow with a community that understands your unique path to wellness."
+        />
       }
     >
-=======
-    <ContentLayout header={<PageHeader title="Concourse" description="Welcome to your wellness sanctuary. Explore community, joy, and trusted resources." primaryAction={{ text: 'Join a Circle', onClick: () => router.push('/circles'), iconName: 'users' }} secondaryAction={{ text: 'Explore Mall', onClick: () => document.getElementById('explore-start')?.scrollIntoView({ behavior: 'smooth' }), iconName: 'search' }} />}>
->>>>>>> b014672 (feat(web): add Cloudscape PageHeader, migrate all pages, remove legacy hero/Kadir assets, add preview route)
-=======
->>>>>>> 8085799 (chore: sync local changes before rebase)
-      <SpaceBetween size="l">
-        <Container id="explore-start">
-          <Header variant="h2">Explore Your Wellness Mall</Header>
-          <Cards
-            cardDefinition={cardDefinition}
-            items={primaryItems}
-            selectionType="none"
-            trackBy="id"
-          />
-          <Box padding={{ top: 'l' }}>
-            <Cards
-              cardDefinition={cardDefinition}
-              items={secondaryItems}
-              selectionType="none"
-              trackBy="id"
-            />
->>>>>>> 978a1c5 (refactor(web): standardize pages on Cloudscape, remove custom Kadir/hero UI)
-          </Box>
-        </Container>
+      <Container>
+        <Header variant="h2">Featured Sections</Header>
+        <Cards
+          cardDefinition={cardDefinition}
+          cardsPerRow={[{ cards: 2 }, { minWidth: 500, cards: 1 }]}
+          items={primaryItems}
+        />
+      </Container>
 
-        <Container>
-          <Header variant="h2">Today&apos;s Highlights</Header>
-          <Cards
-            cardDefinition={{
-              header: (item: any) => <Header variant="h3">{item.title}</Header>,
-              sections: [{ content: (item: any) => <Box>{item.body}</Box> }],
-            }}
-            items={[
-              { id: 'discuss', title: '💬 Active Discussions', body: '“Managing Anxiety Together” – 12 new messages' },
-              { id: 'comedy', title: '😂 Comedy Relief', body: 'New “Graves Giggles” collection – 5 minutes of joy' },
-              { id: 'brand', title: '🛍️ Featured Brand', body: 'Melanin Wellness Co. – Natural supplements' },
-            ]}
-            trackBy="id"
-            selectionType="none"
-          />
-        </Container>
+      <Container>
+        <Header variant="h2">Explore More</Header>
+        <Cards
+          cardDefinition={cardDefinition}
+          cardsPerRow={[{ cards: 3 }, { minWidth: 500, cards: 1 }]}
+          items={secondaryItems}
+        />
+      </Container>
 
-        <Container>
-          <Header variant="h2">Recent Community Activity</Header>
-          <ul>
-            <li>Aisha joined Peer Circles</li>
-            <li>New post in Story Booth</li>
-            <li>Comedy Lounge added 3 clips</li>
-          </ul>
-        </Container>
-
-        <CommunityTestimonials />
-      </SpaceBetween>
+      <CommunityTestimonials />
     </ContentLayout>
   );
 }
 
 export default ConcourseContent;
-

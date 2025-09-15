@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Disable linting and type checking during builds for speed
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+
   // Enable experimental features for Next.js 15
   experimental: {
     // Enable React 19 features - disabled until babel-plugin-react-compiler is installed

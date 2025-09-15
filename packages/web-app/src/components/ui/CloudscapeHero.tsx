@@ -54,17 +54,16 @@ export default function CloudscapeHero({
     };
   };
 
-  const imageCardStyle = (url?: string, blur = 0, opacity = 1): React.CSSProperties => ({
+  const imageCardStyle = (blur = 0, opacity = 1): React.CSSProperties => ({
     width: '100%',
-    height: 220,
+    height: 260,
     borderRadius: 24,
-    background: url && url.length > 0
-      ? `url(${url}) center/cover no-repeat`
-      : 'linear-gradient(135deg, #b85450 0%, #87a96b 100%)',
     boxShadow: '0 30px 70px rgba(0,0,0,0.25)',
     border: '1px solid rgba(255,255,255,0.25)',
+    overflow: 'hidden',
     filter: `saturate(1.06) contrast(1.03) blur(${blur}px)`,
     opacity,
+    background: 'linear-gradient(135deg, #b85450 0%, #87a96b 100%)',
   });
 
   return (
@@ -119,7 +118,7 @@ export default function CloudscapeHero({
 
           {/* Right: depth-stacked image with overlay chips */}
           <Box onMouseMove={handleMouseMove}>
-            <div style={{ position: 'relative', height: 260 }}>
+            <div style={{ position: 'relative', height: 300 }}>
               {/* back glow */}
               <div style={{
                 position: 'absolute', inset: 0, borderRadius: 28,
@@ -129,13 +128,25 @@ export default function CloudscapeHero({
 
               {/* depth layers */}
               <div style={{ position: 'absolute', top: 0, left: 28, right: 28, ...layerStyle(2) }}>
-                <Box style={imageCardStyle(layers[2], 3, 0.7)} />
+                <Box style={imageCardStyle(0, 0.75)}>
+                  {layers[2] ? (
+                    <img src={layers[2]} alt="Community" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : null}
+                </Box>
               </div>
               <div style={{ position: 'absolute', top: 18, left: 14, right: 14, ...layerStyle(1) }}>
-                <Box style={imageCardStyle(layers[1], 1.5, 0.85)} />
+                <Box style={imageCardStyle(0, 0.88)}>
+                  {layers[1] ? (
+                    <img src={layers[1]} alt="Community" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : null}
+                </Box>
               </div>
               <div style={{ position: 'absolute', top: 36, left: 0, right: 0, ...layerStyle(0) }}>
-                <Box style={imageCardStyle(layers[0], 0, 1)} />
+                <Box style={imageCardStyle(0, 1)}>
+                  {layers[0] ? (
+                    <img src={layers[0]} alt="Community" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : null}
+                </Box>
               </div>
 
               {/* overlay chips (top-right) */}

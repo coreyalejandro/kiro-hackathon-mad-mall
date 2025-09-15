@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from 'react';
 import {
   Container,
@@ -53,7 +55,7 @@ export function UserProfileContent() {
     });
   }, []);
 
-  const handleProfileSubmit = (event) => {
+  const handleProfileSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     // Handle profile update logic here
     api.updateUserProfile(profile, notifications).then(() => {
@@ -71,35 +73,37 @@ export function UserProfileContent() {
           <FormField label="First Name">
             <Input
               value={profile.firstName}
-              onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
+              onChange={({ detail }) => setProfile({ ...profile, firstName: detail.value })}
               required
             />
           </FormField>
           <FormField label="Last Name">
             <Input
               value={profile.lastName}
-              onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
+              onChange={({ detail }) => setProfile({ ...profile, lastName: detail.value })}
               required
             />
           </FormField>
           <FormField label="Bio">
             <Textarea
               value={profile.bio}
-              onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+              onChange={({ detail }) => setProfile({ ...profile, bio: detail.value })}
               resize="vertical"
             />
           </FormField>
           <FormField label="Notification Preferences">
             <Toggle
               checked={notifications.email}
-              onChange={() => setNotifications({...notifications, email: !notifications.email})}
-              label="Email Notifications"
-            />
+              onChange={({ detail }) => setNotifications({ ...notifications, email: detail.checked })}
+            >
+              Email Notifications
+            </Toggle>
             <Toggle
               checked={notifications.sms}
-              onChange={() => setNotifications({...notifications, sms: !notifications.sms})}
-              label="SMS Notifications"
-            />
+              onChange={({ detail }) => setNotifications({ ...notifications, sms: detail.checked })}
+            >
+              SMS Notifications
+            </Toggle>
           </FormField>
           <Button type="submit">Save Changes</Button>
         </form>

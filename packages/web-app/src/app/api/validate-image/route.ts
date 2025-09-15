@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { TitanEngine } from '@madmall/titanengine';
+import { TitanEngine } from '@/lib/titan-engine';
 
 const engine = TitanEngine.createDefault();
 
