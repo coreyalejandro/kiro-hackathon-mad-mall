@@ -1,4 +1,10 @@
-import { TitanEvent } from './services';
+interface TitanEvent {
+    userId: string;
+    eventType: 'page' | 'interaction';
+    name: string;
+    timestamp?: number;
+    data?: Record<string, unknown>;
+}
 interface TitanEngineConfig {
     region?: string;
     tableName?: string;
@@ -51,6 +57,9 @@ export declare class TitanEngine {
     }>;
     recordEvent(event: TitanEvent): Promise<void>;
     getEvents(userId: string): Promise<TitanEvent[]>;
+    listPending(limit?: number): Promise<import("@madmall/shared-types/database").DynamoDBImageAsset[]>;
+    listFlagged(limit?: number): Promise<import("@madmall/shared-types/database").DynamoDBImageAsset[]>;
+    selectByContext(context: string, limit?: number): Promise<any>;
     auditImageAssets(limit?: number): Promise<void>;
 }
 export {};

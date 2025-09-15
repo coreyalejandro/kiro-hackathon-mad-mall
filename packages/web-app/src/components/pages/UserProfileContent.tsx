@@ -15,6 +15,7 @@ import {
 } from '@cloudscape-design/components';
 import { api } from '@/lib/mock-api';
 import { ActivityItem } from '@/lib/types';
+import AutoImageHero from '@/components/ui/AutoImageHero';
 
 interface ProfileData {
   firstName: string;
@@ -67,6 +68,12 @@ export function UserProfileContent() {
 
   return (
     <SpaceBetween size="l">
+      <AutoImageHero
+        section="profile"
+        title="Your Profile"
+        description="Manage your information and preferences"
+        eyebrow="Account"
+      />
       <Container>
         <Header variant="h1">User Profile</Header>
         <form onSubmit={handleProfileSubmit}>

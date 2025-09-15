@@ -10,16 +10,13 @@ import {
   UserPoolIdentityProviderFacebook,
   UserPoolIdentityProviderAmazon,
   ProviderAttribute,
-  AttributeMapping,
   OAuthScope,
-  OAuthFlows,
   UserPoolClientIdentityProvider,
   CfnUserPoolGroup,
 } from 'aws-cdk-lib/aws-cognito';
 import { IdentityPool, UserPoolAuthenticationProvider } from 'aws-cdk-lib/aws-cognito-identitypool';
 import {
   Role,
-  ServicePrincipal,
   PolicyStatement,
   Effect,
   FederatedPrincipal,
@@ -265,7 +262,7 @@ export class AuthenticationConstruct extends Construct {
 
   private setupSocialLoginProviders(environment: string): void {
     // Create secrets for social login provider credentials
-    const googleSecret = new Secret(this, 'GoogleOAuthSecret', {
+    new Secret(this, 'GoogleOAuthSecret', {
       secretName: `madmall/${environment}/oauth/google`,
       description: 'Google OAuth credentials for social login',
       generateSecretString: {
@@ -275,7 +272,7 @@ export class AuthenticationConstruct extends Construct {
       },
     });
 
-    const facebookSecret = new Secret(this, 'FacebookOAuthSecret', {
+    new Secret(this, 'FacebookOAuthSecret', {
       secretName: `madmall/${environment}/oauth/facebook`,
       description: 'Facebook OAuth credentials for social login',
       generateSecretString: {
@@ -285,7 +282,7 @@ export class AuthenticationConstruct extends Construct {
       },
     });
 
-    const amazonSecret = new Secret(this, 'AmazonOAuthSecret', {
+    new Secret(this, 'AmazonOAuthSecret', {
       secretName: `madmall/${environment}/oauth/amazon`,
       description: 'Amazon OAuth credentials for social login',
       generateSecretString: {

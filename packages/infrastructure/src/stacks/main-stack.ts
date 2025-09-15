@@ -161,7 +161,7 @@ export class MainStack extends Stack {
     // Create monitoring infrastructure
     this.monitoring = new MonitoringConstruct(this, 'Monitoring', {
       environment,
-      lambdaFunctions: this.lambda.getAllFunctions(),
+      lambdaFunctions: this.lambda.getAllConcreteFunctions(),
       restApi: this.apiGateway.restApi,
       dynamoTable: this.database.mainTable,
       userPool: this.authentication.userPool,
@@ -309,6 +309,19 @@ export class MainStack extends Stack {
       value: this.storage.contentKmsKey.keyArn,
       description: 'KMS key ARN for user content bucket',
       exportName: `madmall-${environment}-user-content-kms-arn`,
+    });
+
+    // CDN outputs
+    new CfnOutput(this, 'ContentCDNDomainName', {
+      value: this.storage.cdnDistribution.distributionDomainName,
+      description: 'CloudFront CDN domain name for user content',
+      exportName: `madmall-${environment}-cdn-domain`,
+    });
+
+    new CfnOutput(this, 'ContentCDNDistributionId', {
+      value: this.storage.cdnDistribution.distributionId,
+      description: 'CloudFront distribution ID',
+      exportName: `madmall-${environment}-cdn-distribution-id`,
     });
   }
 }

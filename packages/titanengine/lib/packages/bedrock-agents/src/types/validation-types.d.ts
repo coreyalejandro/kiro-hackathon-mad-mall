@@ -52,40 +52,40 @@ export declare const ContentValidationInputSchema: z.ZodObject<{
             min: z.ZodNumber;
             max: z.ZodNumber;
         }, "strip", z.ZodTypeAny, {
-            min: number;
             max: number;
+            min: number;
         }, {
-            min: number;
             max: number;
+            min: number;
         }>;
         diagnosisStage: z.ZodEnum<["newly_diagnosed", "in_treatment", "survivor", "caregiver", "supporter"]>;
         supportNeeds: z.ZodArray<z.ZodString, "many">;
     }, "strip", z.ZodTypeAny, {
         diagnosisStage: "newly_diagnosed" | "in_treatment" | "survivor" | "caregiver" | "supporter";
-        ageRange: {
-            min: number;
-            max: number;
-        };
         supportNeeds: string[];
+        ageRange: {
+            max: number;
+            min: number;
+        };
     }, {
         diagnosisStage: "newly_diagnosed" | "in_treatment" | "survivor" | "caregiver" | "supporter";
-        ageRange: {
-            min: number;
-            max: number;
-        };
         supportNeeds: string[];
+        ageRange: {
+            max: number;
+            min: number;
+        };
     }>;
 }, "strip", z.ZodTypeAny, {
+    contentType: "text" | "image_url" | "video_url" | "audio_url";
     content: string;
     targetAudience: {
         diagnosisStage: "newly_diagnosed" | "in_treatment" | "survivor" | "caregiver" | "supporter";
-        ageRange: {
-            min: number;
-            max: number;
-        };
         supportNeeds: string[];
+        ageRange: {
+            max: number;
+            min: number;
+        };
     };
-    contentType: "text" | "image_url" | "video_url" | "audio_url";
     culturalContext: {
         region: string;
         primaryCulture: string;
@@ -95,16 +95,16 @@ export declare const ContentValidationInputSchema: z.ZodObject<{
         sensitiveTopics: string[];
     };
 }, {
+    contentType: "text" | "image_url" | "video_url" | "audio_url";
     content: string;
     targetAudience: {
         diagnosisStage: "newly_diagnosed" | "in_treatment" | "survivor" | "caregiver" | "supporter";
-        ageRange: {
-            min: number;
-            max: number;
-        };
         supportNeeds: string[];
+        ageRange: {
+            max: number;
+            min: number;
+        };
     };
-    contentType: "text" | "image_url" | "video_url" | "audio_url";
     culturalContext: {
         region: string;
         primaryCulture: string;
@@ -141,10 +141,10 @@ export declare const ValidationIssueSchema: z.ZodObject<{
         context?: string | undefined;
     }>>;
 }, "strip", z.ZodTypeAny, {
+    confidence: number;
     description: string;
     type: "cultural_insensitivity" | "inappropriate_language" | "medical_misinformation" | "triggering_content" | "age_inappropriate" | "religious_insensitivity" | "gender_bias" | "racial_bias" | "accessibility_issue";
     severity: ValidationSeverity;
-    confidence: number;
     suggestion?: string | undefined;
     location?: {
         start?: number | undefined;
@@ -152,10 +152,10 @@ export declare const ValidationIssueSchema: z.ZodObject<{
         context?: string | undefined;
     } | undefined;
 }, {
+    confidence: number;
     description: string;
     type: "cultural_insensitivity" | "inappropriate_language" | "medical_misinformation" | "triggering_content" | "age_inappropriate" | "religious_insensitivity" | "gender_bias" | "racial_bias" | "accessibility_issue";
     severity: ValidationSeverity;
-    confidence: number;
     suggestion?: string | undefined;
     location?: {
         start?: number | undefined;
@@ -187,10 +187,10 @@ export declare const CulturalValidationResultSchema: z.ZodObject<{
             context?: string | undefined;
         }>>;
     }, "strip", z.ZodTypeAny, {
+        confidence: number;
         description: string;
         type: "cultural_insensitivity" | "inappropriate_language" | "medical_misinformation" | "triggering_content" | "age_inappropriate" | "religious_insensitivity" | "gender_bias" | "racial_bias" | "accessibility_issue";
         severity: ValidationSeverity;
-        confidence: number;
         suggestion?: string | undefined;
         location?: {
             start?: number | undefined;
@@ -198,10 +198,10 @@ export declare const CulturalValidationResultSchema: z.ZodObject<{
             context?: string | undefined;
         } | undefined;
     }, {
+        confidence: number;
         description: string;
         type: "cultural_insensitivity" | "inappropriate_language" | "medical_misinformation" | "triggering_content" | "age_inappropriate" | "religious_insensitivity" | "gender_bias" | "racial_bias" | "accessibility_issue";
         severity: ValidationSeverity;
-        confidence: number;
         suggestion?: string | undefined;
         location?: {
             start?: number | undefined;
@@ -214,13 +214,11 @@ export declare const CulturalValidationResultSchema: z.ZodObject<{
     sensitivityScore: z.ZodNumber;
     inclusivityScore: z.ZodNumber;
 }, "strip", z.ZodTypeAny, {
-    sensitivityScore: number;
-    inclusivityScore: number;
     issues: {
+        confidence: number;
         description: string;
         type: "cultural_insensitivity" | "inappropriate_language" | "medical_misinformation" | "triggering_content" | "age_inappropriate" | "religious_insensitivity" | "gender_bias" | "racial_bias" | "accessibility_issue";
         severity: ValidationSeverity;
-        confidence: number;
         suggestion?: string | undefined;
         location?: {
             start?: number | undefined;
@@ -229,17 +227,17 @@ export declare const CulturalValidationResultSchema: z.ZodObject<{
         } | undefined;
     }[];
     isAppropriate: boolean;
+    sensitivityScore: number;
+    inclusivityScore: number;
     overallScore: number;
     suggestions: string[];
     culturalRelevanceScore: number;
 }, {
-    sensitivityScore: number;
-    inclusivityScore: number;
     issues: {
+        confidence: number;
         description: string;
         type: "cultural_insensitivity" | "inappropriate_language" | "medical_misinformation" | "triggering_content" | "age_inappropriate" | "religious_insensitivity" | "gender_bias" | "racial_bias" | "accessibility_issue";
         severity: ValidationSeverity;
-        confidence: number;
         suggestion?: string | undefined;
         location?: {
             start?: number | undefined;
@@ -248,6 +246,8 @@ export declare const CulturalValidationResultSchema: z.ZodObject<{
         } | undefined;
     }[];
     isAppropriate: boolean;
+    sensitivityScore: number;
+    inclusivityScore: number;
     overallScore: number;
     suggestions: string[];
     culturalRelevanceScore: number;
@@ -271,8 +271,8 @@ export declare const ContentModerationInputSchema: z.ZodObject<{
         reason: string;
     }>, "many">>;
 }, "strip", z.ZodTypeAny, {
-    content: string;
     contentType: "text" | "image_url" | "video_url" | "audio_url";
+    content: string;
     moderationLevel: "moderate" | "strict" | "lenient";
     customRules: {
         action: "block" | "warn" | "flag";
@@ -280,8 +280,8 @@ export declare const ContentModerationInputSchema: z.ZodObject<{
         reason: string;
     }[];
 }, {
-    content: string;
     contentType: "text" | "image_url" | "video_url" | "audio_url";
+    content: string;
     moderationLevel?: "moderate" | "strict" | "lenient" | undefined;
     customRules?: {
         action: "block" | "warn" | "flag";
@@ -298,22 +298,22 @@ export declare const ContentModerationResultSchema: z.ZodObject<{
         confidence: z.ZodNumber;
         severity: z.ZodNativeEnum<typeof ValidationSeverity>;
     }, "strip", z.ZodTypeAny, {
-        category: "hate_speech" | "harassment" | "violence" | "self_harm" | "sexual_content" | "spam" | "misinformation" | "privacy_violation" | "copyright_violation";
-        severity: ValidationSeverity;
         confidence: number;
+        category: "violence" | "hate_speech" | "harassment" | "self_harm" | "sexual_content" | "spam" | "misinformation" | "privacy_violation" | "copyright_violation";
+        severity: ValidationSeverity;
     }, {
-        category: "hate_speech" | "harassment" | "violence" | "self_harm" | "sexual_content" | "spam" | "misinformation" | "privacy_violation" | "copyright_violation";
-        severity: ValidationSeverity;
         confidence: number;
+        category: "violence" | "hate_speech" | "harassment" | "self_harm" | "sexual_content" | "spam" | "misinformation" | "privacy_violation" | "copyright_violation";
+        severity: ValidationSeverity;
     }>, "many">;
     action: z.ZodEnum<["allow", "flag", "block", "review"]>;
     reason: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     action: "allow" | "block" | "flag" | "review";
     categories: {
-        category: "hate_speech" | "harassment" | "violence" | "self_harm" | "sexual_content" | "spam" | "misinformation" | "privacy_violation" | "copyright_violation";
-        severity: ValidationSeverity;
         confidence: number;
+        category: "violence" | "hate_speech" | "harassment" | "self_harm" | "sexual_content" | "spam" | "misinformation" | "privacy_violation" | "copyright_violation";
+        severity: ValidationSeverity;
     }[];
     isAllowed: boolean;
     riskScore: number;
@@ -321,9 +321,9 @@ export declare const ContentModerationResultSchema: z.ZodObject<{
 }, {
     action: "allow" | "block" | "flag" | "review";
     categories: {
-        category: "hate_speech" | "harassment" | "violence" | "self_harm" | "sexual_content" | "spam" | "misinformation" | "privacy_violation" | "copyright_violation";
-        severity: ValidationSeverity;
         confidence: number;
+        category: "violence" | "hate_speech" | "harassment" | "self_harm" | "sexual_content" | "spam" | "misinformation" | "privacy_violation" | "copyright_violation";
+        severity: ValidationSeverity;
     }[];
     isAllowed: boolean;
     riskScore: number;

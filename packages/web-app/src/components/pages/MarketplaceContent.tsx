@@ -5,6 +5,7 @@ import { Container, ContentLayout } from '@cloudscape-design/components';
 import PageHeader from '@/components/ui/PageHeader';
 // import { api } from '@/lib/mock-api';
 import { Product } from '@/lib/types';
+import AutoImageHero from '@/components/ui/AutoImageHero';
 
 export function MarketplaceContent() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -55,7 +56,17 @@ export function MarketplaceContent() {
   }, []);
 
   return (
-    <ContentLayout header={<PageHeader title="Marketplace" description="Discover wellness products and services from community businesses" primaryAction={{ text: 'Browse Products', onClick: () => {}, iconName: 'cart' }} secondaryAction={{ text: 'List Business', onClick: () => {}, iconName: 'upload' }} />}>
+    <>
+      <AutoImageHero
+        section="marketplace"
+        title="Marketplace"
+        description="Discover wellness products and services from community businesses"
+        eyebrow="Support Black-Owned"
+        primaryAction={{ text: 'Browse Products', onClick: () => {}, iconName: 'cart' }}
+        secondaryAction={{ text: 'List Business', onClick: () => {}, iconName: 'upload' }}
+        highlights={[{ label: 'Featured', value: '89 brands' }]}
+      />
+      <ContentLayout header={<PageHeader title="Marketplace" description="Discover wellness products and services from community businesses" primaryAction={{ text: 'Browse Products', onClick: () => {}, iconName: 'cart' }} secondaryAction={{ text: 'List Business', onClick: () => {}, iconName: 'upload' }} />}>
       <Container>
         <div>
           <h2>Popular Products</h2>
@@ -70,6 +81,7 @@ export function MarketplaceContent() {
           </ul>
         </div>
       </Container>
-    </ContentLayout>
+      </ContentLayout>
+    </>
   );
 }

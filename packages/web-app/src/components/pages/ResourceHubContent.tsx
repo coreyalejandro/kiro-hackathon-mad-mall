@@ -11,6 +11,7 @@ import {
   Spinner,
   Button,
 } from '@cloudscape-design/components';
+import AutoImageHero from '@/components/ui/AutoImageHero';
 import {
   useArticles,
   useArticleCategories,
@@ -42,7 +43,15 @@ export function ResourceHubContent() {
   }));
 
   return (
-    <ContentLayout
+    <>
+      <AutoImageHero
+        section="resources"
+        title="Resource Hub"
+        description="Access mental health resources and wellness tools"
+        eyebrow="Learn"
+        highlights={[{ label: 'Articles', value: '150+' }]}
+      />
+      <ContentLayout
       header={
         <Header
           variant="h1"
@@ -96,5 +105,6 @@ export function ResourceHubContent() {
         )}
       </Container>
     </ContentLayout>
+    </>
   );
 }

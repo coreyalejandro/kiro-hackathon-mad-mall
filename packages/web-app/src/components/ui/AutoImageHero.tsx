@@ -32,11 +32,27 @@ export default function AutoImageHero({
     let cancelled = false;
     async function run() {
       try {
+        // 1) Try approved images first
         const res = await fetch(`/api/images/generate-for-site?section=${encodeURIComponent(section)}`);
         const data = await res.json();
-        const urls: string[] = Array.isArray(data?.images)
+        let urls: string[] = Array.isArray(data?.images)
           ? data.images.map((i: any) => i?.url).filter(Boolean)
           : [];
+
+        // 2) If none exist, generate and auto-approve, then fetch again
+        if (urls.length === 0) {
+          await fetch(`/api/images/generate-for-site`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ section, count: 3 })
+          });
+          const res2 = await fetch(`/api/images/generate-for-site?section=${encodeURIComponent(section)}`);
+          const data2 = await res2.json();
+          urls = Array.isArray(data2?.images)
+            ? data2.images.map((i: any) => i?.url).filter(Boolean)
+            : [];
+        }
+
         if (!cancelled) setImages(urls.slice(0, 3));
       } catch (e) {
         // Non-fatal: leave images empty; CloudscapeHero renders gradients
@@ -59,4 +75,3 @@ export default function AutoImageHero({
     />
   );
 }
-

@@ -85,14 +85,14 @@ export declare const WellnessRecommendationSchema: z.ZodObject<{
         url: z.ZodString;
         description: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
+        url: string;
         type: "website" | "article" | "video" | "audio" | "app";
         title: string;
-        url: string;
         description?: string | undefined;
     }, {
+        url: string;
         type: "website" | "article" | "video" | "audio" | "app";
         title: string;
-        url: string;
         description?: string | undefined;
     }>, "many">>;
 }, "strip", z.ZodTypeAny, {
@@ -104,9 +104,9 @@ export declare const WellnessRecommendationSchema: z.ZodObject<{
     difficulty: "moderate" | "easy" | "challenging";
     benefits: string[];
     resources?: {
+        url: string;
         type: "website" | "article" | "video" | "audio" | "app";
         title: string;
-        url: string;
         description?: string | undefined;
     }[] | undefined;
     contraindications?: string[] | undefined;
@@ -119,9 +119,9 @@ export declare const WellnessRecommendationSchema: z.ZodObject<{
     difficulty: "moderate" | "easy" | "challenging";
     benefits: string[];
     resources?: {
+        url: string;
         type: "website" | "article" | "video" | "audio" | "app";
         title: string;
-        url: string;
         description?: string | undefined;
     }[] | undefined;
     contraindications?: string[] | undefined;
@@ -137,13 +137,13 @@ export declare const WellnessCoachingInputSchema: z.ZodObject<{
         progress: z.ZodNumber;
         targetDate: z.ZodOptional<z.ZodDate>;
     }, "strip", z.ZodTypeAny, {
-        description: string;
         id: string;
+        description: string;
         progress: number;
         targetDate?: Date | undefined;
     }, {
-        description: string;
         id: string;
+        description: string;
         progress: number;
         targetDate?: Date | undefined;
     }>, "many">>;
@@ -182,8 +182,8 @@ export declare const WellnessCoachingInputSchema: z.ZodObject<{
     userMessage: string;
     urgencyLevel: "low" | "medium" | "high" | "crisis";
     currentGoals?: {
-        description: string;
         id: string;
+        description: string;
         progress: number;
         targetDate?: Date | undefined;
     }[] | undefined;
@@ -202,8 +202,8 @@ export declare const WellnessCoachingInputSchema: z.ZodObject<{
     sessionType: "check_in" | "goal_setting" | "crisis_support" | "progress_review" | "general_guidance";
     userMessage: string;
     currentGoals?: {
-        description: string;
         id: string;
+        description: string;
         progress: number;
         targetDate?: Date | undefined;
     }[] | undefined;
@@ -238,14 +238,14 @@ export declare const WellnessCoachingResponseSchema: z.ZodObject<{
             url: z.ZodString;
             description: z.ZodOptional<z.ZodString>;
         }, "strip", z.ZodTypeAny, {
+            url: string;
             type: "website" | "article" | "video" | "audio" | "app";
             title: string;
-            url: string;
             description?: string | undefined;
         }, {
+            url: string;
             type: "website" | "article" | "video" | "audio" | "app";
             title: string;
-            url: string;
             description?: string | undefined;
         }>, "many">>;
     }, "strip", z.ZodTypeAny, {
@@ -257,9 +257,9 @@ export declare const WellnessCoachingResponseSchema: z.ZodObject<{
         difficulty: "moderate" | "easy" | "challenging";
         benefits: string[];
         resources?: {
+            url: string;
             type: "website" | "article" | "video" | "audio" | "app";
             title: string;
-            url: string;
             description?: string | undefined;
         }[] | undefined;
         contraindications?: string[] | undefined;
@@ -272,9 +272,9 @@ export declare const WellnessCoachingResponseSchema: z.ZodObject<{
         difficulty: "moderate" | "easy" | "challenging";
         benefits: string[];
         resources?: {
+            url: string;
             type: "website" | "article" | "video" | "audio" | "app";
             title: string;
-            url: string;
             description?: string | undefined;
         }[] | undefined;
         contraindications?: string[] | undefined;
@@ -312,13 +312,6 @@ export declare const WellnessCoachingResponseSchema: z.ZodObject<{
     escalationNeeded: z.ZodBoolean;
     escalationReason: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    resources: {
-        description: string;
-        type: string;
-        title: string;
-        url?: string | undefined;
-    }[];
-    message: string;
     recommendations: {
         description: string;
         type: "mindfulness_exercise" | "physical_activity" | "social_connection" | "professional_support" | "self_care_activity" | "educational_resource" | "community_engagement";
@@ -328,13 +321,20 @@ export declare const WellnessCoachingResponseSchema: z.ZodObject<{
         difficulty: "moderate" | "easy" | "challenging";
         benefits: string[];
         resources?: {
+            url: string;
             type: "website" | "article" | "video" | "audio" | "app";
             title: string;
-            url: string;
             description?: string | undefined;
         }[] | undefined;
         contraindications?: string[] | undefined;
     }[];
+    resources: {
+        description: string;
+        type: string;
+        title: string;
+        url?: string | undefined;
+    }[];
+    message: string;
     tone: "supportive" | "informational" | "encouraging" | "empathetic" | "motivational";
     followUpQuestions: string[];
     actionItems: {
@@ -345,13 +345,6 @@ export declare const WellnessCoachingResponseSchema: z.ZodObject<{
     escalationNeeded: boolean;
     escalationReason?: string | undefined;
 }, {
-    resources: {
-        description: string;
-        type: string;
-        title: string;
-        url?: string | undefined;
-    }[];
-    message: string;
     recommendations: {
         description: string;
         type: "mindfulness_exercise" | "physical_activity" | "social_connection" | "professional_support" | "self_care_activity" | "educational_resource" | "community_engagement";
@@ -361,13 +354,20 @@ export declare const WellnessCoachingResponseSchema: z.ZodObject<{
         difficulty: "moderate" | "easy" | "challenging";
         benefits: string[];
         resources?: {
+            url: string;
             type: "website" | "article" | "video" | "audio" | "app";
             title: string;
-            url: string;
             description?: string | undefined;
         }[] | undefined;
         contraindications?: string[] | undefined;
     }[];
+    resources: {
+        description: string;
+        type: string;
+        title: string;
+        url?: string | undefined;
+    }[];
+    message: string;
     tone: "supportive" | "informational" | "encouraging" | "empathetic" | "motivational";
     followUpQuestions: string[];
     actionItems: {

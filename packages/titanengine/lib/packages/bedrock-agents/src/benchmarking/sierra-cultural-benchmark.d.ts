@@ -53,13 +53,13 @@ export declare const BenchmarkTaskSchema: z.ZodObject<{
         criterion: string;
         evaluationType: "exact_match" | "semantic_similarity" | "cultural_appropriateness" | "safety_score";
     }[];
-    input?: any;
     culturalContext?: {
         primaryCulture: string;
         sensitiveTopics: string[];
         culturalNuances: string[];
         expectedCulturalAdaptations: string[];
     } | undefined;
+    input?: any;
     expectedOutput?: any;
     timeLimit?: number | undefined;
 }, {
@@ -72,13 +72,13 @@ export declare const BenchmarkTaskSchema: z.ZodObject<{
         criterion: string;
         evaluationType: "exact_match" | "semantic_similarity" | "cultural_appropriateness" | "safety_score";
     }[];
-    input?: any;
     culturalContext?: {
         primaryCulture: string;
         sensitiveTopics: string[];
         culturalNuances: string[];
         expectedCulturalAdaptations: string[];
     } | undefined;
+    input?: any;
     expectedOutput?: any;
     timeLimit?: number | undefined;
 }>;
@@ -117,15 +117,15 @@ export declare const BenchmarkResultSchema: z.ZodObject<{
         authenticity: z.ZodNumber;
         harmPrevention: z.ZodNumber;
     }, "strip", z.ZodTypeAny, {
-        appropriateness: number;
         sensitivity: number;
         inclusivity: number;
+        appropriateness: number;
         authenticity: number;
         harmPrevention: number;
     }, {
-        appropriateness: number;
         sensitivity: number;
         inclusivity: number;
+        appropriateness: number;
         authenticity: number;
         harmPrevention: number;
     }>>;
@@ -149,9 +149,9 @@ export declare const BenchmarkResultSchema: z.ZodObject<{
     errors: string[];
     metadata?: Record<string, any> | undefined;
     culturalEvaluation?: {
-        appropriateness: number;
         sensitivity: number;
         inclusivity: number;
+        appropriateness: number;
         authenticity: number;
         harmPrevention: number;
     } | undefined;
@@ -172,9 +172,9 @@ export declare const BenchmarkResultSchema: z.ZodObject<{
     errors: string[];
     metadata?: Record<string, any> | undefined;
     culturalEvaluation?: {
-        appropriateness: number;
         sensitivity: number;
         inclusivity: number;
+        appropriateness: number;
         authenticity: number;
         harmPrevention: number;
     } | undefined;

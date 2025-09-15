@@ -1,7 +1,6 @@
 import { Construct } from 'constructs';
 import {
   RestApi,
-  RestApiProps,
   EndpointType,
   MethodLoggingLevel,
   AccessLogFormat,
@@ -10,8 +9,6 @@ import {
   CorsOptions,
   ThrottleSettings,
   RequestValidator,
-  Model,
-  JsonSchemaType,
   DomainName,
   BasePathMapping,
   SecurityPolicy,
@@ -20,14 +17,14 @@ import {
   MockIntegration,
   PassthroughBehavior,
 } from 'aws-cdk-lib/aws-apigateway';
-import { Function as LambdaFunction } from 'aws-cdk-lib/aws-lambda';
+import { Function as LambdaFunction, IFunction } from 'aws-cdk-lib/aws-lambda';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Certificate, CertificateValidation } from 'aws-cdk-lib/aws-certificatemanager';
 import { HostedZone, ARecord, RecordTarget } from 'aws-cdk-lib/aws-route53';
 import { ApiGatewayDomain } from 'aws-cdk-lib/aws-route53-targets';
 import { RemovalPolicy, Tags } from 'aws-cdk-lib';
 import { UserPool } from 'aws-cdk-lib/aws-cognito';
-import { UsagePlan, QuotaSettings, Period } from 'aws-cdk-lib/aws-apigateway';
+import { Period } from 'aws-cdk-lib/aws-apigateway';
 import { Duration } from 'aws-cdk-lib';
 
 export interface ApiGatewayConstructProps {
@@ -39,7 +36,7 @@ export interface ApiGatewayConstructProps {
   /**
    * Lambda functions to integrate with API Gateway
    */
-  lambdaFunctions: Map<string, LambdaFunction>;
+  lambdaFunctions: Map<string, IFunction>;
   
   /**
    * Custom domain name for the API
@@ -95,7 +92,7 @@ export class ApiGatewayConstruct extends Construct {
     });
 
     // Create execution log group
-    const executionLogGroup = new LogGroup(this, 'ApiGatewayExecutionLogs', {
+    new LogGroup(this, 'ApiGatewayExecutionLogs', {
       logGroupName: `/aws/apigateway/madmall-${environment}-execution-logs`,
       retention: environment === 'prod' ? RetentionDays.ONE_MONTH : RetentionDays.ONE_WEEK,
       removalPolicy: RemovalPolicy.DESTROY,
@@ -251,7 +248,7 @@ export class ApiGatewayConstruct extends Construct {
     });
   }
 
-  private createApiResources(lambdaFunctions: Map<string, LambdaFunction>): void {
+  private createApiResources(lambdaFunctions: Map<string, IFunction>): void {
     // Create API structure based on service domains
     const apiStructure = {
       'v1': {
@@ -290,6 +287,18 @@ export class ApiGatewayConstruct extends Construct {
           function: 'titan-engine',
           proxy: true,
         },
+        'upload': {
+          methods: ['POST'],
+          function: 'upload-handler',
+        },
+        'upload/confirm': {
+          methods: ['POST'],
+          function: 'upload-handler',
+        },
+        'upload/bulk': {
+          methods: ['POST'],
+          function: 'upload-handler',
+        },
         'ai': {
           methods: ['POST'],
           function: 'bedrock-agent-orchestrator',
@@ -304,7 +313,7 @@ export class ApiGatewayConstruct extends Construct {
   private buildApiResources(
     parent: any,
     structure: any,
-    lambdaFunctions: Map<string, LambdaFunction>
+    lambdaFunctions: Map<string, IFunction>
   ): void {
     Object.entries(structure).forEach(([path, config]: [string, any]) => {
       const resource = parent.addResource(path);
@@ -348,7 +357,7 @@ export class ApiGatewayConstruct extends Construct {
   /**
    * Add custom throttling settings to specific resources
    */
-  public addResourceThrottling(resourcePath: string, settings: ThrottleSettings): void {
+  public addResourceThrottling(resourcePath: string, _settings: ThrottleSettings): void {
     const resource = this.restApi.root.resourceForPath(resourcePath);
     if (resource) {
       // Note: Resource-level throttling would be implemented through usage plans

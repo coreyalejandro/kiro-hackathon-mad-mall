@@ -1,6 +1,6 @@
 import { Construct } from 'constructs';
 import { RestApi, CorsOptions, ThrottleSettings, DomainName } from 'aws-cdk-lib/aws-apigateway';
-import { Function as LambdaFunction } from 'aws-cdk-lib/aws-lambda';
+import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { Certificate } from 'aws-cdk-lib/aws-certificatemanager';
 import { HostedZone } from 'aws-cdk-lib/aws-route53';
 import { UserPool } from 'aws-cdk-lib/aws-cognito';
@@ -12,7 +12,7 @@ export interface ApiGatewayConstructProps {
     /**
      * Lambda functions to integrate with API Gateway
      */
-    lambdaFunctions: Map<string, LambdaFunction>;
+    lambdaFunctions: Map<string, IFunction>;
     /**
      * Custom domain name for the API
      * @example 'api.madmall.com'
@@ -48,7 +48,7 @@ export declare class ApiGatewayConstruct extends Construct {
     /**
      * Add custom throttling settings to specific resources
      */
-    addResourceThrottling(resourcePath: string, settings: ThrottleSettings): void;
+    addResourceThrottling(resourcePath: string, _settings: ThrottleSettings): void;
     /**
      * Create usage plans for API key management
      */

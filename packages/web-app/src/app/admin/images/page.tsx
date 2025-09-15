@@ -1,70 +1,123 @@
 'use client';
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { useEffect, useMemo, useState } from 'react';
+import {
+  Button,
+  Container,
+  ContentLayout,
+  Header,
+  SpaceBetween,
+  Cards,
+  Box,
+  Badge,
+} from '@cloudscape-design/components';
 
 export default function AdminImagesPage() {
   const [generating, setGenerating] = useState(false);
   const [results, setResults] = useState<any>(null);
 
+  const sections = useMemo(() => [
+    'concourse',
+    'circles',
+    'comedy',
+    'stories',
+    'marketplace',
+    'resources',
+    'auth',
+    'profile',
+  ], []);
+
+  const fetchApproved = async () => {
+    const approvedResponse = await fetch('/api/images/approve');
+    const approvedData = await approvedResponse.json();
+    setResults(approvedData);
+  };
+
+  useEffect(() => {
+    // Load any approved images on first visit
+    fetchApproved();
+  }, []);
+
   const generateSiteImages = async () => {
     setGenerating(true);
     try {
-      // Generate images for all sections
-      const sections = ['concourse', 'circles', 'comedy', 'stories', 'marketplace'];
-
       for (const section of sections) {
-        const response = await fetch('/api/images/generate-for-site', {
+        await fetch('/api/images/generate-for-site', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ section, count: 2 })
+          body: JSON.stringify({ section, count: 3 })
         });
-
-        const data = await response.json();
-        console.log(`Generated images for ${section}:`, data);
       }
-
-      // Get all approved images
-      const approvedResponse = await fetch('/api/images/approve');
-      const approvedData = await approvedResponse.json();
-      setResults(approvedData);
-
+      await fetchApproved();
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Generation failed:', error);
     } finally {
       setGenerating(false);
     }
   };
 
+  const cardDefinition = {
+    header: (item: any) => (
+      <SpaceBetween size="xs" direction="horizontal">
+        <Badge color="blue">{item.category}</Badge>
+        <Badge color="green">{new Date(item.approvedAt).toLocaleString()}</Badge>
+      </SpaceBetween>
+    ),
+    sections: [
+      {
+        id: 'preview',
+        content: (item: any) => (
+          <Box>
+            <img
+              src={item.url}
+              alt={item.altText}
+              style={{ width: '100%', height: 180, objectFit: 'cover', borderRadius: 8 }}
+            />
+          </Box>
+        )
+      },
+      {
+        id: 'meta',
+        content: (item: any) => (
+          <SpaceBetween size="xs">
+            <Box variant="p">{item.altText}</Box>
+            <Box variant="code">{item.prompt}</Box>
+          </SpaceBetween>
+        )
+      }
+    ]
+  } as const;
+
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-8">Site Image Management</h1>
-
-      <div className="space-y-6">
-        <Button
-          onClick={generateSiteImages}
-          disabled={generating}
-          className="w-full h-12 text-lg"
+    <ContentLayout
+      header={
+        <Header
+          variant="h1"
+          actions={
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button variant="primary" onClick={generateSiteImages} loading={generating} iconName="status-in-progress">
+                {generating ? 'Generating images…' : 'Generate Images For All Sections'}
+              </Button>
+              <Button variant="normal" onClick={fetchApproved} iconName="refresh">Refresh</Button>
+            </SpaceBetween>
+          }
         >
-          {generating ? 'Generating Site Images...' : 'Generate Images for All Site Sections'}
-        </Button>
-
-        {results && (
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold mb-4">Approved Images ({results.total})</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {results.approvedImages.map((img: any) => (
-                <div key={img.id} className="border rounded-lg p-4">
-                  <img src={img.url} alt={img.altText} className="w-full h-48 object-cover rounded mb-2" />
-                  <p className="font-semibold">{img.category}</p>
-                  <p className="text-sm text-gray-600">{img.altText}</p>
-                  <p className="text-xs text-green-600">Approved: {new Date(img.approvedAt).toLocaleString()}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
+          Site Image Management
+        </Header>
+      }
+    >
+      <Container>
+        <SpaceBetween size="l">
+          <Header variant="h2">Approved Images {results ? `(${results.total})` : ''}</Header>
+          <Cards
+            cardDefinition={cardDefinition as any}
+            cardsPerRow={[{ cards: 3 }, { minWidth: 500, cards: 1 }]}
+            items={results?.approvedImages || []}
+            empty={<Box variant="p">No approved images yet. Click Generate to create them.</Box>}
+          />
+        </SpaceBetween>
+      </Container>
+    </ContentLayout>
   );
 }

@@ -182,25 +182,25 @@ export declare const RecommendationItemSchema: z.ZodObject<{
     metadata: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodAny>>;
     tags: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
 }, "strip", z.ZodTypeAny, {
+    tags: string[];
+    id: string;
+    confidence: number;
     description: string;
     type: string;
-    id: string;
-    tags: string[];
     title: string;
-    confidence: number;
     reasoning: string;
     relevanceScore: number;
     metadata?: Record<string, any> | undefined;
 }, {
+    id: string;
+    confidence: number;
     description: string;
     type: string;
-    id: string;
     title: string;
-    confidence: number;
     reasoning: string;
     relevanceScore: number;
-    tags?: string[] | undefined;
     metadata?: Record<string, any> | undefined;
+    tags?: string[] | undefined;
 }>;
 export type RecommendationItem = z.infer<typeof RecommendationItemSchema>;
 export declare const RecommendationResultSchema: z.ZodObject<{
@@ -215,25 +215,25 @@ export declare const RecommendationResultSchema: z.ZodObject<{
         metadata: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodAny>>;
         tags: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
     }, "strip", z.ZodTypeAny, {
+        tags: string[];
+        id: string;
+        confidence: number;
         description: string;
         type: string;
-        id: string;
-        tags: string[];
         title: string;
-        confidence: number;
         reasoning: string;
         relevanceScore: number;
         metadata?: Record<string, any> | undefined;
     }, {
+        id: string;
+        confidence: number;
         description: string;
         type: string;
-        id: string;
         title: string;
-        confidence: number;
         reasoning: string;
         relevanceScore: number;
-        tags?: string[] | undefined;
         metadata?: Record<string, any> | undefined;
+        tags?: string[] | undefined;
     }>, "many">;
     totalCount: z.ZodNumber;
     algorithmUsed: z.ZodString;
@@ -251,12 +251,12 @@ export declare const RecommendationResultSchema: z.ZodObject<{
     }>, "many">;
 }, "strip", z.ZodTypeAny, {
     recommendations: {
+        tags: string[];
+        id: string;
+        confidence: number;
         description: string;
         type: string;
-        id: string;
-        tags: string[];
         title: string;
-        confidence: number;
         reasoning: string;
         relevanceScore: number;
         metadata?: Record<string, any> | undefined;
@@ -271,15 +271,15 @@ export declare const RecommendationResultSchema: z.ZodObject<{
     }[];
 }, {
     recommendations: {
+        id: string;
+        confidence: number;
         description: string;
         type: string;
-        id: string;
         title: string;
-        confidence: number;
         reasoning: string;
         relevanceScore: number;
-        tags?: string[] | undefined;
         metadata?: Record<string, any> | undefined;
+        tags?: string[] | undefined;
     }[];
     totalCount: number;
     algorithmUsed: string;

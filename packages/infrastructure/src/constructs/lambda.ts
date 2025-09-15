@@ -105,6 +105,7 @@ export interface LambdaFunctionConfig {
 
 export class LambdaConstruct extends Construct {
   public readonly functions: Map<string, IFunction> = new Map();
+  private readonly concreteFunctions: Map<string, LambdaFunction> = new Map();
   private readonly baseRole: Role;
   private readonly baseEnvironmentVariables: Record<string, string>;
 
@@ -272,6 +273,18 @@ export class LambdaConstruct extends Construct {
         timeout: 15,
       },
       {
+        name: 'upload-handler',
+        description: 'Image upload and processing service',
+        codePath: '../api-gateway/dist/handlers/upload',
+        handler: 'index.handler',
+        memorySize: 1024,
+        timeout: 60,
+        environmentVariables: {
+          USER_CONTENT_BUCKET_NAME: process.env.USER_CONTENT_BUCKET_NAME || '',
+          CONTENT_KMS_KEY_ID: process.env.CONTENT_KMS_KEY_ID || '',
+        },
+      },
+      {
         name: 'titan-engine',
         description: 'TitanEngine image processing service',
         codePath: '../titanengine/dist',
@@ -394,7 +407,8 @@ export class LambdaConstruct extends Construct {
       },
     });
 
-    // Store alias reference so API Gateway integrates with the live alias
+    // Store both the concrete function (for monitoring) and alias (for API Gateway)
+    this.concreteFunctions.set(name, lambdaFunction);
     this.functions.set(name, alias);
 
     return alias;
@@ -413,5 +427,9 @@ export class LambdaConstruct extends Construct {
 
   public getAllFunctions(): IFunction[] {
     return Array.from(this.functions.values());
+  }
+
+  public getAllConcreteFunctions(): LambdaFunction[] {
+    return Array.from(this.concreteFunctions.values());
   }
 }

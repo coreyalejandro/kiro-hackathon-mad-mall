@@ -1,6 +1,7 @@
 'use client';
 
 import { Container, Header, ContentLayout, Spinner } from '@cloudscape-design/components';
+import AutoImageHero from '@/components/ui/AutoImageHero';
 import { useArticle } from '@/lib/queries';
 
 interface ArticleDetailContentProps {
@@ -20,7 +21,14 @@ export function ArticleDetailContent({ id }: ArticleDetailContentProps) {
   }
 
   return (
-    <ContentLayout
+    <>
+      <AutoImageHero
+        section="resources"
+        title={article.title}
+        description={article.excerpt}
+        eyebrow="Article"
+      />
+      <ContentLayout
       header={
         <Header variant="h1" description={article.excerpt}>
           {article.title}
@@ -33,6 +41,6 @@ export function ArticleDetailContent({ id }: ArticleDetailContentProps) {
         </div>
       </Container>
     </ContentLayout>
+    </>
   );
 }
-

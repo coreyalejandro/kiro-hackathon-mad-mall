@@ -9,11 +9,10 @@ import {
   Alarm,
   ComparisonOperator,
   TreatMissingData,
-  AlarmWidget,
 } from 'aws-cdk-lib/aws-cloudwatch';
 import { SnsAction } from 'aws-cdk-lib/aws-cloudwatch-actions';
 import { Topic, Subscription, SubscriptionProtocol } from 'aws-cdk-lib/aws-sns';
-import { Function as LambdaFunction } from 'aws-cdk-lib/aws-lambda';
+import { Function as LambdaFunction, IFunction } from 'aws-cdk-lib/aws-lambda';
 import { RestApi } from 'aws-cdk-lib/aws-apigateway';
 import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import { UserPool } from 'aws-cdk-lib/aws-cognito';

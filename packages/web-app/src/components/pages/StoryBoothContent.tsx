@@ -7,6 +7,7 @@ import { StoryUploader } from '@/components/stories/StoryUploader';
 import { StoryList } from '@/components/stories/StoryList';
 // import { api } from '@/lib/mock-api';
 import { Story } from '@/lib/types';
+import AutoImageHero from '@/components/ui/AutoImageHero';
 
 export function StoryBoothContent() {
   const [stories, setStories] = useState<Story[]>([]);
@@ -40,7 +41,17 @@ export function StoryBoothContent() {
   }, []);
 
   return (
-    <ContentLayout header={<PageHeader title="Story Booth" description="Share and discover inspiring personal stories" primaryAction={{ text: 'Share Your Story', onClick: () => {}, iconName: 'edit' }} secondaryAction={{ text: 'Read Stories', onClick: () => {}, iconName: 'document' }} />}>
+    <>
+      <AutoImageHero
+        section="stories"
+        title="Story Booth"
+        description="Share and discover inspiring personal stories"
+        eyebrow="Community Voices"
+        primaryAction={{ text: 'Share Your Story', onClick: () => {}, iconName: 'edit' }}
+        secondaryAction={{ text: 'Read Stories', onClick: () => {}, iconName: 'document' }}
+        highlights={[{ label: 'Today', value: '23 stories' }]}
+      />
+      <ContentLayout header={<PageHeader title="Story Booth" description="Share and discover inspiring personal stories" primaryAction={{ text: 'Share Your Story', onClick: () => {}, iconName: 'edit' }} secondaryAction={{ text: 'Read Stories', onClick: () => {}, iconName: 'document' }} />}>
       <Container>
         <div>
           <h2>Recent Stories</h2>
@@ -58,6 +69,7 @@ export function StoryBoothContent() {
 
       <StoryUploader />
       <StoryList />
-    </ContentLayout>
+      </ContentLayout>
+    </>
   );
 }

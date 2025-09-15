@@ -9,19 +9,19 @@ export declare const AgentConfigSchema: z.ZodObject<{
     topP: z.ZodDefault<z.ZodNumber>;
     stopSequences: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
 }, "strip", z.ZodTypeAny, {
+    modelId: string;
     description: string;
     agentId: string;
     agentName: string;
-    modelId: string;
     temperature: number;
     maxTokens: number;
     topP: number;
     stopSequences?: string[] | undefined;
 }, {
+    modelId: string;
     description: string;
     agentId: string;
     agentName: string;
-    modelId: string;
     temperature?: number | undefined;
     maxTokens?: number | undefined;
     topP?: number | undefined;
@@ -36,18 +36,18 @@ export declare const AgentContextSchema: z.ZodObject<{
     timestamp: z.ZodDate;
     metadata: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodAny>>;
 }, "strip", z.ZodTypeAny, {
+    timestamp: Date;
     sessionId: string;
     correlationId: string;
-    timestamp: Date;
-    userId?: string | undefined;
     metadata?: Record<string, any> | undefined;
+    userId?: string | undefined;
     tenantId?: string | undefined;
 }, {
+    timestamp: Date;
     sessionId: string;
     correlationId: string;
-    timestamp: Date;
-    userId?: string | undefined;
     metadata?: Record<string, any> | undefined;
+    userId?: string | undefined;
     tenantId?: string | undefined;
 }>;
 export type AgentContext = z.infer<typeof AgentContextSchema>;
@@ -60,17 +60,17 @@ export declare const AgentResponseSchema: z.ZodObject<{
     metadata: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodAny>>;
 }, "strip", z.ZodTypeAny, {
     success: boolean;
-    error?: string | undefined;
     metadata?: Record<string, any> | undefined;
-    data?: any;
     confidence?: number | undefined;
+    error?: string | undefined;
+    data?: any;
     reasoning?: string | undefined;
 }, {
     success: boolean;
-    error?: string | undefined;
     metadata?: Record<string, any> | undefined;
-    data?: any;
     confidence?: number | undefined;
+    error?: string | undefined;
+    data?: any;
     reasoning?: string | undefined;
 }>;
 export type AgentResponse<T = any> = z.infer<typeof AgentResponseSchema> & {

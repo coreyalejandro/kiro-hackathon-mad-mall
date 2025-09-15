@@ -111,9 +111,9 @@ export declare const WorkflowDefinitionSchema: z.ZodObject<{
     }>>;
 }, "strip", z.ZodTypeAny, {
     name: string;
+    id: string;
     description: string;
     version: string;
-    id: string;
     steps: {
         name: string;
         id: string;
@@ -134,9 +134,9 @@ export declare const WorkflowDefinitionSchema: z.ZodObject<{
     } | undefined;
 }, {
     name: string;
+    id: string;
     description: string;
     version: string;
-    id: string;
     steps: {
         name: string;
         id: string;

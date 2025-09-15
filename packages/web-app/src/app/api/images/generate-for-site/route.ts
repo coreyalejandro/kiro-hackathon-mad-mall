@@ -34,6 +34,30 @@ const siteImagePrompts = {
     "Black women entrepreneurs showcasing mental health resources",
     "African American women at community wellness fair with businesses",
     "Black women displaying holistic healing products as business owners"
+  ],
+  resources: [
+    "African American woman reading a health article on a tablet in a calm environment",
+    "Black women browsing wellness resources together in a bright library space",
+    "African American woman learning mindfulness from a digital guide at home",
+    "Black woman researching mental health information on a laptop with notes"
+  ],
+  auth: [
+    "African American woman smiling while using a secure login screen on a phone",
+    "Black woman creating an account on a laptop in a cozy workspace",
+    "African American woman confidently signing in to a community app",
+    "Black woman verifying account details with a friendly UI"
+  ],
+  profile: [
+    "African American woman customizing her profile on a laptop in a warm, bright room",
+    "Black woman updating account settings on a tablet with a calm smile",
+    "African American woman reviewing notifications on a mobile app in a cozy space",
+    "Black woman managing her profile in a friendly, modern UI"
+  ],
+  article: [
+    "Close-up of an African American woman reading a wellness article on a tablet",
+    "Black woman highlighting notes from a digital mental health article",
+    "African American woman focused on learning from an online resource with tea",
+    "Black woman studying a health article on a laptop at a tidy desk"
   ]
 };
 

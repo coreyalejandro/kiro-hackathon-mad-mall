@@ -1,0 +1,18 @@
+"use strict";
+/**
+ * Jest test setup file
+ * Global test configuration and mocks
+ */
+// Mock console.log to reduce test output noise
+global.console = {
+    ...console,
+    log: jest.fn(),
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+};
+// Set test environment variables
+process.env.NODE_ENV = 'test';
+process.env.LOG_LEVEL = 'error';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2V0dXAuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJzZXR1cC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBQUE7OztHQUdHO0FBRUgsK0NBQStDO0FBQy9DLE1BQU0sQ0FBQyxPQUFPLEdBQUc7SUFDZixHQUFHLE9BQU87SUFDVixHQUFHLEVBQUUsSUFBSSxDQUFDLEVBQUUsRUFBRTtJQUNkLEtBQUssRUFBRSxJQUFJLENBQUMsRUFBRSxFQUFFO0lBQ2hCLElBQUksRUFBRSxJQUFJLENBQUMsRUFBRSxFQUFFO0lBQ2YsSUFBSSxFQUFFLElBQUksQ0FBQyxFQUFFLEVBQUU7SUFDZixLQUFLLEVBQUUsSUFBSSxDQUFDLEVBQUUsRUFBRTtDQUNqQixDQUFDO0FBRUYsaUNBQWlDO0FBQ2pDLE9BQU8sQ0FBQyxHQUFHLENBQUMsUUFBUSxHQUFHLE1BQU0sQ0FBQztBQUM5QixPQUFPLENBQUMsR0FBRyxDQUFDLFNBQVMsR0FBRyxPQUFPLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKipcbiAqIEplc3QgdGVzdCBzZXR1cCBmaWxlXG4gKiBHbG9iYWwgdGVzdCBjb25maWd1cmF0aW9uIGFuZCBtb2Nrc1xuICovXG5cbi8vIE1vY2sgY29uc29sZS5sb2cgdG8gcmVkdWNlIHRlc3Qgb3V0cHV0IG5vaXNlXG5nbG9iYWwuY29uc29sZSA9IHtcbiAgLi4uY29uc29sZSxcbiAgbG9nOiBqZXN0LmZuKCksXG4gIGRlYnVnOiBqZXN0LmZuKCksXG4gIGluZm86IGplc3QuZm4oKSxcbiAgd2FybjogamVzdC5mbigpLFxuICBlcnJvcjogamVzdC5mbigpLFxufTtcblxuLy8gU2V0IHRlc3QgZW52aXJvbm1lbnQgdmFyaWFibGVzXG5wcm9jZXNzLmVudi5OT0RFX0VOViA9ICd0ZXN0JztcbnByb2Nlc3MuZW52LkxPR19MRVZFTCA9ICdlcnJvcic7Il19

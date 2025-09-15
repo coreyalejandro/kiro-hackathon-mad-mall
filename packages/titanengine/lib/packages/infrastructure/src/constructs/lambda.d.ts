@@ -1,5 +1,5 @@
 import { Construct } from 'constructs';
-import { IFunction } from 'aws-cdk-lib/aws-lambda';
+import { Function as LambdaFunction, IFunction } from 'aws-cdk-lib/aws-lambda';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Vpc, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { Table } from 'aws-cdk-lib/aws-dynamodb';
@@ -68,6 +68,7 @@ export interface LambdaFunctionConfig {
 }
 export declare class LambdaConstruct extends Construct {
     readonly functions: Map<string, IFunction>;
+    private readonly concreteFunctions;
     private readonly baseRole;
     private readonly baseEnvironmentVariables;
     constructor(scope: Construct, id: string, props: LambdaConstructProps);
@@ -77,4 +78,5 @@ export declare class LambdaConstruct extends Construct {
     getFunction(name: string): IFunction | undefined;
     private scheduleAudit;
     getAllFunctions(): IFunction[];
+    getAllConcreteFunctions(): LambdaFunction[];
 }

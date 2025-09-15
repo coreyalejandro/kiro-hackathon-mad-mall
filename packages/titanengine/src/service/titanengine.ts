@@ -1,19 +1,63 @@
 import { v4 as uuidv4 } from 'uuid';
+import { ImageAssetRepository } from '../repository/image-asset-repository';
 import {
-  DynamoDBService,
-  ImageAssetRepository,
   PexelsProvider,
   UnsplashProvider,
   PlaceholderProvider,
   Automatic1111Provider,
-  BedrockSDXLProvider,
-  CulturalValidationAgent,
-  DspyBridge,
-  TitanKCache,
-  TitanAnalyticsProcessor,
-  CareRecommendation,
-  TitanEvent,
-} from './services'; // Adjust your import paths as necessary
+  BedrockSDXLProvider
+} from '../providers';
+import { TitanKCache } from './kcache';
+import { DspyBridge } from './dspy-bridge';
+import { TitanAnalyticsProcessor } from './analytics-processor';
+import { CulturalValidationAgent } from '@madmall/bedrock-agents';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+
+class DynamoDBService {
+  client: DynamoDBClient;
+  tableName: string;
+  maxRetries: number;
+  timeout: number;
+  connectionPoolSize: number;
+  enableMetrics: boolean;
+
+  constructor(config: {
+    region: string;
+    tableName: string;
+    endpoint?: string;
+    maxRetries: number;
+    timeout: number;
+    connectionPoolSize: number;
+    enableMetrics: boolean;
+  }) {
+    this.client = new DynamoDBClient({
+      region: config.region,
+      endpoint: config.endpoint,
+      maxAttempts: config.maxRetries,
+    });
+    this.tableName = config.tableName;
+    this.maxRetries = config.maxRetries;
+    this.timeout = config.timeout;
+    this.connectionPoolSize = config.connectionPoolSize;
+    this.enableMetrics = config.enableMetrics;
+  }
+}
+
+interface CareRecommendation {
+  id: string;
+  userId: string;
+  recommendations: string[];
+  confidence: number;
+  timestamp: Date;
+}
+
+interface TitanEvent {
+  userId: string;
+  eventType: 'page' | 'interaction';
+  name: string;
+  timestamp?: number;
+  data?: Record<string, unknown>;
+}
 
 interface TitanEngineConfig {
   region?: string;
@@ -70,9 +114,9 @@ export class TitanEngine {
 
   private initializeDynamoDBService(config: TitanEngineConfig, env: Record<string, unknown>): DynamoDBService {
     return new DynamoDBService({
-      region: config.region || env.AWS_REGION || 'us-east-1',
-      tableName: config.tableName || env.DYNAMO_TABLE || 'madmall-development-main',
-      endpoint: env.DYNAMODB_ENDPOINT || config.endpoint,
+      region: String(config.region || env.AWS_REGION || 'us-east-1'),
+      tableName: String(config.tableName || env.DYNAMO_TABLE || 'madmall-development-main'),
+      endpoint: config.endpoint || String(env.DYNAMODB_ENDPOINT || ''),
       maxRetries: 3,
       timeout: 3000,
       connectionPoolSize: 50,
@@ -156,26 +200,27 @@ export class TitanEngine {
     category: string;
     imageId?: string;
   }) {
-    const { response } = await this.culturalAgent.execute(
-      {
-        content: image.url,
-        contentType: 'image_url',
-        culturalContext: {
-          primaryCulture: 'african_american',
-          secondaryCultures: [],
-          region: 'us',
-          language: 'en',
-          religiousConsiderations: [],
-          sensitiveTopics: [],
-        },
-        targetAudience: {
-          ageRange: { min: 20, max: 60 },
-          diagnosisStage: 'in_treatment',
-          supportNeeds: ['community'],
-        },
+    const response = await this.culturalAgent.execute({
+      content: image.url,
+      contentType: 'image_url',
+      culturalContext: {
+        primaryCulture: 'african_american',
+        secondaryCultures: [],
+        region: 'us',
+        language: 'en',
+        religiousConsiderations: [],
+        sensitiveTopics: [],
       },
-      {}
-    );
+      targetAudience: {
+        ageRange: { min: 20, max: 60 },
+        diagnosisStage: 'in_treatment',
+        supportNeeds: ['community'],
+      },
+    }, {
+      sessionId: 'validation-session',
+      correlationId: `validate-${image.imageId || 'unknown'}`,
+      timestamp: new Date(),
+    });
 
     if (!response.success || !response.data) {
       throw new Error(response.error || 'Image validation failed');
@@ -206,6 +251,18 @@ export class TitanEngine {
     return this.analytics.getEvents(userId);
   }
 
+  async listPending(limit = 20) {
+    return this.images.listPending(limit);
+  }
+
+  async listFlagged(limit = 20) {
+    return this.images.listFlagged(limit);
+  }
+
+  async selectByContext(context: string, limit = 10) {
+    return this.images.listByCategory(context.split('.')[0] || 'general', limit);
+  }
+
   async auditImageAssets(limit = 20) {
     const pending = await this.images.listPending(limit);
     for (const img of pending) {
@@ -224,7 +281,7 @@ export class TitanEngine {
             altText: placeholder.altText,
             category: img.category,
             tags: placeholder.tags,
-            source: 'placeholder',
+            source: 'stock',
             sourceInfo: placeholder.sourceInfo,
           });
         }

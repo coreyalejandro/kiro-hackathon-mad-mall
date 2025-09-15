@@ -6,6 +6,7 @@ import PageHeader from '@/components/ui/PageHeader';
 import { useComedyClips, useSubmitReliefRating } from '@/lib/queries';
 import ComedyTherapyPlayer from '@/components/featured/ComedyTherapyPlayer';
 import type { ComedyClip } from '@/lib/types';
+import AutoImageHero from '@/components/ui/AutoImageHero';
 
 export function ComedyLoungeContent() {
   const { data: clips = [] } = useComedyClips(); // Using the custom hook to fetch clips
@@ -22,7 +23,17 @@ export function ComedyLoungeContent() {
   };
 
   return (
-    <ContentLayout header={<PageHeader title="Comedy Lounge" description="Find joy and laughter in our comedy community space" primaryAction={{ text: 'Watch Comedy', onClick: () => {}, iconName: 'play' }} secondaryAction={{ text: 'Share a Laugh', onClick: () => {}, iconName: 'share' }} />}>
+    <>
+      <AutoImageHero
+        section="comedy"
+        title="Comedy Lounge"
+        description="Find joy and laughter in our comedy community space"
+        eyebrow="Therapeutic Humor"
+        primaryAction={{ text: 'Watch Comedy', onClick: () => {}, iconName: 'play' }}
+        secondaryAction={{ text: 'Share a Laugh', onClick: () => {}, iconName: 'share' }}
+        highlights={[{ label: 'New Clips', value: '45' }, { label: 'Rating', value: '4.9' }]}
+      />
+      <ContentLayout header={<PageHeader title="Comedy Lounge" description="Find joy and laughter in our comedy community space" primaryAction={{ text: 'Watch Comedy', onClick: () => {}, iconName: 'play' }} secondaryAction={{ text: 'Share a Laugh', onClick: () => {}, iconName: 'share' }} />}>
       <Container>
         {/* Featured player */}
         <div className="mt-8">
@@ -62,6 +73,7 @@ export function ComedyLoungeContent() {
           </div>
         )}
       </Container>
-    </ContentLayout>
+      </ContentLayout>
+    </>
   );
 }

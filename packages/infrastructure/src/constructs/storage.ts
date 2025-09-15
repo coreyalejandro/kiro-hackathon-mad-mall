@@ -1,8 +1,18 @@
 import { Construct } from 'constructs';
-import { RemovalPolicy, Stack, Tags } from 'aws-cdk-lib';
+import { RemovalPolicy, Stack, Tags, Duration } from 'aws-cdk-lib';
 import { Bucket, BlockPublicAccess, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { Key, KeySpec, KeyUsage } from 'aws-cdk-lib/aws-kms';
 import { Role, PolicyStatement, Effect, ServicePrincipal, AccountRootPrincipal, ArnPrincipal } from 'aws-cdk-lib/aws-iam';
+import { 
+  Distribution, 
+  OriginAccessIdentity, 
+  ViewerProtocolPolicy, 
+  CachePolicy, 
+  OriginRequestPolicy,
+  ResponseHeadersPolicy,
+  PriceClass
+} from 'aws-cdk-lib/aws-cloudfront';
+import { S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins';
 
 export interface StorageConstructProps {
 	/** Environment name (dev, staging, prod) */
@@ -14,6 +24,8 @@ export interface StorageConstructProps {
 export class StorageConstruct extends Construct {
 	public readonly contentKmsKey: Key;
 	public readonly userContentBucket: Bucket;
+	public readonly cdnDistribution: Distribution;
+	public readonly originAccessIdentity: OriginAccessIdentity;
 
 	constructor(scope: Construct, id: string, props: StorageConstructProps) {
 		super(scope, id);
@@ -81,6 +93,38 @@ export class StorageConstruct extends Construct {
 				},
 			},
 		}));
+
+		// Create CloudFront Origin Access Identity
+		this.originAccessIdentity = new OriginAccessIdentity(this, 'ContentOAI', {
+			comment: `OAI for MADMall ${environment} user content bucket`,
+		});
+
+		// Grant CloudFront access to S3 bucket
+		this.userContentBucket.addToResourcePolicy(new PolicyStatement({
+			effect: Effect.ALLOW,
+			principals: [this.originAccessIdentity.grantPrincipal],
+			actions: ['s3:GetObject'],
+			resources: [`${this.userContentBucket.bucketArn}/*`],
+		}));
+
+		// Create CloudFront distribution for image CDN
+		this.cdnDistribution = new Distribution(this, 'ContentCDN', {
+			comment: `MADMall ${environment} Content CDN`,
+			defaultBehavior: {
+				origin: new S3Origin(this.userContentBucket, {
+					originAccessIdentity: this.originAccessIdentity,
+				}),
+				viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+				cachePolicy: CachePolicy.CACHING_OPTIMIZED,
+				originRequestPolicy: OriginRequestPolicy.CORS_S3_ORIGIN,
+				responseHeadersPolicy: ResponseHeadersPolicy.CORS_ALLOW_ALL_ORIGINS,
+			},
+			priceClass: environment === 'prod' ? PriceClass.PRICE_CLASS_ALL : PriceClass.PRICE_CLASS_100,
+			enableIpv6: true,
+		});
+
+		Tags.of(this.cdnDistribution).add('Name', `madmall-${environment}-content-cdn`);
+		Tags.of(this.cdnDistribution).add('Environment', environment);
 	}
 }
 
