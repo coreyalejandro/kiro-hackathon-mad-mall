@@ -1,5 +1,7 @@
 # MADMall - AI-Powered Wellness Platform
 
+[![Watch the video](https://img.youtube.com/vi/OjhfPaGNkH0/maxresdefault.jpg)](https://youtu.be/OjhfPaGNkH0)
+
 A social wellness hub platform called "AIme" built for the Kiro Hackathon, focusing on mental health support and community connection with cultural sensitivity for African American women.
 
 ## 🚀 Quick Start
