@@ -103,7 +103,7 @@ export function ComedyLoungeContent() {
                   </SpaceBetween>
                   
                   <Box color="text-status-info" margin={{ bottom: "s" }}>
-                    😄 {clip.engagement.likes} • 👀 {clip.engagement.views} • ⭐ {clip.rating}
+                    😄 {clip.engagement?.likes || clip.averageReliefRating || 0} • 👀 {clip.engagement?.views || clip.viewCount || 0} • ⭐ {clip.rating || clip.averageReliefRating || 0}
                   </Box>
                 </SpaceBetween>
 

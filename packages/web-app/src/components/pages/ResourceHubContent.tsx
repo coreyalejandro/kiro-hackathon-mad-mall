@@ -174,7 +174,7 @@ export function ResourceHubContent() {
                       </SpaceBetween>
                       
                       <Box color="text-status-info" margin={{ bottom: "s" }}>
-                        👀 {article.engagement.views} • ⭐ {article.rating}
+                        👀 {article.engagement?.views || article.bookmarkCount || 0} • ⭐ {article.rating || 0}
                       </Box>
                     </SpaceBetween>
 

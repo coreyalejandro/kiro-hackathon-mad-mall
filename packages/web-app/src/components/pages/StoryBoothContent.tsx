@@ -108,7 +108,7 @@ export function StoryBoothContent() {
                   </SpaceBetween>
                   
                   <Box color="text-status-info" margin={{ bottom: "s" }}>
-                    ❤️ {story.engagement.likes} • 💬 {story.engagement.comments} • 👀 {story.engagement.views}
+                    ❤️ {story.engagement?.likes || 0} • 💬 {story.engagement?.comments || 0} • 👀 {story.engagement?.views || 0}
                   </Box>
                 </SpaceBetween>
 
