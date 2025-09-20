@@ -64,3 +64,6 @@ jspm_packages/
 !/.projenrc.ts
 !/LICENSE
 .vercel
+
+# Legacy backup files (not part of active codebase)
+madmall-web-legacy-backup/
