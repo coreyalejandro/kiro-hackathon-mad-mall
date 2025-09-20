@@ -2,8 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { Container, ContentLayout, Cards, SpaceBetween, Box, Button, Badge, Header } from '@cloudscape-design/components';
-import PageHeader from '../ui/PageHeader';
-import AutoImageHero from '../ui/AutoImageHero';
 import CommunityTestimonials from '../ui/CommunityTestimonials';
 
 export function ConcourseContent() {
@@ -83,20 +81,14 @@ export function ConcourseContent() {
   };
 
   return (
-    <>
-      <AutoImageHero
-        section="concourse"
-        title="Welcome to MADMall"
-        description="Your wellness journey starts here. Connect, share, and grow with a community that understands your unique path to wellness."
-        eyebrow="Concourse"
-        highlights={[{ label: 'Members', value: '127 active' }, { label: 'Stories', value: '23 today' }]}
-      />
-      <ContentLayout
+    <ContentLayout
       header={
-        <PageHeader
-          title="Welcome to MADMall"
+        <Header
+          variant="h1"
           description="Your wellness journey starts here. Connect, share, and grow with a community that understands your unique path to wellness."
-        />
+        >
+          Welcome to MADMall
+        </Header>
       }
     >
       <Container>
@@ -118,8 +110,7 @@ export function ConcourseContent() {
       </Container>
 
       <CommunityTestimonials />
-      </ContentLayout>
-    </>
+    </ContentLayout>
   );
 }
 

@@ -59,7 +59,7 @@ export default function CommunityTestimonials({
     <Container>
       <SpaceBetween size="l">
         <Box textAlign="center">
-          <Header variant="h2" className="text-rich-umber">
+          <Header variant="h2">
             Voices from Our Community
           </Header>
           <Box color="text-body-secondary" fontSize="body-s">
@@ -69,40 +69,52 @@ export default function CommunityTestimonials({
 
         <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
           {testimonials.map((testimonial) => (
-            <div key={testimonial.id}>
+            <Box key={testimonial.id} variant="div" padding="m">
               <SpaceBetween size="m">
                 <Box textAlign="center">
                   <CommunityImage 
                     category="portraits"
                     size="small"
                     rounded={true}
-                    style={{ 
-                      margin: '0 auto',
-                      border: '3px solid rgba(255, 255, 255, 0.3)',
-                      boxShadow: '0 8px 25px rgba(0, 0, 0, 0.2)'
-                    }}
                   />
                 </Box>
 
                 <Box textAlign="center">
-                  <div className="testimonial-quote">
+                  <Box 
+                    fontSize="body-m" 
+                    fontStyle="italic" 
+                    color="text-body-secondary"
+                    margin={{ bottom: "s" }}
+                  >
                     "{testimonial.quote}"
-                  </div>
+                  </Box>
                 </Box>
 
                 <Box textAlign="center">
-                  <div className="testimonial-name">
+                  <Box 
+                    fontSize="heading-s" 
+                    fontWeight="bold" 
+                    color="text-body-default"
+                    margin={{ bottom: "xs" }}
+                  >
                     {testimonial.name}
-                  </div>
-                  <div className="testimonial-role">
+                  </Box>
+                  <Box 
+                    fontSize="body-s" 
+                    color="text-status-info"
+                    margin={{ bottom: "xs" }}
+                  >
                     {testimonial.role}
-                  </div>
-                  <div className="testimonial-location">
+                  </Box>
+                  <Box 
+                    fontSize="body-s" 
+                    color="text-body-secondary"
+                  >
                     {testimonial.location} • Member since {testimonial.memberSince}
-                  </div>
+                  </Box>
                 </Box>
               </SpaceBetween>
-            </div>
+            </Box>
           ))}
         </Grid>
       </SpaceBetween>
