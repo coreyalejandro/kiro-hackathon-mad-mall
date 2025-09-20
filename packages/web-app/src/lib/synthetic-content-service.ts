@@ -2,10 +2,12 @@
 import { generateBulkData, generateCircle, generateProduct, generateStory, generateComedyClip, generateArticle } from './synthetic-data';
 import { cotDataGenerator } from './cot-data-generator';
 
-// Enhanced synthetic content with CoT reasoning
+// Enhanced synthetic content with CoT reasoning and deduplication
 export class SyntheticContentService {
   private static instance: SyntheticContentService;
   private cache: Map<string, any> = new Map();
+  private usedContent: Map<string, Set<string>> = new Map(); // Track used content IDs
+  private contentGenerators: Map<string, () => any> = new Map(); // Store generators for each type
 
   static getInstance(): SyntheticContentService {
     if (!SyntheticContentService.instance) {
@@ -14,14 +16,54 @@ export class SyntheticContentService {
     return SyntheticContentService.instance;
   }
 
-  // Generate culturally authentic peer circles
-  async getPeerCircles(count: number = 12): Promise<any[]> {
-    const cacheKey = `circles-${count}`;
-    if (this.cache.has(cacheKey)) {
-      return this.cache.get(cacheKey);
+  constructor() {
+    // Initialize content generators
+    this.contentGenerators.set('circle', () => generateCircle());
+    this.contentGenerators.set('product', () => generateProduct());
+    this.contentGenerators.set('story', () => generateStory());
+    this.contentGenerators.set('comedy', () => generateComedyClip());
+    this.contentGenerators.set('article', () => generateArticle());
+    
+    // Initialize used content tracking
+    this.usedContent.set('circles', new Set());
+    this.usedContent.set('businesses', new Set());
+    this.usedContent.set('stories', new Set());
+    this.usedContent.set('comedy', new Set());
+    this.usedContent.set('articles', new Set());
+  }
+
+  // Generate unique content ensuring no duplicates
+  private generateUniqueContent(type: string, count: number, maxAttempts: number = 50): any[] {
+    const used = this.usedContent.get(type) || new Set();
+    const generator = this.contentGenerators.get(type);
+    if (!generator) throw new Error(`No generator found for type: ${type}`);
+
+    const uniqueContent: any[] = [];
+    let attempts = 0;
+
+    while (uniqueContent.length < count && attempts < maxAttempts) {
+      const content = generator();
+      const contentId = content.id || content.title || content.name || JSON.stringify(content);
+      
+      if (!used.has(contentId)) {
+        used.add(contentId);
+        uniqueContent.push(content);
+      }
+      attempts++;
     }
 
-    const circles = Array.from({ length: count }, () => generateCircle());
+    // If we couldn't generate enough unique content, fill with what we have
+    if (uniqueContent.length < count) {
+      console.warn(`Could only generate ${uniqueContent.length} unique ${type} items out of ${count} requested`);
+    }
+
+    return uniqueContent;
+  }
+
+  // Generate culturally authentic peer circles
+  async getPeerCircles(count: number = 12): Promise<any[]> {
+    // Always generate fresh unique content to prevent repeats
+    const circles = this.generateUniqueContent('circle', count);
     
     // Enhance with CoT reasoning for cultural authenticity
     const enhancedCircles = circles.map(circle => ({
@@ -39,18 +81,15 @@ export class SyntheticContentService {
       }
     }));
 
-    this.cache.set(cacheKey, enhancedCircles);
     return enhancedCircles;
   }
 
   // Generate culturally authentic business listings
   async getBusinesses(count: number = 8): Promise<any[]> {
-    const cacheKey = `businesses-${count}`;
-    if (this.cache.has(cacheKey)) {
-      return this.cache.get(cacheKey);
-    }
-
-    const businesses = Array.from({ length: count }, () => generateProduct()).map(product => ({
+    // Always generate fresh unique content to prevent repeats
+    const products = this.generateUniqueContent('product', count);
+    
+    const businesses = products.map(product => ({
       id: product.id,
       name: product.business.name,
       owner: product.business.ownerName,
@@ -65,20 +104,18 @@ export class SyntheticContentService {
       affiliateUrl: product.affiliateUrl
     }));
 
-    this.cache.set(cacheKey, businesses);
     return businesses;
   }
 
   // Generate culturally authentic wellness stories
   async getWellnessStories(count: number = 6): Promise<any[]> {
-    const cacheKey = `stories-${count}`;
-    if (this.cache.has(cacheKey)) {
-      return this.cache.get(cacheKey);
-    }
-
+    // Always generate fresh unique content to prevent repeats
     const stories = [];
+    const themes = ['diagnosis', 'community', 'healing', 'advocacy', 'support', 'resilience', 'empowerment', 'wellness'];
+    
     for (let i = 0; i < count; i++) {
-      const cotStory = cotDataGenerator.generateStory(['diagnosis', 'community', 'healing', 'advocacy'][i % 4]);
+      const theme = themes[i % themes.length];
+      const cotStory = cotDataGenerator.generateStory(theme);
       stories.push({
         ...cotStory.data,
         culturalValidation: cotStory.culturalValidation,
@@ -87,17 +124,12 @@ export class SyntheticContentService {
       });
     }
 
-    this.cache.set(cacheKey, stories);
     return stories;
   }
 
   // Generate culturally authentic comedy content
   async getComedyContent(count: number = 8): Promise<any[]> {
-    const cacheKey = `comedy-${count}`;
-    if (this.cache.has(cacheKey)) {
-      return this.cache.get(cacheKey);
-    }
-
+    // Always generate fresh unique content to prevent repeats
     const comedyClips = [];
     for (let i = 0; i < count; i++) {
       const cotComedy = cotDataGenerator.generateComedyClip();
@@ -109,20 +141,18 @@ export class SyntheticContentService {
       });
     }
 
-    this.cache.set(cacheKey, comedyClips);
     return comedyClips;
   }
 
   // Generate educational articles
   async getEducationalArticles(count: number = 5): Promise<any[]> {
-    const cacheKey = `articles-${count}`;
-    if (this.cache.has(cacheKey)) {
-      return this.cache.get(cacheKey);
-    }
-
+    // Always generate fresh unique content to prevent repeats
     const articles = [];
+    const topics = ['self-advocacy', 'nutrition', 'mental-health', 'workplace', 'family', 'medication', 'lifestyle', 'support-systems'];
+    
     for (let i = 0; i < count; i++) {
-      const cotArticle = cotDataGenerator.generateArticle(['self-advocacy', 'nutrition', 'mental-health', 'workplace', 'family'][i % 5]);
+      const topic = topics[i % topics.length];
+      const cotArticle = cotDataGenerator.generateArticle(topic);
       articles.push({
         ...cotArticle.data,
         culturalValidation: cotArticle.culturalValidation,
@@ -131,7 +161,6 @@ export class SyntheticContentService {
       });
     }
 
-    this.cache.set(cacheKey, articles);
     return articles;
   }
 
@@ -224,9 +253,27 @@ export class SyntheticContentService {
     return stats;
   }
 
-  // Clear cache (useful for development)
+  // Clear cache and reset used content tracking (useful for development)
   clearCache(): void {
     this.cache.clear();
+    this.usedContent.forEach(usedSet => usedSet.clear());
+  }
+
+  // Reset used content tracking for a specific type
+  resetUsedContent(type: string): void {
+    const used = this.usedContent.get(type);
+    if (used) {
+      used.clear();
+    }
+  }
+
+  // Get statistics about content generation
+  getContentStats(): Record<string, number> {
+    const stats: Record<string, number> = {};
+    this.usedContent.forEach((usedSet, type) => {
+      stats[type] = usedSet.size;
+    });
+    return stats;
   }
 }
 
