@@ -14,11 +14,12 @@ pnpm install
 pnpm dev
 ```
 
-Access the platform at `http://localhost:3000`
+Access the platform at `http//localhost:3000`
 
 ## 📱 Features
 
 ### Core Platform
+
 - **Concourse**: Main social feed and interaction space
 - **Peer Circles**: Group support communities
 - **Comedy Lounge**: Wellness through humor
@@ -27,6 +28,7 @@ Access the platform at `http://localhost:3000`
 - **Resource Hub**: Mental health resources
 
 ### AI Integration (TitanEngine)
+
 - **Image Generation**: AWS Bedrock SDXL for culturally-sensitive imagery
 - **Content Validation**: AWS Bedrock Claude-3 for cultural appropriateness
 - **Care Recommendations**: Personalized wellness suggestions
@@ -35,12 +37,14 @@ Access the platform at `http://localhost:3000`
 ## 🛠️ Architecture
 
 ### Monorepo Structure
+
 - `packages/web-app`: Next.js 15 App Router frontend with Cloudscape Design
 - `packages/api-gateway`: AWS Lambda handlers
 - `packages/infrastructure`: AWS CDK constructs
 - `packages/shared-types`: Common TypeScript types
 
 ### Tech Stack
+
 - **Frontend**: Next.js 15, React 19, Cloudscape Design System
 - **Backend**: AWS Lambda, DynamoDB
 - **AI**: AWS Bedrock (SDXL, Claude-3)
@@ -49,12 +53,15 @@ Access the platform at `http://localhost:3000`
 ## 🎨 Image Generation System
 
 ### Admin Interface
+
 Visit `/admin/images` to:
+
 - Generate images for all site sections
 - View approval workflow results
 - Manage culturally-appropriate imagery
 
 ### API Endpoints
+
 - `POST /api/images/generate-for-site` - Generate section-specific images
 - `GET/POST /api/images/approve` - Approval workflow management
 - `POST /api/generate-image` - Single image generation
@@ -62,6 +69,7 @@ Visit `/admin/images` to:
 - `POST /api/care-model` - Wellness recommendations
 
 ### Image Flow
+
 1. Admin generates images via `/admin/images`
 2. AWS Bedrock SDXL creates culturally-sensitive images
 3. Claude-3 validates for cultural appropriateness
@@ -90,6 +98,7 @@ pnpm test             # Package tests
 ## 🌍 Environment Setup
 
 Create `/packages/web-app/.env.local`:
+
 ```bash
 AWS_ACCESS_KEY_ID=your_access_key
 AWS_SECRET_ACCESS_KEY=your_secret_key
@@ -99,6 +108,7 @@ AWS_REGION=us-east-1
 ## 🎯 Platform Context
 
 This platform emphasizes:
+
 - Cultural sensitivity for African American women
 - Community-driven mental health support
 - AI-generated imagery with approval workflows

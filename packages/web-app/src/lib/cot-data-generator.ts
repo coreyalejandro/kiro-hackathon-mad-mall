@@ -94,42 +94,6 @@ export class CoTStoryGenerator {
     ];
   }
 
-  private validateCulturalAuthenticity(content: string): { score: number; considerations: string[]; improvements: string[] } {
-    const considerations = [];
-    const improvements = [];
-    let score = 0.8; // Base score
-
-    // Check for authentic language
-    const authenticLanguage = CULTURAL_CONTEXTS.gravesDisease.language;
-    const hasAuthenticLanguage = authenticLanguage.some(word => content.toLowerCase().includes(word));
-    if (hasAuthenticLanguage) {
-      score += 0.1;
-      considerations.push('Uses culturally authentic language');
-    } else {
-      improvements.push('Consider adding more community-centered language');
-    }
-
-    // Check for community focus
-    if (content.includes('sister') || content.includes('community') || content.includes('support')) {
-      score += 0.05;
-      considerations.push('Emphasizes community and sisterhood');
-    }
-
-    // Check for balanced vulnerability and strength
-    const hasVulnerability = content.includes('scared') || content.includes('overwhelmed') || content.includes('struggle');
-    const hasStrength = content.includes('strong') || content.includes('resilient') || content.includes('warrior');
-    if (hasVulnerability && hasStrength) {
-      score += 0.05;
-      considerations.push('Balances vulnerability with strength');
-    }
-
-    return {
-      score: Math.min(score, 1.0),
-      considerations,
-      improvements
-    };
-  }
-
   generateStory(theme: string): CoTGenerationResult<Story> {
     const reasoning = this.generateReasoning('personal health story', theme);
     
@@ -170,7 +134,7 @@ To anyone feeling alone in their health journey - your tribe is out there. Don't
     };
 
     const selectedTemplate = storyTemplates[theme as keyof typeof storyTemplates] || storyTemplates.diagnosis;
-    const culturalValidation = this.validateCulturalAuthenticity(selectedTemplate.content);
+    const culturalValidation = validateCulturalAuthenticity(selectedTemplate.content);
 
     const story: Story = {
       id: `cot-story-${Math.random().toString(36).substr(2, 9)}`,
@@ -265,7 +229,7 @@ Your health is worth fighting for, sister. Keep advocating until you get the car
     };
 
     const selectedTemplate = articleTemplates['self-advocacy'];
-    const culturalValidation = this.validateCulturalAuthenticity(selectedTemplate.content);
+    const culturalValidation = validateCulturalAuthenticity(selectedTemplate.content);
 
     const article: Article = {
       id: `cot-article-${Math.random().toString(36).substr(2, 9)}`,
@@ -326,7 +290,7 @@ export class CoTComedyGenerator {
     ];
 
     const selectedTemplate = comedyTemplates[Math.floor(Math.random() * comedyTemplates.length)];
-    const culturalValidation = this.validateCulturalAuthenticity(selectedTemplate.description);
+    const culturalValidation = validateCulturalAuthenticity(selectedTemplate.description);
 
     const comedyClip: ComedyClip = {
       id: `cot-comedy-${Math.random().toString(36).substr(2, 9)}`,
@@ -446,3 +410,40 @@ export const enhanceWithCoTData = (existingData: any) => {
     }
   };
 };
+
+// Standalone function for cultural validation
+function validateCulturalAuthenticity(content: string): { score: number; considerations: string[]; improvements: string[] } {
+  const considerations = [];
+  const improvements = [];
+  let score = 0.8; // Base score
+
+  // Check for authentic language
+  const authenticLanguage = CULTURAL_CONTEXTS.gravesDisease.language;
+  const hasAuthenticLanguage = authenticLanguage.some(word => content.toLowerCase().includes(word));
+  if (hasAuthenticLanguage) {
+    score += 0.1;
+    considerations.push('Uses culturally authentic language');
+  } else {
+    improvements.push('Consider adding more community-centered language');
+  }
+
+  // Check for community focus
+  if (content.includes('sister') || content.includes('community') || content.includes('support')) {
+    score += 0.05;
+    considerations.push('Emphasizes community and sisterhood');
+  }
+
+  // Check for balanced vulnerability and strength
+  const hasVulnerability = content.includes('scared') || content.includes('overwhelmed') || content.includes('struggle');
+  const hasStrength = content.includes('strong') || content.includes('resilient') || content.includes('warrior');
+  if (hasVulnerability && hasStrength) {
+    score += 0.05;
+    considerations.push('Balances vulnerability with strength');
+  }
+
+  return {
+    score: Math.min(score, 1.0),
+    considerations,
+    improvements
+  };
+}

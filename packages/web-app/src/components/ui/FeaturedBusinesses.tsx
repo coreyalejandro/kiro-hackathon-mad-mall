@@ -10,8 +10,18 @@ import {
   Badge,
   Box
 } from '@cloudscape-design/components';
-import { Business } from '@madmall/shared-types';
+// import { Business } from '@madmall/shared-types';
 import CommunityImage from './CommunityImage';
+
+// Temporary type definition
+interface Business {
+  id: number;
+  name: string;
+  description: string;
+  category: string;
+  imageUrl?: string;
+  rating?: number;
+}
 
 interface FeaturedBusiness {
   id: number;
@@ -92,14 +102,10 @@ export default function FeaturedBusinesses({
 
         <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
           {businesses.map((business) => (
-            <div 
+            <Box
               key={business.id}
-              style={{ 
-                borderRadius: '8px',
-                border: '1px solid var(--color-border-divider-default, #e9ebed)',
-                background: 'var(--color-background-container-content, #fff)',
-                padding: '1rem'
-              }}
+              variant="div"
+              padding="m"
             >
               <SpaceBetween size="m">
                 <Box textAlign="center">
@@ -123,28 +129,25 @@ export default function FeaturedBusinesses({
                     <Badge color="grey">{business.category}</Badge>
                   </SpaceBetween>
                   
-                  <div style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.25rem' }}>
+                  <Box variant="h3" fontSize="heading-s" fontWeight="bold" margin={{ bottom: "xs" }}>
                     {business.name}
-                  </div>
+                  </Box>
                   
-                  <div 
-                    style={{ 
-                      fontSize: '0.9rem',
-                      color: 'rgba(255, 255, 255, 0.9)',
-                      fontStyle: 'italic',
-                      marginBottom: '0.5rem'
-                    }}
+                  <Box 
+                    fontSize="body-s"
+                    color="text-body-secondary"
+                    margin={{ bottom: "s" }}
                   >
                     Founded by {business.owner}
-                  </div>
+                  </Box>
                   
-                  <div style={{ fontSize: '0.95rem', color: 'var(--color-text-body-default)', lineHeight: 1.5 }}>
+                  <Box fontSize="body-s" color="text-body-secondary">
                     {business.description}
-                  </div>
+                  </Box>
                   
-                  <div style={{ color: 'var(--color-text-status-info)', marginBottom: '0.5rem' }}>
+                  <Box color="text-status-info" margin={{ bottom: "s" }}>
                     ⭐ {business.rating} ({business.reviews} reviews)
-                  </div>
+                  </Box>
                 </SpaceBetween>
 
                 <Button 
@@ -154,7 +157,7 @@ export default function FeaturedBusinesses({
                   Shop Now
                 </Button>
               </SpaceBetween>
-            </div>
+            </Box>
           ))}
         </Grid>
       </SpaceBetween>

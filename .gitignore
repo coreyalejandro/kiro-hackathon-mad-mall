@@ -63,3 +63,4 @@ jspm_packages/
 !/.syncpackrc.json
 !/.projenrc.ts
 !/LICENSE
+.vercel

@@ -13,7 +13,20 @@ import {
   Link,
   Checkbox
 } from '@cloudscape-design/components';
-import { LoginRequest, RegisterRequest } from '@madmall/shared-types';
+// import { LoginRequest, RegisterRequest } from '@madmall/shared-types';
+
+// Temporary type definitions
+interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+interface RegisterRequest {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
 
 interface AuthFormProps {
   mode: 'login' | 'register';

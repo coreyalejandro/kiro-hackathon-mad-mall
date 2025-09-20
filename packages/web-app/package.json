@@ -16,8 +16,6 @@
     "@aws-sdk/client-bedrock-runtime": "^3.888.0",
     "@cloudscape-design/components": "^3.0.1074",
     "@cloudscape-design/global-styles": "^1.0.45",
-    "@madmall/shared-types": "workspace:*",
-    "@madmall/titanengine": "workspace:*",
     "@tanstack/react-query": "^5.87.1",
     "@tanstack/react-query-devtools": "^5.87.3",
     "aws-amplify": "^6.3.14",

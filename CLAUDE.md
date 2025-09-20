@@ -9,11 +9,13 @@ This is "MADMall" (Kiro Hackathon) - a social wellness hub platform called "AIme
 ## Architecture
 
 ### Monorepo Structure
+
 - **Projen + Nx**: Uses Projen for project configuration and Nx for task orchestration with build caching
 - **PNPM Workspaces**: Package management with workspace dependencies
 - **AWS PDK**: Leverages AWS Project Development Kit for enterprise-grade patterns
 
 ### Key Packages
+
 - `@madmall/web-app`: Next.js 15 App Router frontend with Cloudscape Design
 - `@madmall/api-gateway`: AWS Lambda handlers with Smithy IDL definitions
 - `@madmall/infrastructure`: AWS CDK constructs for cloud infrastructure
@@ -22,18 +24,21 @@ This is "MADMall" (Kiro Hackathon) - a social wellness hub platform called "AIme
 ## Development Commands
 
 ### Setup & Installation
+
 ```bash
 pnpm install           # Install dependencies
 pnpm setup            # Full setup: install + build all packages
 ```
 
 ### Development
+
 ```bash
 pnpm dev              # Start all development servers in parallel
 pnpm run dev          # Same as above (alias)
 ```
 
 ### Building & Testing
+
 ```bash
 pnpm build:all        # Build all packages
 pnpm test:all         # Run tests for all packages
@@ -41,6 +46,7 @@ pnpm lint:all         # Lint all packages
 ```
 
 ### Nx-powered Commands (for affected packages only)
+
 ```bash
 pnpm affected:build   # Build only affected packages
 pnpm affected:test    # Test only affected packages
@@ -48,6 +54,7 @@ pnpm affected:lint    # Lint only affected packages
 ```
 
 ### Per-Package Commands
+
 ```bash
 # Web App (Next.js)
 cd packages/web-app
@@ -77,23 +84,27 @@ pnpm dev              # Watch mode compilation
 ## Key Architecture Patterns
 
 ### Frontend (Next.js App Router)
+
 - **Cloudscape Design System**: AWS's design components for enterprise UX
 - **App Router**: Uses Next.js 15 with React 19, server components by default
 - **Navigation**: Centralized NavigationProvider with AppLayout + SideNavigation
 - **Theming**: Custom "Kadir Nelson" theme with wellness-focused styling
 
 ### Backend (AWS Serverless)
+
 - **Lambda Handlers**: Event-driven functions in api-gateway package
 - **Smithy IDL**: API definitions with code generation (use `pnpm generate`)
 - **DynamoDB**: Database integration via AWS SDK v3
 - **CDK Constructs**: Reusable infrastructure patterns in separate modules
 
 ### Type System
+
 - **Workspace References**: Packages reference `@madmall/shared-types` via file: protocol
 - **Domain Exports**: Types organized by domain (domain/, api/, events/, config/)
 - **Build Dependencies**: Infrastructure and API depend on shared types
 
 ### Development Workflow
+
 - **Nx Caching**: Build outputs cached for faster subsequent builds
 - **Parallel Execution**: Tasks run across packages simultaneously (max 3 parallel)
 - **Affected Analysis**: Only rebuild/test packages that changed
@@ -101,6 +112,7 @@ pnpm dev              # Watch mode compilation
 ## Platform Context
 
 This is a **social wellness platform** with these core areas:
+
 - **Concourse**: Main social feed/interaction space
 - **Peer Circles**: Group support communities
 - **Comedy Lounge**: Wellness through humor

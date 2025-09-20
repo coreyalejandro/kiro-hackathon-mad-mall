@@ -4,7 +4,7 @@
     "affected:build": "pnpm exec projen affected:build",
     "affected:lint": "pnpm exec projen affected:lint",
     "affected:test": "pnpm exec projen affected:test",
-    "build": "pnpm exec projen build",
+    "build": "cd packages/web-app && pnpm build",
     "build:all": "pnpm exec projen build:all",
     "clean": "pnpm exec projen clean",
     "clobber": "pnpm exec projen clobber",
@@ -47,11 +47,18 @@
     "dev:infra:destroy": "cd packages/infrastructure && cdk destroy --all -c environment=dev --force",
     "docs:api": "cd packages/api-gateway && pnpm run generate && cp -f generated/openapi.json ../docs/openapi.json || true"
   },
+  "dependencies": {
+    "next": "15.1.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
   "devDependencies": {
     "@aws-sdk/client-dynamodb": "^3.883.0",
     "@aws-sdk/client-s3": "^3.886.0",
     "@aws/pdk": "^0.26.14",
     "@types/node": "^18",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.7",
     "@typescript-eslint/eslint-plugin": "^7",
     "@typescript-eslint/parser": "^7",
     "constructs": "^10.0.0",
@@ -64,6 +71,7 @@
     "npm-check-updates": "^18.0.3",
     "nx": "19.0.0",
     "prettier": "^3.6.2",
-    "projen": "^0.82.8"
+    "projen": "^0.82.8",
+    "typescript": "~5.8.3"
   }
 }

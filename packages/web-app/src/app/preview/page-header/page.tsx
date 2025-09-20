@@ -1,3 +1,5 @@
+'use client';
+
 import PageHeader from '@/components/ui/PageHeader';
 import { ContentLayout, Container, SpaceBetween, Box } from '@cloudscape-design/components';
 

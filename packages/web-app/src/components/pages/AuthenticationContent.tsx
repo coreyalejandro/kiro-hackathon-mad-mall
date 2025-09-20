@@ -1,37 +1,38 @@
 'use client';
 
-import { Container, ContentLayout } from '@cloudscape-design/components';
-import PageHeader from '@/components/ui/PageHeader';
+import { Container, ContentLayout, SpaceBetween, Button, Header } from '@cloudscape-design/components';
 import { signInWithRedirect, signOut } from 'aws-amplify/auth';
 import { env } from '@/lib/env';
 import { useEffect } from 'react';
-import AutoImageHero from '@/components/ui/AutoImageHero';
 
 export function AuthenticationContent() {
   useEffect(() => {
     // Preload or verify auth domain/client id presence
   }, []);
   return (
-    <>
-      <AutoImageHero
-        section="auth"
-        title="Welcome Back"
-        description="Sign in or create your account to join our community"
-        eyebrow="Account"
-        primaryAction={{ text: 'Sign In', onClick: () => signInWithRedirect(), iconName: 'lock' }}
-        secondaryAction={{ text: 'Create Account', onClick: () => signInWithRedirect(), iconName: 'add-plus' }}
-      />
-      <ContentLayout header={<PageHeader title="Authentication" description="Sign in or create your account to join our community" primaryAction={{ text: 'Sign In', onClick: () => signInWithRedirect(), iconName: 'lock' }} secondaryAction={{ text: 'Create Account', onClick: () => signInWithRedirect(), iconName: 'add-plus' }} />}>
+    <ContentLayout 
+      header={
+        <Header
+          variant="h1"
+          description="Sign in or create your account to join our community"
+          actions={
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button variant="normal" iconName="add-plus" onClick={() => signInWithRedirect()}>Create Account</Button>
+              <Button variant="primary" iconName="user-profile" onClick={() => signInWithRedirect()}>Sign In</Button>
+            </SpaceBetween>
+          }
+        >
+          Authentication
+        </Header>
+      }
+    >
       <Container>
-        <div>
-          <p>Sign in to your account or create a new one to join our wellness community.</p>
-          <div style={{ display: 'flex', gap: 12 }}>
-            <button onClick={() => signInWithRedirect()}>Sign In</button>
-            <button onClick={() => signInWithRedirect()}>Create Account</button>
-          </div>
-        </div>
+        <p>Sign in to your account or create a new one to join our wellness community.</p>
+        <SpaceBetween direction="horizontal" size="s">
+          <Button variant="primary" onClick={() => signInWithRedirect()}>Sign In</Button>
+          <Button variant="normal" onClick={() => signInWithRedirect()}>Create Account</Button>
+        </SpaceBetween>
       </Container>
-      </ContentLayout>
-    </>
+    </ContentLayout>
   );
 }

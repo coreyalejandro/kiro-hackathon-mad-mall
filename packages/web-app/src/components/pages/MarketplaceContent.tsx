@@ -1,11 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Container, ContentLayout } from '@cloudscape-design/components';
-import PageHeader from '@/components/ui/PageHeader';
+import { Container, ContentLayout, Header, SpaceBetween, Button, Cards, Box } from '@cloudscape-design/components';
 // import { api } from '@/lib/mock-api';
 import { Product } from '@/lib/types';
-import AutoImageHero from '@/components/ui/AutoImageHero';
 
 export function MarketplaceContent() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -56,32 +54,48 @@ export function MarketplaceContent() {
   }, []);
 
   return (
-    <>
-      <AutoImageHero
-        section="marketplace"
-        title="Marketplace"
-        description="Discover wellness products and services from community businesses"
-        eyebrow="Support Black-Owned"
-        primaryAction={{ text: 'Browse Products', onClick: () => {}, iconName: 'cart' }}
-        secondaryAction={{ text: 'List Business', onClick: () => {}, iconName: 'upload' }}
-        highlights={[{ label: 'Featured', value: '89 brands' }]}
-      />
-      <ContentLayout header={<PageHeader title="Marketplace" description="Discover wellness products and services from community businesses" primaryAction={{ text: 'Browse Products', onClick: () => {}, iconName: 'cart' }} secondaryAction={{ text: 'List Business', onClick: () => {}, iconName: 'upload' }} />}>
+    <ContentLayout 
+      header={
+        <Header
+          variant="h1"
+          description="Discover wellness products and services from community businesses"
+          actions={
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button variant="normal" iconName="upload">List Business</Button>
+              <Button variant="primary" iconName="external">Browse Products</Button>
+            </SpaceBetween>
+          }
+        >
+          Marketplace
+        </Header>
+      }
+    >
       <Container>
-        <div>
-          <h2>Popular Products</h2>
-          <ul>
-            {products.slice(0, 5).map(p => (
-              <li key={p.id}>
-                <strong>{p.name}</strong> - ${p.price}
-                <br />
-                <small>{p.business.name} • ⭐ {p.rating} ({p.reviewCount} reviews)</small>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Box variant="h2" margin={{ bottom: 'm' }}>
+          Popular Products
+        </Box>
+        <Cards
+          cardDefinition={{
+            sections: [
+              {
+                id: 'product',
+                content: (item: Product) => (
+                  <SpaceBetween direction="vertical" size="xs">
+                    <Box variant="strong">{item.name}</Box>
+                    <Box variant="small" color="text-body-secondary">
+                      {item.business.name} • ⭐ {item.rating} ({item.reviewCount} reviews)
+                    </Box>
+                    <Box variant="strong" color="text-status-success">
+                      ${item.price}
+                    </Box>
+                  </SpaceBetween>
+                )
+              }
+            ]
+          }}
+          items={products.slice(0, 5)}
+        />
       </Container>
-      </ContentLayout>
-    </>
+    </ContentLayout>
   );
 }

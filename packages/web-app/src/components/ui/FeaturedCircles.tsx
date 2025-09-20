@@ -10,8 +10,18 @@ import {
   Badge,
   Box
 } from '@cloudscape-design/components';
-import { Circle } from '@madmall/shared-types';
+// import { Circle } from '@madmall/shared-types';
 import CommunityImage from './CommunityImage';
+
+// Temporary type definition
+interface Circle {
+  id: string;
+  name: string;
+  description: string;
+  memberCount: number;
+  category: string;
+  imageUrl?: string;
+}
 
 interface FeaturedCircle {
   id: string;
@@ -90,18 +100,10 @@ export default function FeaturedCircles({
 
         <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
           {circles.map((circle) => (
-            <div 
+            <Box
               key={circle.id}
-              style={{ 
-                borderRadius: '8px',
-                border: '1px solid var(--color-border-divider-default, #e9ebed)',
-                background: 'var(--color-background-container-content, #fff)',
-                minHeight: '320px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                padding: '1rem'
-              }}
+              variant="div"
+              padding="m"
             >
               <SpaceBetween size="m">
                 <Box textAlign="center">
@@ -119,12 +121,12 @@ export default function FeaturedCircles({
                 </Box>
 
                 <Box textAlign="center">
-                  <div style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.25rem' }}>
+                  <Box variant="h3" fontSize="heading-s" fontWeight="bold" margin={{ bottom: "xs" }}>
                     {circle.name}
-                  </div>
-                  <div style={{ fontSize: '0.95rem', lineHeight: 1.5, color: 'var(--color-text-body-default)' }}>
+                  </Box>
+                  <Box fontSize="body-s" color="text-body-secondary">
                     {circle.description}
-                  </div>
+                  </Box>
                 </Box>
 
                 <Box textAlign="center">
@@ -137,17 +139,17 @@ export default function FeaturedCircles({
                     </Badge>
                   </SpaceBetween>
                   
-                  <div style={{ marginTop: '1rem' }}>
+                  <Box margin={{ top: "m" }}>
                     <Button 
                       variant="primary"
                       onClick={() => handleJoinCircle(circle.id, circle.name)}
                     >
                       Join Circle
                     </Button>
-                  </div>
+                  </Box>
                 </Box>
               </SpaceBetween>
-            </div>
+            </Box>
           ))}
         </Grid>
       </SpaceBetween>
