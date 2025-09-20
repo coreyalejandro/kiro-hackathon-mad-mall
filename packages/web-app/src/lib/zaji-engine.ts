@@ -419,6 +419,112 @@ Format your response as JSON:
     return recommendations;
   }
 
+  // Real Bedrock-powered chat response generation
+  async generateResponse(params: {
+    prompt: string;
+    context?: string;
+    culturalContext?: Record<string, any>;
+    maxTokens?: number;
+    temperature?: number;
+    userId: string;
+  }): Promise<string> {
+    try {
+      const { BedrockRuntimeClient, InvokeModelCommand } = await import('@aws-sdk/client-bedrock-runtime');
+
+      const client = new BedrockRuntimeClient({
+        region: process.env.AWS_REGION || 'us-east-1',
+      });
+
+      // Enhance prompt with cultural context and wellness focus
+      const enhancedPrompt = this.enhancePromptForWellnessChat(
+        params.prompt,
+        params.context || '',
+        params.culturalContext || {}
+      );
+
+      const command = new InvokeModelCommand({
+        modelId: 'anthropic.claude-3-sonnet-20240229-v1:0',
+        contentType: 'application/json',
+        accept: 'application/json',
+        body: JSON.stringify({
+          anthropic_version: 'bedrock-2023-05-31',
+          max_tokens: params.maxTokens || 1000,
+          temperature: params.temperature || 0.7,
+          messages: [
+            {
+              role: 'user',
+              content: enhancedPrompt
+            }
+          ],
+          system: `You are Zaji, an AI wellness companion specifically designed for Black women with Graves disease and other chronic health conditions. You provide culturally-sensitive, empathetic, and practical support. 
+
+Key principles:
+- Use culturally authentic language and references
+- Focus on sisterhood, community, and resilience
+- Provide practical, actionable advice
+- Be empathetic and understanding of health challenges
+- Encourage self-advocacy and empowerment
+- Respect the intersection of race, gender, and health experiences
+
+Always respond with warmth, understanding, and practical guidance that honors the user's cultural background and health journey.`
+        })
+      });
+
+      const response = await client.send(command);
+      
+      if (!response.body) {
+        throw new Error('No response from Bedrock');
+      }
+
+      const responseBody = JSON.parse(new TextDecoder().decode(response.body));
+      return responseBody.content[0].text;
+
+    } catch (error) {
+      console.error('Bedrock chat generation failed:', error);
+      
+      // Fallback response with cultural sensitivity
+      return this.generateFallbackResponse(params.prompt, params.culturalContext || {});
+    }
+  }
+
+  private enhancePromptForWellnessChat(
+    prompt: string, 
+    context: string, 
+    culturalContext: Record<string, any>
+  ): string {
+    let enhancedPrompt = prompt;
+    
+    if (context) {
+      enhancedPrompt = `Context: ${context}\n\nUser question: ${prompt}`;
+    }
+    
+    if (culturalContext.primaryCulture) {
+      enhancedPrompt += `\n\nCultural context: The user identifies as ${culturalContext.primaryCulture}`;
+    }
+    
+    if (culturalContext.region) {
+      enhancedPrompt += ` from ${culturalContext.region}`;
+    }
+    
+    return enhancedPrompt;
+  }
+
+  private generateFallbackResponse(prompt: string, culturalContext: Record<string, any>): string {
+    const fallbackResponses = [
+      "I understand you're reaching out for support, sister. While I'm experiencing some technical difficulties right now, I want you to know that your wellness journey matters and you're not alone in this.",
+      "Thank you for trusting me with your question. I'm currently having some connectivity issues, but I'm here to support you on your health journey. Please know that your voice and experiences are valued.",
+      "I hear you, and I want to help. There's a temporary technical issue on my end, but I'm committed to providing culturally-sensitive support for your wellness needs."
+    ];
+    
+    const baseResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+    
+    if (culturalContext.primaryCulture === 'African American') {
+      return `${baseResponse} Remember, as Black women, we have a legacy of strength and resilience. Your health and wellbeing are important, and you deserve culturally-competent care.`;
+    }
+    
+    return baseResponse;
+  }
+
   private enhancePromptForCulturalSensitivity(prompt: string, style: string): string {
     const culturalEnhancements = [
       'diverse representation',
