@@ -1,75 +1,128 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Container, ContentLayout } from '@cloudscape-design/components';
-import PageHeader from '@/components/ui/PageHeader';
-import { StoryUploader } from '@/components/stories/StoryUploader';
-import { StoryList } from '@/components/stories/StoryList';
-// import { api } from '@/lib/mock-api';
-import { Story } from '@/lib/types';
-import AutoImageHero from '@/components/ui/AutoImageHero';
+import { Container, ContentLayout, Header, SpaceBetween, Button, Grid, Box, Badge, Cards } from '@cloudscape-design/components';
+import { syntheticContentService } from '@/lib/synthetic-content-service';
 
 export function StoryBoothContent() {
-  const [stories, setStories] = useState<Story[]>([]);
+  const [stories, setStories] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Mock data for now - replace with actual API call when available
-    const mockStories: Story[] = [
-      {
-        id: '1',
-        title: 'My Journey with Graves Disease',
-        content: 'A personal story about living with Graves Disease...',
-        type: 'text',
-        author: {
-          name: 'Sarah M.',
-          avatar: '/avatars/sarah.jpg'
-        },
-        tags: ['diagnosis', 'journey'],
-        publishedAt: new Date(),
-        engagement: {
-          likes: 12,
-          comments: 3,
-          shares: 1,
-          views: 45,
-          saves: 8,
-          helpfulVotes: 5
-        },
-        isAnonymous: false
+    const loadStories = async () => {
+      try {
+        const storiesData = await syntheticContentService.getWellnessStories(6);
+        setStories(storiesData);
+      } catch (error) {
+        console.error('Failed to load stories:', error);
+      } finally {
+        setLoading(false);
       }
-    ];
-    setStories(mockStories);
+    };
+
+    loadStories();
   }, []);
 
-  return (
-    <>
-      <AutoImageHero
-        section="stories"
-        title="Story Booth"
-        description="Share and discover inspiring personal stories"
-        eyebrow="Community Voices"
-        primaryAction={{ text: 'Share Your Story', onClick: () => {}, iconName: 'edit' }}
-        secondaryAction={{ text: 'Read Stories', onClick: () => {}, iconName: 'document' }}
-        highlights={[{ label: 'Today', value: '23 stories' }]}
-      />
-      <ContentLayout header={<PageHeader title="Story Booth" description="Share and discover inspiring personal stories" primaryAction={{ text: 'Share Your Story', onClick: () => {}, iconName: 'edit' }} secondaryAction={{ text: 'Read Stories', onClick: () => {}, iconName: 'document' }} />}>
-      <Container>
-        <div>
-          <h2>Recent Stories</h2>
-          <ul>
-            {stories.slice(0, 5).map(s => (
-              <li key={s.id}>
-                <strong>{s.title}</strong> by {s.author.name}
-                <br />
-                <small>{s.engagement.likes} likes • {s.engagement.comments} comments</small>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Container>
+  const handleReadStory = (storyId: string, storyTitle: string) => {
+    console.log(`Reading story: ${storyTitle} (${storyId})`);
+    // TODO: Implement actual story reading functionality
+  };
 
-      <StoryUploader />
-      <StoryList />
+  if (loading) {
+    return (
+      <ContentLayout 
+        header={
+          <Header variant="h1" description="Share and discover inspiring personal stories">
+            Story Booth
+          </Header>
+        }
+      >
+        <Container>
+          <Box textAlign="center" padding="xl">
+            Loading stories...
+          </Box>
+        </Container>
       </ContentLayout>
-    </>
+    );
+  }
+
+  return (
+    <ContentLayout 
+      header={
+        <Header
+          variant="h1"
+          description="Share and discover inspiring personal stories"
+          actions={
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button variant="normal" iconName="document">Read Stories</Button>
+              <Button variant="primary" iconName="edit">Share Your Story</Button>
+            </SpaceBetween>
+          }
+        >
+          Story Booth
+        </Header>
+      }
+    >
+      <Container>
+        <Box variant="h2" margin={{ bottom: 'm' }}>
+          Community Stories
+        </Box>
+        
+        <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
+          {stories.map((story) => (
+            <Box
+              key={story.id}
+              variant="div"
+              padding="m"
+            >
+              <SpaceBetween size="m">
+                <Box textAlign="center">
+                  <Box
+                    variant="div"
+                    padding="l"
+                    textAlign="center"
+                    color="text-status-info"
+                    fontSize="display-l"
+                  >
+                    📖
+                  </Box>
+                </Box>
+
+                <SpaceBetween size="s">
+                  <Box variant="h3" fontSize="heading-s" fontWeight="bold" margin={{ bottom: "xs" }}>
+                    {story.title}
+                  </Box>
+                  
+                  <Box fontSize="body-s" color="text-body-secondary" margin={{ bottom: "s" }}>
+                    by {story.author.name}
+                  </Box>
+                  
+                  <Box fontSize="body-s" color="text-body-secondary" margin={{ bottom: "s" }}>
+                    {story.content.substring(0, 150)}...
+                  </Box>
+                  
+                  <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                    {story.tags.slice(0, 2).map((tag: string) => (
+                      <Badge key={tag} color="blue">{tag}</Badge>
+                    ))}
+                  </SpaceBetween>
+                  
+                  <Box color="text-status-info" margin={{ bottom: "s" }}>
+                    ❤️ {story.engagement.likes} • 💬 {story.engagement.comments} • 👀 {story.engagement.views}
+                  </Box>
+                </SpaceBetween>
+
+                <Button 
+                  variant="primary"
+                  onClick={() => handleReadStory(story.id, story.title)}
+                >
+                  Read Story
+                </Button>
+              </SpaceBetween>
+            </Box>
+          ))}
+        </Grid>
+      </Container>
+    </ContentLayout>
   );
 }

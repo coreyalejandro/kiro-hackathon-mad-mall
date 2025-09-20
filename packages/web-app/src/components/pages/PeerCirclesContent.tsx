@@ -1,39 +1,126 @@
 'use client';
 
-import { Container, ContentLayout } from '@cloudscape-design/components';
-import PageHeader from '@/components/ui/PageHeader';
-import { CirclesGrid } from '@/components/ui'; // Importing CirclesGrid for displaying circles
-import type { Circle } from '@/lib/types'; // Ensuring Circle type is imported
-import { useCircles } from '@/lib/queries'; // Fetching circles via a custom hook
-import AutoImageHero from '@/components/ui/AutoImageHero';
+import { useEffect, useState } from 'react';
+import { Container, ContentLayout, Header, SpaceBetween, Button, Grid, Box, Badge, Cards } from '@cloudscape-design/components';
+import { syntheticContentService } from '@/lib/synthetic-content-service';
 
 export function PeerCirclesContent() {
-  const { data: circles = [] } = useCircles(); // Using custom hook to fetch circles data
+  const [circles, setCircles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadCircles = async () => {
+      try {
+        const circlesData = await syntheticContentService.getPeerCircles(12);
+        setCircles(circlesData);
+      } catch (error) {
+        console.error('Failed to load circles:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCircles();
+  }, []);
+
+  const handleJoinCircle = (circleId: string, circleName: string) => {
+    console.log(`Joining circle: ${circleName} (${circleId})`);
+    // TODO: Implement actual join functionality
+  };
+
+  if (loading) {
+    return (
+      <ContentLayout 
+        header={
+          <Header variant="h1" description="Connect with supportive peer groups and communities">
+            Peer Circles
+          </Header>
+        }
+      >
+        <Container>
+          <Box textAlign="center" padding="xl">
+            Loading peer circles...
+          </Box>
+        </Container>
+      </ContentLayout>
+    );
+  }
 
   return (
-    <>
-      <AutoImageHero
-        section="circles"
-        title="Peer Circles"
-        description="Connect with supportive peer groups and communities"
-        eyebrow="Community"
-        primaryAction={{ text: 'Create Circle', onClick: () => {}, iconName: 'add-plus' }}
-        secondaryAction={{ text: 'Browse', onClick: () => {}, iconName: 'search' }}
-        highlights={[{ label: 'Active', value: '127 members' }, { label: 'New', value: '5 this week' }]}
-      />
-      <ContentLayout header={<PageHeader title="Peer Circles" description="Connect with supportive peer groups and communities" primaryAction={{ text: 'Create Circle', onClick: () => {} , iconName: 'add-plus' }} secondaryAction={{ text: 'Browse', onClick: () => {} , iconName: 'search' }} />}>
+    <ContentLayout 
+      header={
+        <Header
+          variant="h1"
+          description="Connect with supportive peer groups and communities"
+          actions={
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button variant="normal" iconName="search">Browse</Button>
+              <Button variant="primary" iconName="add-plus">Create Circle</Button>
+            </SpaceBetween>
+          }
+        >
+          Peer Circles
+        </Header>
+      }
+    >
       <Container>
-        {/* Display the circles using CirclesGrid */}
-        <div className="circles-section">
-          <h2>Available Peer Circles</h2>
-          {circles.length > 0 ? (
-            <CirclesGrid circles={circles} /> // Pass circles to CirclesGrid component
-          ) : (
-            <p>No peer circles available at this time. Please check back later.</p>
-          )}
-        </div>
+        <Box variant="h2" margin={{ bottom: 'm' }}>
+          Available Peer Circles
+        </Box>
+        
+        <Grid gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}>
+          {circles.map((circle) => (
+            <Box
+              key={circle.id}
+              variant="div"
+              padding="m"
+            >
+              <SpaceBetween size="m">
+                <Box textAlign="center">
+                  <Box
+                    variant="div"
+                    padding="l"
+                    textAlign="center"
+                    color="text-status-info"
+                    fontSize="display-l"
+                  >
+                    👥
+                  </Box>
+                </Box>
+
+                <Box textAlign="center">
+                  <Box variant="h3" fontSize="heading-s" fontWeight="bold" margin={{ bottom: "xs" }}>
+                    {circle.name}
+                  </Box>
+                  <Box fontSize="body-s" color="text-body-secondary">
+                    {circle.description}
+                  </Box>
+                </Box>
+
+                <Box textAlign="center">
+                  <SpaceBetween direction="horizontal" size="s" alignItems="center">
+                    <Badge color="grey">
+                      {circle.memberCount} members
+                    </Badge>
+                    <Badge color="grey">
+                      Active {circle.recentActivity}
+                    </Badge>
+                  </SpaceBetween>
+                  
+                  <Box margin={{ top: "m" }}>
+                    <Button 
+                      variant="primary"
+                      onClick={() => handleJoinCircle(circle.id, circle.name)}
+                    >
+                      Join Circle
+                    </Button>
+                  </Box>
+                </Box>
+              </SpaceBetween>
+            </Box>
+          ))}
+        </Grid>
       </Container>
-      </ContentLayout>
-    </>
+    </ContentLayout>
   );
 }
