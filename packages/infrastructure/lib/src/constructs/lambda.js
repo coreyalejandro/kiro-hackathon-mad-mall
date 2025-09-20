@@ -169,9 +169,9 @@ class LambdaConstruct extends constructs_1.Construct {
                 },
             },
             {
-                name: 'titan-engine',
-                description: 'TitanEngine image processing service',
-                codePath: '../titanengine/dist',
+                name: 'zaji-engine',
+                description: 'Zaji image processing service',
+                codePath: '../zaji/dist',
                 handler: 'index.handler',
                 memorySize: 1024,
                 timeout: 60,

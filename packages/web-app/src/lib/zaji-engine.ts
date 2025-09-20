@@ -1,5 +1,5 @@
 /**
- * Working TitanEngine implementation for web app
+ * Working Zaji implementation for web app
  * Provides real Bedrock integration for image generation and validation
  */
 
@@ -20,7 +20,7 @@ interface CareRecommendation {
   timestamp: Date;
 }
 
-interface TitanEvent {
+interface ZajiEvent {
   userId: string;
   eventType: 'page' | 'interaction';
   name: string;
@@ -28,13 +28,13 @@ interface TitanEvent {
   data?: Record<string, unknown>;
 }
 
-export class TitanEngine {
+export class ZajiEngine {
   static createDefault() {
-    return new TitanEngine();
+    return new ZajiEngine();
   }
 
   constructor() {
-    console.log('TitanEngine initialized (web app version)');
+    console.log('ZajiEngine initialized (web app version)');
   }
 
   // Real Bedrock-powered image validation
@@ -333,11 +333,11 @@ Format your response as JSON:
   }
 
   // Event tracking for analytics
-  async recordEvent(event: TitanEvent): Promise<void> {
-    console.log('TitanEngine event recorded:', event);
+  async recordEvent(event: ZajiEvent): Promise<void> {
+    console.log('ZajiEngine event recorded:', event);
   }
 
-  async getEvents(userId: string): Promise<TitanEvent[]> {
+  async getEvents(userId: string): Promise<ZajiEvent[]> {
     return [
       {
         userId,

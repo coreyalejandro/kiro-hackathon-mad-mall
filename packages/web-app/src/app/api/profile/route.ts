@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { TitanEngine } from '@/lib/titan-engine';
+import { ZajiEngine } from '@/lib/zaji-engine';
 
-const engine = TitanEngine.createDefault();
+const engine = ZajiEngine.createDefault();
 
 // In-memory store for mock profile data
 let profile = {

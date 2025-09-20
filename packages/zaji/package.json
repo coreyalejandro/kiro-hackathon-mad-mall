@@ -1,7 +1,7 @@
 {
-  "name": "@madmall/titanengine",
+  "name": "@madmall/zaji",
   "version": "0.1.0",
-  "description": "TitanEngine image curation and generation service with Bedrock integration",
+  "description": "Zaji image curation and generation service with Bedrock integration",
   "private": true,
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

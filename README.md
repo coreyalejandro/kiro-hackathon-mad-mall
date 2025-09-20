@@ -27,7 +27,7 @@ Access the platform at `http//localhost:3000`
 - **Marketplace**: Wellness products and services
 - **Resource Hub**: Mental health resources
 
-### AI Integration (TitanEngine)
+### AI Integration (Zaji)
 
 - **Image Generation**: AWS Bedrock SDXL for culturally-sensitive imagery
 - **Content Validation**: AWS Bedrock Claude-3 for cultural appropriateness
