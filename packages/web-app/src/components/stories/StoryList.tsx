@@ -29,7 +29,7 @@ export function StoryList() {
             <h3>{story.title}</h3>
             <p>{story.content.slice(0, 120)}...</p>
             <div>
-              👁️ {story.engagement.views} · ❤️ {story.engagement.likes} · 💬 {story.engagement.comments} · 🔁 {story.engagement.shares}
+              👁️ {story.engagement?.views || 0} · ❤️ {story.engagement?.likes || 0} · 💬 {story.engagement?.comments || 0} · 🔁 {story.engagement?.shares || 0}
             </div>
             <Button
               onClick={() => track({ storyId: story.id, type: 'like' })}

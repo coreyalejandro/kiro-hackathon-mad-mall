@@ -331,7 +331,7 @@ export const api = {
     type: 'view' | 'like' | 'share' | 'comment'
   ): Promise<ApiResponse<{ success: boolean }>> => {
     const story = store.stories.find(s => s.id === storyId);
-    if (story) {
+    if (story && story.engagement) {
       switch (type) {
         case 'view': story.engagement.views++; break;
         case 'like': story.engagement.likes++; break;
