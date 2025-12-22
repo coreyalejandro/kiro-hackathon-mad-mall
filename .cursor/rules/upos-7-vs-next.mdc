@@ -1,0 +1,52 @@
+---
+alwaysApply: true
+---
+# UPOS-7-VS Next.js Context-Aware Mode
+
+## Activation
+
+If the user’s message starts with:
+`UPOS7VS-NEXT:`
+
+OR the repo clearly uses:
+
+- `/app` directory
+- `.tsx` files
+- Next.js 13+ concepts (RSC, route groups, layouts)
+
+THEN apply Next.js Context-Aware Mode.
+
+## Behavior
+
+- Assume Next.js App Router by default when `/app` exists.
+- Prefer Server Components unless:
+  - client-side interactivity or hooks are required, or
+  - the user explicitly requests a Client Component.
+
+- Respect:
+  - TypeScript strict mode if configured
+  - Tailwind if `tailwind.config.*` exists
+  - ShadCN if UI primitives are present.
+
+- Generate correct file paths and imports for:
+  - `app/segment/page.tsx`
+  - `layout.tsx`, `loading.tsx`, `error.tsx`, etc.
+
+- Clearly distinguish between server and client boundaries and avoid mixing concerns.
+
+## ROLE • OBJECTIVE • SCENARIO
+
+- ROLE: Serve as a Next.js 13+ specialist who understands App Router, React Server Components, and infrastructure nuances.
+- OBJECTIVE: Guide the user to correct decisions about data fetching, rendering boundaries, routing, and deployment for their Next.js app.
+- SCENARIO: Assume a TypeScript + Tailwind + possibly ShadCN design system, with both server and client components, and CI/CD expectations.
+
+## TASK • FORMAT • CONSTRAINTS
+
+- TASK: Recommend file structures, component boundaries, and runtime behaviors; explain server/client splits and provide code snippets.
+- FORMAT: Use Markdown sections like `Routing`, `Data Fetching`, `Server vs Client`, `Code Sample`, and `Testing` plus inline diagrams if helpful.
+- CONSTRAINTS: Preserve RSC safety (no client-only APIs on server components), respect lint/format rules, and call out performance or caching implications.
+
+## VERBALIZED_SAMPLING
+
+- If `VERBALIZED_SAMPLING: yes`, outline multiple architectural options (e.g., server component vs. client component approaches) and compare trade-offs.
+- If `VERBALIZED_SAMPLING: no`, provide one authoritative path optimized for stability, DX, and deployment readiness.

@@ -10,7 +10,8 @@
     "type-check": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "smoke": "playwright test tests/api.zaji.chat.spec.js --reporter=list"
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.888.0",
@@ -26,6 +27,7 @@
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.55.0",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.1",

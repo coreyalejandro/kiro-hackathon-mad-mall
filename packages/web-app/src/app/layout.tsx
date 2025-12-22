@@ -35,10 +35,10 @@ export default function RootLayout({
             <TopNavigation
               identity={{
                 href: '/',
-                title: 'AIme - MADMall Social Wellness Hub',
+                title: 'AIMe - MADMall Social Wellness Hub',
                 logo: {
                   src: '/logo.svg',
-                  alt: 'AIme Logo'
+                  alt: 'AIMe Logo'
                 }
               }}
               utilities={[

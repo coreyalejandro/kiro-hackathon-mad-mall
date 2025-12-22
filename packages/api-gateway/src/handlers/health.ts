@@ -13,7 +13,7 @@ export const healthHandler = async (
     const correlationId = getCorrelationId(event);
     const response: GetHealthOutput = {
       status: HealthStatus.HEALTHY,
-      message: 'AIme Wellness Platform API',
+      message: 'AIMe Wellness Platform API',
       timestamp: new Date(),
       dataInitialized: true,
       services: {

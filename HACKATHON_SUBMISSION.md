@@ -32,30 +32,35 @@ MADMall is a comprehensive social wellness platform featuring:
 ### 🔧 Tech Stack
 
 **Languages & Frameworks:**
+
 - TypeScript
 - Next.js 15
 - React 19
 - Node.js
 
 **Cloud Services & AI:**
+
 - AWS Bedrock (SDXL, Claude-3)
 - AWS Lambda
 - AWS DynamoDB
 - AWS CDK
 
 **Frontend Technologies:**
+
 - Cloudscape Design System
 - TanStack React Query
 - Socket.io Client
 - Lucide React Icons
 
 **Backend & API:**
+
 - REST APIs
 - Smithy IDL
 - AWS SDK v3
 - Lambda Functions
 
 **Development Tools:**
+
 - Projen
 - Nx Monorepo
 - PNPM Workspaces
@@ -63,6 +68,7 @@ MADMall is a comprehensive social wellness platform featuring:
 - ESLint
 
 **Deployment & Infrastructure:**
+
 - Vercel
 - AWS CloudFormation
 - Infrastructure as Code (CDK)

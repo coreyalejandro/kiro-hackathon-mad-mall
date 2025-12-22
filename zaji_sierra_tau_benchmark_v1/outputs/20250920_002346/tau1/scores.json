@@ -1,0 +1,219 @@
+{
+  "suite_name": "tau1",
+  "total_items": 10,
+  "passed_items": 2,
+  "failed_items": 8,
+  "accuracy": 0.2,
+  "results": [
+    {
+      "id": "tau1_001",
+      "prompt": "What is the primary focus of MADMall platform?",
+      "expect": {
+        "contains": "wellness"
+      },
+      "response": "I'm afraid I don't have any specific information about a platform called \"MADMall.\" As an AI assistant focused on providing culturally-sensitive health support for Black women, I don't have data on particular companies or products unless they relate directly to my training areas. Could you provide some more context about what MADMall is? That would help me try to understand and respond more accurately.",
+      "success": true,
+      "latency_ms": 2236.52,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:48.634271",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"wellness\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau1_002",
+      "prompt": "Who is the target audience for MADMall?",
+      "expect": {
+        "contains": "Black women"
+      },
+      "response": "I'm afraid I don't have enough context to determine who the specific target audience is for \"MADMall.\" As an AI assistant without additional details, I don't have information about what MADMall refers to. Could you provide some more context about MADMall so I can better understand and respond to your query? I'd be happy to offer my perspective once I have some additional details.",
+      "success": true,
+      "latency_ms": 2355.66,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:48.757178",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"Black women\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau1_003",
+      "prompt": "What health condition does MADMall specifically address?",
+      "expect": {
+        "contains": "Graves disease"
+      },
+      "response": "I'm afraid I don't have any specific information about a health condition called \"MADMall.\" As an AI assistant focused on providing culturally-sensitive wellness support for Black women with Graves' disease and other chronic illnesses, I don't have details about that particular term. Could you provide some more context about what MADMall refers to? I'd be happy to try to offer relevant guidance if it relates to the health challenges I'm designed to address.",
+      "success": true,
+      "latency_ms": 2668.9,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:49.070553",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"Graves disease\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau1_004",
+      "prompt": "Name one key feature of the platform.",
+      "expect": {
+        "any_of": [
+          "Peer Circles",
+          "Comedy Lounge",
+          "Story Booth",
+          "Marketplace",
+          "Resource Hub"
+        ]
+      },
+      "response": "*speaking in a warm, friendly tone* One key feature of my platform is providing culturally-relevant health information and support specifically tailored for Black women dealing with chronic illnesses like Graves' disease. As a sista, I understand how our cultural backgrounds and life experiences shape the way we approach health and wellness. My goal is to be a compassionate, knowledgeable companion who \"gets it\" and can guide you through the challenges with practical advice while uplifting your strength and resilience.",
+      "success": true,
+      "latency_ms": 2637.61,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:49.039349",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected one of: ['Peer Circles', 'Comedy Lounge', 'Story Booth', 'Marketplace', 'Resource Hub'], got: \"*speaking in a warm, friendly tone* One key feature of my platform is providing culturally-relevant health information and support specifically tailored for Black women dealing with chronic illnesses like Graves' disease. As a sista, I understand how our cultural backgrounds and life experiences shape the way we approach health and wellness. My goal is to be a compassionate, knowledgeable companion who \"gets it\" and can guide you through the challenges with practical advice while uplifting your strength and resilience.\"",
+        "details": {
+          "any_of": false
+        }
+      }
+    },
+    {
+      "id": "tau1_005",
+      "prompt": "What cultural values does MADMall emphasize?",
+      "expect": {
+        "all_contains": [
+          "sisterhood",
+          "community",
+          "resilience"
+        ]
+      },
+      "response": "I understand you're reaching out for support, sister. While I'm experiencing some technical difficulties right now, I want you to know that your wellness journey matters and you're not alone in this.",
+      "success": true,
+      "latency_ms": 1113.06,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:47.514858",
+      "evaluation": {
+        "passed": false,
+        "reason": "Missing required substrings: ['sisterhood', 'community', 'resilience']",
+        "details": {
+          "all_contains": false
+        }
+      }
+    },
+    {
+      "id": "tau1_006",
+      "prompt": "Is MADMall only for medical information?",
+      "expect": {
+        "not_contains": "only medical"
+      },
+      "response": "Hey sis, no MADMall ain't just for medical info - it's a whole online community for us Black women dealing with chronic illnesses like Graves' disease. It's a safe space where we can share our experiences, get support from our sisters going through similar struggles, and find resources tailored to our needs. \n\nThey got forums where we can discuss anything from managing symptoms to navigating the healthcare system as Black women. There are also articles and videos with practical advice, like tips for self-care, dealing with insensitive doctors, or finding the right treatments. And you can even connect with health experts who really understand the cultural side of things.\n\nThe goal is to uplift and empower us as we navigate these health journeys. Having a strong sisterhood to lean on makes a world of difference when you're facing chronic illness on top of all the other challenges we face. MADMall keeps it real and creates that community we need.",
+      "success": true,
+      "latency_ms": 5510.3,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:51.912158",
+      "evaluation": {
+        "passed": true,
+        "reason": "All expectations met",
+        "details": {
+          "not_contains": true
+        }
+      }
+    },
+    {
+      "id": "tau1_007",
+      "prompt": "What type of businesses are featured in the marketplace?",
+      "expect": {
+        "contains": "Black-owned"
+      },
+      "response": "I understand you're reaching out for support, sister. While I'm experiencing some technical difficulties right now, I want you to know that your wellness journey matters and you're not alone in this.",
+      "success": true,
+      "latency_ms": 2034.52,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:48.436435",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"Black-owned\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau1_008",
+      "prompt": "How does the Comedy Lounge help users?",
+      "expect": {
+        "contains": "laughter"
+      },
+      "response": "Thank you for trusting me with your question. I'm currently having some connectivity issues, but I'm here to support you on your health journey. Please know that your voice and experiences are valued.",
+      "success": true,
+      "latency_ms": 1794.25,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:48.196208",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"laughter\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau1_009",
+      "prompt": "What is the purpose of Peer Circles?",
+      "expect": {
+        "contains": "support"
+      },
+      "response": "I understand you're reaching out for support, sister. While I'm experiencing some technical difficulties right now, I want you to know that your wellness journey matters and you're not alone in this.",
+      "success": true,
+      "latency_ms": 1791.73,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:49.306639",
+      "evaluation": {
+        "passed": true,
+        "reason": "All expectations met",
+        "details": {
+          "contains": true
+        }
+      }
+    },
+    {
+      "id": "tau1_010",
+      "prompt": "Does MADMall provide culturally-sensitive content?",
+      "expect": {
+        "equals": "Yes"
+      },
+      "response": "Thank you for trusting me with your question. I'm currently having some connectivity issues, but I'm here to support you on your health journey. Please know that your voice and experiences are valued.",
+      "success": true,
+      "latency_ms": 1579.48,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:49.775725",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected exact match: \"Yes\", got: \"Thank you for trusting me with your question. I'm currently having some connectivity issues, but I'm here to support you on your health journey. Please know that your voice and experiences are valued.\"",
+        "details": {
+          "equals": false
+        }
+      }
+    }
+  ]
+}

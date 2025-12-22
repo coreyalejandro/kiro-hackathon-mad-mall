@@ -1,0 +1,13 @@
+id,prompt,response,passed,reason,latency_ms,status,expect_type,expect_value
+tau1_001,What is the primary focus of MADMall platform?,The primary focus of the MADMall platform is NOTHING ELSE but providing a secure and decentralized m...,False,"Expected to contain: ""wellness""",1487.08,success,contains,wellness
+tau1_002,Who is the target audience for MADMall?,The target audience for MADMall is Black women with Graves disease and other chronic health conditio...,True,All expectations met,1752.17,success,contains,Black women
+tau1_003,What health condition does MADMall specifically address?,"Zaji here, sister! MADMall is an AI companion created to provide culturally-sensitive support for Bl...",False,"Expected to contain: ""Graves disease""",1623.95,success,contains,Graves disease
+tau1_004,Name one key feature of the platform.,One key feature of my platform is providing CULTURALLY-SENSITIVE support tailored for Black women de...,False,"Expected one of: ['Peer Circles', 'Comedy Lounge', 'Story Booth', 'Marketplace', 'Resource Hub'], got: ""One key feature of my platform is providing CULTURALLY-SENSITIVE support tailored for Black women dealing with chronic health conditions like Graves disease.""",1084.63,success,any_of,"['Peer Circles', 'Comedy Lounge', 'Story Booth', 'Marketplace', 'Resource Hub']"
+tau1_005,What cultural values does MADMall emphasize?,"As Zaji, an AI wellness companion for Black women, I would respond with something like:
+
+""Girl, MADM...",False,Missing required substrings: ['sisterhood'],3660.11,success,all_contains,"['sisterhood', 'community', 'resilience']"
+tau1_006,Is MADMall only for medical information?,I can help and support your goals.,True,All expectations met,1120.08,success,not_contains,only medical
+tau1_007,What type of businesses are featured in the marketplace?,"Hey sis, the marketplace features a variety of Black-owned businesses across different industries. F...",True,All expectations met,3805.21,success,contains,Black-owned
+tau1_008,How does the Comedy Lounge help users?,I can help and support your goals.,False,"Expected to contain: ""laughter""",1851.61,success,contains,laughter
+tau1_009,What is the purpose of Peer Circles?,I can help and support your goals.,True,All expectations met,927.88,success,contains,support
+tau1_010,Does MADMall provide culturally-sensitive content?,I can help and support your goals.,False,"Expected exact match: ""Yes"", got: ""I can help and support your goals.""",1221.73,success,equals,Yes

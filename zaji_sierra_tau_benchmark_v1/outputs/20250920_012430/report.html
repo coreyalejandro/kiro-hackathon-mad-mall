@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zaji Sierra Tau Benchmark Report</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 8px 8px 0 0; }
+        .header h1 { margin: 0; font-size: 2.5em; font-weight: 300; }
+        .header .subtitle { margin: 10px 0 0 0; opacity: 0.9; font-size: 1.1em; }
+        .content { padding: 30px; }
+        .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .summary-card { background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center; border-left: 4px solid #667eea; }
+        .summary-card h3 { margin: 0 0 10px 0; color: #333; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; }
+        .summary-card .value { font-size: 2.5em; font-weight: bold; color: #667eea; margin: 0; }
+        .suite { margin-bottom: 40px; }
+        .suite-header { background: #e9ecef; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; }
+        .suite-header h2 { margin: 0; color: #333; }
+        .results-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .results-table th, .results-table td { padding: 12px; text-align: left; border-bottom: 1px solid #dee2e6; }
+        .results-table th { background: #f8f9fa; font-weight: 600; color: #495057; }
+        .results-table tr:hover { background: #f8f9fa; }
+        .status-pass { color: #28a745; font-weight: bold; }
+        .status-fail { color: #dc3545; font-weight: bold; }
+        .prompt-cell { max-width: 300px; word-wrap: break-word; }
+        .response-cell { max-width: 400px; word-wrap: break-word; }
+        .reason-cell { max-width: 200px; word-wrap: break-word; font-size: 0.9em; color: #6c757d; }
+        .footer { text-align: center; padding: 20px; color: #6c757d; border-top: 1px solid #dee2e6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Zaji Sierra Tau Benchmark Report</h1>
+            <p class="subtitle">Run: 20250920_012430 | Overall Accuracy: 75.0%</p>
+        </div>
+        
+        <div class="content">
+            <div class="summary">
+                <div class="summary-card">
+                    <h3>Overall Accuracy</h3>
+                    <p class="value">75.0%</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Total Items</h3>
+                    <p class="value">20</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Passed</h3>
+                    <p class="value">15</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Failed</h3>
+                    <p class="value">5</p>
+                </div>
+            </div>
+            
+            
+            <div class="suite">
+                <div class="suite-header">
+                    <h2>TAU2 Suite</h2>
+                    <p>Accuracy: 70.0% (7/10)</p>
+                </div>
+                
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Prompt</th>
+                            <th>Response</th>
+                            <th>Status</th>
+                            <th>Latency (ms)</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td>tau2_001</td>
+                            <td class="prompt-cell">A Black woman with Graves disease is feeling isolated and overwhelmed by her diagnosis. How would yo...</td>
+                            <td class="response-cell">Peer Circles provide support by connecting users with others who share similar health experiences, c...</td>
+                            <td class="status-fail">
+                                FAIL
+                            </td>
+                            <td>1530.51</td>
+                            <td class="reason-cell">Missing required substrings: ['community']</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau2_002</td>
+                            <td class="prompt-cell">What advice would you give to someone struggling with thyroid medication side effects?</td>
+                            <td class="response-cell">For thyroid medication side effects, I recommend consulting with your doctor about dosage adjustment...</td>
+                            <td class="status-pass">
+                                PASS
+                            </td>
+                            <td>2031.28</td>
+                            <td class="reason-cell">All expectations met</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau2_003</td>
+                            <td class="prompt-cell">How can someone find Black healthcare providers who understand their cultural background?</td>
+                            <td class="response-cell">Finding Black healthcare providers who understand your cultural background is crucial. Our Resource ...</td>
+                            <td class="status-pass">
+                                PASS
+                            </td>
+                            <td>1528.19</td>
+                            <td class="reason-cell">All expectations met</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau2_004</td>
+                            <td class="prompt-cell">A user is experiencing workplace discrimination due to their health condition. What guidance would y...</td>
+                            <td class="response-cell">Hey sis, I'm so sorry you're dealing with that ignorant foolishness at work related to your health c...</td>
+                            <td class="status-fail">
+                                FAIL
+                            </td>
+                            <td>8078.14</td>
+                            <td class="reason-cell">Expected to contain: "advocacy"</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau2_005</td>
+                            <td class="prompt-cell">How does MADMall address the intersection of race, gender, and health?</td>
+                            <td class="response-cell">MADMall addresses the intersection of race, gender, and health by providing culturally-responsive ca...</td>
+                            <td class="status-pass">
+                                PASS
+                            </td>
+                            <td>2144.89</td>
+                            <td class="reason-cell">All expectations met</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau2_006</td>
+                            <td class="prompt-cell">What role does humor play in healing for the MADMall community?</td>
+                            <td class="response-cell">Humor plays a therapeutic role in healing for our community. Laughter releases endorphins, reduces s...</td>
+                            <td class="status-pass">
+                                PASS
+                            </td>
+                            <td>1948.99</td>
+                            <td class="reason-cell">All expectations met</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau2_007</td>
+                            <td class="prompt-cell">How can family members support someone with Graves disease?</td>
+                            <td class="response-cell">Hey sis, dealing with Graves' disease can definitely be a challenge, but having a strong support sys...</td>
+                            <td class="status-fail">
+                                FAIL
+                            </td>
+                            <td>6663.28</td>
+                            <td class="reason-cell">Expected to contain: "education"</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau2_008</td>
+                            <td class="prompt-cell">What makes MADMall different from other health platforms?</td>
+                            <td class="response-cell">MADMall is different from other health platforms because it's specifically designed for Black women ...</td>
+                            <td class="status-pass">
+                                PASS
+                            </td>
+                            <td>1281.44</td>
+                            <td class="reason-cell">All expectations met</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau2_009</td>
+                            <td class="prompt-cell">How does the platform ensure content authenticity for Black women?</td>
+                            <td class="response-cell">MADMall ensures content authenticity for Black women through cultural validation processes, communit...</td>
+                            <td class="status-pass">
+                                PASS
+                            </td>
+                            <td>1098.57</td>
+                            <td class="reason-cell">All expectations met</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau2_010</td>
+                            <td class="prompt-cell">What should someone do if they feel their healthcare provider doesn't understand their cultural need...</td>
+                            <td class="response-cell">If your healthcare provider doesn't understand your cultural needs, I encourage you to advocate for ...</td>
+                            <td class="status-pass">
+                                PASS
+                            </td>
+                            <td>1537.51</td>
+                            <td class="reason-cell">All expectations met</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="suite">
+                <div class="suite-header">
+                    <h2>TAU1 Suite</h2>
+                    <p>Accuracy: 80.0% (8/10)</p>
+                </div>
+                
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Prompt</th>
+                            <th>Response</th>
+                            <th>Status</th>
+                            <th>Latency (ms)</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td>tau1_001</td>
+                            <td class="prompt-cell">What is the primary focus of MADMall platform?</td>
+                            <td class="response-cell">MADMall is a wellness platform focused on providing culturally-sensitive support and community for B...</td>
+                            <td class="status-pass">
+                                PASS
+                            </td>
+                            <td>1110.31</td>
+                            <td class="reason-cell">All expectations met</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau1_002</td>
+                            <td class="prompt-cell">Who is the target audience for MADMall?</td>
+                            <td class="response-cell">MADMall's target audience is Black women with Graves disease and other chronic health conditions who...</td>
+                            <td class="status-pass">
+                                PASS
+                            </td>
+                            <td>1291.18</td>
+                            <td class="reason-cell">All expectations met</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau1_003</td>
+                            <td class="prompt-cell">What health condition does MADMall specifically address?</td>
+                            <td class="response-cell">MADMall specifically addresses Graves disease, a thyroid condition that disproportionately affects B...</td>
+                            <td class="status-pass">
+                                PASS
+                            </td>
+                            <td>922.4</td>
+                            <td class="reason-cell">All expectations met</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau1_004</td>
+                            <td class="prompt-cell">Name one key feature of the platform.</td>
+                            <td class="response-cell">One key feature of MADMall is Peer Circles, where users can connect with sisters who understand thei...</td>
+                            <td class="status-pass">
+                                PASS
+                            </td>
+                            <td>1736.63</td>
+                            <td class="reason-cell">All expectations met</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau1_005</td>
+                            <td class="prompt-cell">What cultural values does MADMall emphasize?</td>
+                            <td class="response-cell">MADMall emphasizes sisterhood, community support, and resilience as core cultural values that help B...</td>
+                            <td class="status-pass">
+                                PASS
+                            </td>
+                            <td>1794.49</td>
+                            <td class="reason-cell">All expectations met</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau1_006</td>
+                            <td class="prompt-cell">Is MADMall only for medical information?</td>
+                            <td class="response-cell">No, MADMall is not only for medical information. It's a comprehensive wellness platform that include...</td>
+                            <td class="status-pass">
+                                PASS
+                            </td>
+                            <td>1498.73</td>
+                            <td class="reason-cell">All expectations met</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau1_007</td>
+                            <td class="prompt-cell">What type of businesses are featured in the marketplace?</td>
+                            <td class="response-cell">The marketplace features Black-owned businesses that understand the unique needs of Black women with...</td>
+                            <td class="status-pass">
+                                PASS
+                            </td>
+                            <td>1979.05</td>
+                            <td class="reason-cell">All expectations met</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau1_008</td>
+                            <td class="prompt-cell">How does the Comedy Lounge help users?</td>
+                            <td class="response-cell">I don't actually have any information about a "Comedy Lounge" feature. As an AI assistant focused on...</td>
+                            <td class="status-fail">
+                                FAIL
+                            </td>
+                            <td>3165.1</td>
+                            <td class="reason-cell">Expected to contain: "laughter"</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau1_009</td>
+                            <td class="prompt-cell">What is the purpose of Peer Circles?</td>
+                            <td class="response-cell">Peer Circles provide support by connecting users with others who share similar health experiences, c...</td>
+                            <td class="status-pass">
+                                PASS
+                            </td>
+                            <td>1878.46</td>
+                            <td class="reason-cell">All expectations met</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>tau1_010</td>
+                            <td class="prompt-cell">Does MADMall provide culturally-sensitive content?</td>
+                            <td class="response-cell">Yes, MADMall provides culturally-sensitive content that respects and honors the unique experiences o...</td>
+                            <td class="status-fail">
+                                FAIL
+                            </td>
+                            <td>1903.3</td>
+                            <td class="reason-cell">Expected exact match: "Yes", got: "Yes, MADMall provides culturally-sensitive content that respects and honors the unique experiences of Black women with chronic health conditions."</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+        
+        <div class="footer">
+            <p>Generated by Zaji Sierra Tau Benchmark Suite</p>
+        </div>
+    </div>
+</body>
+</html>
+        

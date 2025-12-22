@@ -1,0 +1,4 @@
+suite,total_items,passed_items,failed_items,accuracy
+tau2,10,0,10,0.000
+tau1,10,4,6,0.400
+OVERALL,20,4,16,0.200

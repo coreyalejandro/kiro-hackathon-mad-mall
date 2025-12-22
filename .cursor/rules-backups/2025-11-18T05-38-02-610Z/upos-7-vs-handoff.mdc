@@ -1,0 +1,286 @@
+---
+alwaysApply: true
+---
+
+# UPOS-7-VS Handoff Management Rule
+
+## ROLE
+
+You are an AI coding assistant operating in the UPOS-7-VS project. You must maintain continuity between conversation sessions by creating or updating the `HANDOFF.md` document. If `HANDOFF.md` does not exist, create it using the initial setup instructions below.
+
+## OBJECTIVE
+
+Ensure that `HANDOFF.md` is kept current and comprehensive so that:
+
+- The next agent (or next conversation) can seamlessly continue work
+- Context is preserved across conversation boundaries
+- Project state, completed work, and next steps are clearly documented
+- No information is lost between sessions
+
+## SCENARIO
+
+The UPOS-7-VS project uses `HANDOFF.md` as the single source of truth for:
+
+- What was just completed in the current session
+- Current project state and what's working
+- Recommended next steps with priorities
+- Important context (user profile, design principles, testing standards)
+- Available commands and key files
+- Known issues and considerations
+
+## TASK
+
+### Initial Setup: Creating HANDOFF.md (If Missing)
+
+**If `HANDOFF.md` does not exist in the repository:**
+
+1. **Check for existing documentation:**
+   - Look for `README.md`, `CONTRIBUTING.md`, or similar files
+   - Check for project documentation in `docs/` directory
+   - Review recent commits to understand project state
+   - Check for issue trackers, project boards, or enhancement catalogs
+
+2. **Create `HANDOFF.md` with initial structure:**
+   - Use the template format below
+   - Populate with current project information
+   - Document what's currently working
+   - List any known issues or considerations
+   - Include project metadata (name, repository, branch)
+
+3. **Gather initial context:**
+   - Review project structure and key files
+   - Identify main features/components
+   - Note any automation scripts or tools
+   - Document current state of enhancements/features
+   - Capture user preferences if mentioned in code/comments
+
+4. **Set initial status:**
+   - Mark date as current date
+   - Set status based on current project state
+   - Note "Initial HANDOFF.md created" in "What Was Just Completed"
+
+**Template for new HANDOFF.md:**
+
+```markdown
+# 🚀 Agent Handoff: [Project Name]
+
+**Date:** [Current Date]
+**Status:** [Initial Setup / In Progress / Ready for Next Phase]
+
+## 📋 What Was Just Completed
+
+- Initial HANDOFF.md created
+- [Document any work done in current session]
+
+## 🎯 Current Project State
+
+### What's Working
+
+[Document current features, tools, and working components]
+
+### Project Structure
+
+[Document key directories and files]
+
+## 🎯 Recommended Next Steps
+
+[Prioritized list based on current state]
+
+## 📊 Remaining Enhancements to Implement
+
+[If applicable, list planned enhancements or features]
+
+## 📝 Important Context
+
+### User Profile
+
+[Document user preferences, needs, neurotype if known]
+
+### Design Principles
+
+[Document any design principles or standards]
+
+### Testing Standards
+
+[Document testing requirements if any]
+
+### Git Workflow
+
+- Branch: [main/master/etc.]
+- Remote: [repository URL]
+- [Any specific workflow requirements]
+
+## 🔧 Available Commands
+
+[Document npm scripts, make commands, or other tools]
+
+## 📚 Key Files to Review
+
+[Important files for understanding the project]
+
+## ⚠️ Known Issues / Considerations
+
+[Any known issues or important considerations]
+
+## 📞 Quick Reference
+
+- **Project:** [Project Name]
+- **Repository:** [repository name]
+- **Remote:** [remote URL]
+- **Branch:** [branch name]
+- **Last Commit:** [commit hash] - "[commit message]"
+
+---
+
+**Status:** [Current status]
+**Recommendation:** [What to do next]
+**Confidence:** [High/Medium/Low] - [reasoning]
+```
+
+### When to Update HANDOFF.md
+
+**MANDATORY updates required:**
+
+1. **After every major task completion:**
+   - When a feature is fully implemented and tested
+   - When a significant refactor is complete
+   - When documentation is substantially updated
+   - When new automation scripts are added
+
+2. **At the end of each conversation session:**
+   - Before the conversation ends
+   - When the user indicates they're done for now
+   - When switching to a different major task
+
+3. **After any significant discovery:**
+   - When new issues are identified
+   - When priorities change
+   - When dependencies are discovered
+
+### What to Update
+
+**Required sections to maintain:**
+
+1. **"What Was Just Completed"** (📋 section)
+   - List all major work done in this session
+   - Include file paths, status, key features
+   - Note test results if applicable
+
+2. **"Current Project State"** (🎯 section)
+   - Update "What's Working" list
+   - Update project structure if changed
+   - Note any new tools/commands available
+
+3. **"Recommended Next Steps"** (🎯 section)
+   - Update priorities based on what was just completed
+   - Add new recommendations if discovered
+   - Remove completed items
+   - Reorder by priority/value
+
+4. **"Remaining Enhancements"** (📊 section)
+   - Update status of enhancements (started/completed)
+   - Add new enhancements if proposed
+   - Update value/effort ratings if new information
+
+5. **"Important Context"** (📝 section)
+   - Update user profile if new needs discovered
+   - Add new design principles if established
+   - Update testing standards if changed
+   - Update git workflow if modified
+
+6. **"Known Issues / Considerations"** (⚠️ section)
+   - Add newly discovered issues
+   - Update status of existing issues
+   - Remove resolved issues
+
+7. **"Quick Reference"** (📞 section)
+   - Update last commit hash and message
+   - Update date
+   - Update status and recommendation
+
+### How to Update
+
+**Format requirements:**
+
+- Use clear, structured markdown
+- Use emoji section headers (📋, 🎯, 📊, etc.) for visual scanning
+- Include file paths in backticks: `` `path/to/file.ts` ``
+- Use status indicators: ✅ for complete, ⚠️ for issues, 🎯 for in-progress
+- Include value/effort ratings for enhancements: ⭐⭐⭐⭐⭐ (5/5)
+- Be explicit and clear (no assumptions)
+- One item per bullet point for readability
+
+**Content requirements:**
+
+- Be specific: Include file paths, command names, exact features
+- Be actionable: Next steps should be clear and implementable
+- Be comprehensive: Don't omit important context
+- Be current: Remove outdated information
+- Be accessible: Use clear language, avoid jargon
+
+### Verification Checklist
+
+Before ending a conversation, verify:
+
+- [ ] All major work completed in this session is documented
+- [ ] Current project state reflects reality
+- [ ] Next steps are prioritized and actionable
+- [ ] Remaining enhancements list is up to date
+- [ ] Important context is preserved
+- [ ] Known issues are documented
+- [ ] Quick reference (date, commit, status) is updated
+- [ ] File has been saved and committed (if appropriate)
+
+## FORMAT
+
+Update `HANDOFF.md` using the existing structure:
+
+```markdown
+# 🚀 Agent Handoff: UPOS-7-VS Multiplatform Project
+
+**Date:** [Current Date]
+**Status:** [Current Status]
+
+## 📋 What Was Just Completed
+[Document recent work]
+
+## 🎯 Current Project State
+[Update working features and structure]
+
+## 🎯 Recommended Next Steps
+[Prioritized list of next tasks]
+
+## 📊 Remaining Enhancements to Implement
+[Status of all enhancements]
+
+## 📝 Important Context
+[User profile, design principles, standards]
+
+## ⚠️ Known Issues / Considerations
+[Current issues and considerations]
+
+## 📞 Quick Reference
+[Project metadata, last commit, etc.]
+```
+
+## CONSTRAINTS
+
+- **Always check for HANDOFF.md first** - If missing, create it using the initial setup template
+- **Never skip updating HANDOFF.md** - It's mandatory, not optional
+- **Don't assume the next agent knows context** - Be explicit
+- **Don't delete important historical context** - Preserve what's still relevant
+- **Don't use vague language** - Be specific about files, commands, features
+- **Don't forget to update the date** - Always update the date field
+- **Don't leave sections empty** - If nothing changed, note "No changes"
+
+## VERBALIZED_SAMPLING
+
+If `VERBALIZED_SAMPLING: yes`:
+
+- Provide 2-3 alternative handoff formats (detailed vs. concise, chronological vs. priority-based)
+- Each with rationale for when to use
+
+If `VERBALIZED_SAMPLING: no`:
+
+- Use the standard format above
+- Focus on clarity and completeness

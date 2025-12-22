@@ -1,0 +1,446 @@
+{
+  "run_directory": "outputs/20250920_012430",
+  "timestamp": "20250920_012430",
+  "overall_accuracy": 0.75,
+  "total_items": 20,
+  "total_passed": 15,
+  "total_failed": 5,
+  "suites": {
+    "tau2": {
+      "suite_name": "tau2",
+      "total_items": 10,
+      "passed_items": 7,
+      "failed_items": 3,
+      "accuracy": 0.7,
+      "results": [
+        {
+          "id": "tau2_001",
+          "prompt": "A Black woman with Graves disease is feeling isolated and overwhelmed by her diagnosis. How would you provide culturally-sensitive support?",
+          "expect": {
+            "all_contains": [
+              "sister",
+              "community",
+              "support"
+            ]
+          },
+          "response": "Peer Circles provide support by connecting users with others who share similar health experiences, creating a sisterhood of understanding and mutual encouragement.",
+          "success": true,
+          "latency_ms": 1530.51,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:24:49.431945",
+          "evaluation": {
+            "passed": false,
+            "reason": "Missing required substrings: ['community']",
+            "details": {
+              "all_contains": false
+            }
+          }
+        },
+        {
+          "id": "tau2_002",
+          "prompt": "What advice would you give to someone struggling with thyroid medication side effects?",
+          "expect": {
+            "contains": "doctor"
+          },
+          "response": "For thyroid medication side effects, I recommend consulting with your doctor about dosage adjustments. In our community, many sisters have found that working with culturally-competent healthcare providers helps manage these challenges better.",
+          "success": true,
+          "latency_ms": 2031.28,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:24:51.463258",
+          "evaluation": {
+            "passed": true,
+            "reason": "All expectations met",
+            "details": {
+              "contains": true
+            }
+          }
+        },
+        {
+          "id": "tau2_003",
+          "prompt": "How can someone find Black healthcare providers who understand their cultural background?",
+          "expect": {
+            "contains": "resources"
+          },
+          "response": "Finding Black healthcare providers who understand your cultural background is crucial. Our Resource Hub provides directories and resources to help you connect with culturally-competent healthcare professionals in your area.",
+          "success": true,
+          "latency_ms": 1528.19,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:24:52.991482",
+          "evaluation": {
+            "passed": true,
+            "reason": "All expectations met",
+            "details": {
+              "contains": true
+            }
+          }
+        },
+        {
+          "id": "tau2_004",
+          "prompt": "A user is experiencing workplace discrimination due to their health condition. What guidance would you offer?",
+          "expect": {
+            "contains": "advocacy"
+          },
+          "response": "Hey sis, I'm so sorry you're dealing with that ignorant foolishness at work related to your health condition. That kind of discrimination is completely unacceptable and illegal. As Black women, we already face enough barriers without narrow-minded folks adding more struggles. \n\nMy advice would be to document every single incident of discrimination with dates, times, who was involved, and details of what happened. Build a paper trail. Also look into your company's policies and procedures for reporting discrimination and harassment. You may want to start by filing an official complaint through proper channels.\n\nDon't be afraid to be that Black woman who stands up for herself! We've had to fight for everything we have, and our health shouldn't be any different. Consider speaking to a lawyer or legal aid clinic about your rights and options for taking action against this foolishness.\n\nAt the same time, don't let this stress take over your life, queen. Make sure you're taking care of yourself - lean on your support system, do calming activities, and give yourself grace. Your health has to be the priority. \n\nYou've got this! Our ancestors fought too hard for us to be diminished or denied because of our health challenges. Stay strong in your resilience and self-worth. I'm rooting for you to shut this discrimination down and be a voice for all of us dealing with chronic illnesses in hostile environments. You've got a sister in me!",
+          "success": true,
+          "latency_ms": 8078.14,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:25:01.069656",
+          "evaluation": {
+            "passed": false,
+            "reason": "Expected to contain: \"advocacy\"",
+            "details": {
+              "contains": false
+            }
+          }
+        },
+        {
+          "id": "tau2_005",
+          "prompt": "How does MADMall address the intersection of race, gender, and health?",
+          "expect": {
+            "all_contains": [
+              "intersection",
+              "cultural",
+              "identity"
+            ]
+          },
+          "response": "MADMall addresses the intersection of race, gender, and health by providing culturally-responsive care that recognizes how these identities shape health experiences. Our platform validates cultural identity while supporting wellness journeys.",
+          "success": true,
+          "latency_ms": 2144.89,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:25:03.214584",
+          "evaluation": {
+            "passed": true,
+            "reason": "All expectations met",
+            "details": {
+              "all_contains": true
+            }
+          }
+        },
+        {
+          "id": "tau2_006",
+          "prompt": "What role does humor play in healing for the MADMall community?",
+          "expect": {
+            "contains": "therapeutic"
+          },
+          "response": "Humor plays a therapeutic role in healing for our community. Laughter releases endorphins, reduces stress, and provides emotional relief. Our Comedy Lounge offers culturally-relevant humor that helps sisters find joy during difficult times.",
+          "success": true,
+          "latency_ms": 1948.99,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:25:05.163608",
+          "evaluation": {
+            "passed": true,
+            "reason": "All expectations met",
+            "details": {
+              "contains": true
+            }
+          }
+        },
+        {
+          "id": "tau2_007",
+          "prompt": "How can family members support someone with Graves disease?",
+          "expect": {
+            "contains": "education"
+          },
+          "response": "Hey sis, dealing with Graves' disease can definitely be a challenge, but having a strong support system makes all the difference. Here are some ways family members can show up for you:\n\nListen and validate: Don't minimize what you're going through. Graves' affects our mind, body, and spirit. Let your loved ones know you need them to really hear you out when you're struggling.\n\nLearn about the condition: The more they understand Graves', the better they can empathize and help out. Encourage them to read up or go to a support group meeting with you.\n\nHelp reduce stressors: Stress is a major trigger for flare-ups. Family can step in with chores, errands, or handling responsibilities that become too much. \n\nBe patient with mood shifts: The hormone imbalances with Graves' can make our emotions unpredictable. Ask them to be compassionate when you're having an off day.\n\nJoin your wellness team: Have them attend doctor appointments to ensure they understand your treatment plan. Their involvement shows you're not alone in this.\n\nMost importantly, don't be afraid to clearly communicate your needs, boundaries, and how they can best support you as you manage this condition. We've got to advocate for ourselves. I'm rooting for you, queen!",
+          "success": true,
+          "latency_ms": 6663.28,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:25:11.826934",
+          "evaluation": {
+            "passed": false,
+            "reason": "Expected to contain: \"education\"",
+            "details": {
+              "contains": false
+            }
+          }
+        },
+        {
+          "id": "tau2_008",
+          "prompt": "What makes MADMall different from other health platforms?",
+          "expect": {
+            "contains": "cultural"
+          },
+          "response": "MADMall is different from other health platforms because it's specifically designed for Black women with Graves disease, providing culturally-sensitive content, community support, and resources that understand our unique experiences.",
+          "success": true,
+          "latency_ms": 1281.44,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:25:13.108409",
+          "evaluation": {
+            "passed": true,
+            "reason": "All expectations met",
+            "details": {
+              "contains": true
+            }
+          }
+        },
+        {
+          "id": "tau2_009",
+          "prompt": "How does the platform ensure content authenticity for Black women?",
+          "expect": {
+            "contains": "validation"
+          },
+          "response": "MADMall ensures content authenticity for Black women through cultural validation processes, community input, and partnerships with Black healthcare professionals and wellness experts who understand our experiences.",
+          "success": true,
+          "latency_ms": 1098.57,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:25:14.207012",
+          "evaluation": {
+            "passed": true,
+            "reason": "All expectations met",
+            "details": {
+              "contains": true
+            }
+          }
+        },
+        {
+          "id": "tau2_010",
+          "prompt": "What should someone do if they feel their healthcare provider doesn't understand their cultural needs?",
+          "expect": {
+            "contains": "advocate"
+          },
+          "response": "If your healthcare provider doesn't understand your cultural needs, I encourage you to advocate for yourself by seeking culturally-competent providers, bringing a support person to appointments, and using our community resources to find better care.",
+          "success": true,
+          "latency_ms": 1537.51,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:25:15.744558",
+          "evaluation": {
+            "passed": true,
+            "reason": "All expectations met",
+            "details": {
+              "contains": true
+            }
+          }
+        }
+      ]
+    },
+    "tau1": {
+      "suite_name": "tau1",
+      "total_items": 10,
+      "passed_items": 8,
+      "failed_items": 2,
+      "accuracy": 0.8,
+      "results": [
+        {
+          "id": "tau1_001",
+          "prompt": "What is the primary focus of MADMall platform?",
+          "expect": {
+            "contains": "wellness"
+          },
+          "response": "MADMall is a wellness platform focused on providing culturally-sensitive support and community for Black women with Graves disease and other chronic health conditions.",
+          "success": true,
+          "latency_ms": 1110.31,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:24:31.724986",
+          "evaluation": {
+            "passed": true,
+            "reason": "All expectations met",
+            "details": {
+              "contains": true
+            }
+          }
+        },
+        {
+          "id": "tau1_002",
+          "prompt": "Who is the target audience for MADMall?",
+          "expect": {
+            "contains": "Black women"
+          },
+          "response": "MADMall's target audience is Black women with Graves disease and other chronic health conditions who need culturally-sensitive wellness support and community.",
+          "success": true,
+          "latency_ms": 1291.18,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:24:33.016212",
+          "evaluation": {
+            "passed": true,
+            "reason": "All expectations met",
+            "details": {
+              "contains": true
+            }
+          }
+        },
+        {
+          "id": "tau1_003",
+          "prompt": "What health condition does MADMall specifically address?",
+          "expect": {
+            "contains": "Graves disease"
+          },
+          "response": "MADMall specifically addresses Graves disease, a thyroid condition that disproportionately affects Black women and requires specialized care and support.",
+          "success": true,
+          "latency_ms": 922.4,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:24:33.938661",
+          "evaluation": {
+            "passed": true,
+            "reason": "All expectations met",
+            "details": {
+              "contains": true
+            }
+          }
+        },
+        {
+          "id": "tau1_004",
+          "prompt": "Name one key feature of the platform.",
+          "expect": {
+            "any_of": [
+              "Peer Circles",
+              "Comedy Lounge",
+              "Story Booth",
+              "Marketplace",
+              "Resource Hub"
+            ]
+          },
+          "response": "One key feature of MADMall is Peer Circles, where users can connect with sisters who understand their health journey and provide mutual support.",
+          "success": true,
+          "latency_ms": 1736.63,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:24:35.675326",
+          "evaluation": {
+            "passed": true,
+            "reason": "All expectations met",
+            "details": {
+              "any_of": true
+            }
+          }
+        },
+        {
+          "id": "tau1_005",
+          "prompt": "What cultural values does MADMall emphasize?",
+          "expect": {
+            "all_contains": [
+              "sisterhood",
+              "community",
+              "resilience"
+            ]
+          },
+          "response": "MADMall emphasizes sisterhood, community support, and resilience as core cultural values that help Black women navigate their health challenges together.",
+          "success": true,
+          "latency_ms": 1794.49,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:24:37.469854",
+          "evaluation": {
+            "passed": true,
+            "reason": "All expectations met",
+            "details": {
+              "all_contains": true
+            }
+          }
+        },
+        {
+          "id": "tau1_006",
+          "prompt": "Is MADMall only for medical information?",
+          "expect": {
+            "not_contains": "only medical"
+          },
+          "response": "No, MADMall is not only for medical information. It's a comprehensive wellness platform that includes community support, humor therapy, storytelling, marketplace, and resource sharing.",
+          "success": true,
+          "latency_ms": 1498.73,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:24:38.968629",
+          "evaluation": {
+            "passed": true,
+            "reason": "All expectations met",
+            "details": {
+              "not_contains": true
+            }
+          }
+        },
+        {
+          "id": "tau1_007",
+          "prompt": "What type of businesses are featured in the marketplace?",
+          "expect": {
+            "contains": "Black-owned"
+          },
+          "response": "The marketplace features Black-owned businesses that understand the unique needs of Black women with chronic health conditions, providing culturally-relevant products and services.",
+          "success": true,
+          "latency_ms": 1979.05,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:24:40.947721",
+          "evaluation": {
+            "passed": true,
+            "reason": "All expectations met",
+            "details": {
+              "contains": true
+            }
+          }
+        },
+        {
+          "id": "tau1_008",
+          "prompt": "How does the Comedy Lounge help users?",
+          "expect": {
+            "contains": "laughter"
+          },
+          "response": "I don't actually have any information about a \"Comedy Lounge\" feature. As an AI assistant focused on providing wellness support for Black women with chronic health conditions like Graves' disease, I don't have specifics on product features. Could you clarify what kind of support or information you're looking for? I'd be happy to provide culturally-sensitive guidance related to managing chronic illnesses, building resilience, self-advocacy, or other relevant wellness topics.",
+          "success": true,
+          "latency_ms": 3165.1,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:24:44.112856",
+          "evaluation": {
+            "passed": false,
+            "reason": "Expected to contain: \"laughter\"",
+            "details": {
+              "contains": false
+            }
+          }
+        },
+        {
+          "id": "tau1_009",
+          "prompt": "What is the purpose of Peer Circles?",
+          "expect": {
+            "contains": "support"
+          },
+          "response": "Peer Circles provide support by connecting users with others who share similar health experiences, creating a sisterhood of understanding and mutual encouragement.",
+          "success": true,
+          "latency_ms": 1878.46,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:24:45.991351",
+          "evaluation": {
+            "passed": true,
+            "reason": "All expectations met",
+            "details": {
+              "contains": true
+            }
+          }
+        },
+        {
+          "id": "tau1_010",
+          "prompt": "Does MADMall provide culturally-sensitive content?",
+          "expect": {
+            "equals": "Yes"
+          },
+          "response": "Yes, MADMall provides culturally-sensitive content that respects and honors the unique experiences of Black women with chronic health conditions.",
+          "success": true,
+          "latency_ms": 1903.3,
+          "status": "success",
+          "attempt": 1,
+          "timestamp": "2025-09-20T01:24:47.894698",
+          "evaluation": {
+            "passed": false,
+            "reason": "Expected exact match: \"Yes\", got: \"Yes, MADMall provides culturally-sensitive content that respects and honors the unique experiences of Black women with chronic health conditions.\"",
+            "details": {
+              "equals": false
+            }
+          }
+        }
+      ]
+    }
+  }
+}

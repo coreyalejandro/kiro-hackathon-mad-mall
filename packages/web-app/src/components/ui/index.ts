@@ -8,6 +8,8 @@ export { default as FeaturedCircles } from './FeaturedCircles';
 export { default as CirclesGrid } from './CirclesGrid';
 export { default as InteractiveStats } from './InteractiveStats';
 export { default as LoadingCard } from './LoadingCard';
+export { default as MarketplaceCard } from './MarketplaceCard';
+export type { MarketplaceCardProps } from './MarketplaceCard';
 export { default as OnboardingFlow } from './OnboardingFlow';
 export { default as SearchWithFilters } from './SearchWithFilters';
 export { default as SkeletonLoader } from './SkeletonLoader';

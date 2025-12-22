@@ -245,7 +245,7 @@ Users experience isolation and identity strain after diagnosis, which reduces he
 
 ### 4. Exact Feature List with Priorities (P0 for hackathon)
 
-**Table-stakes components (30) — each “system must provide …”**
+Table-stakes components (30) — each “system must provide …”**
 
 1. Account creation with email verification.
 2. Profile page with privacy toggles and culture tags.

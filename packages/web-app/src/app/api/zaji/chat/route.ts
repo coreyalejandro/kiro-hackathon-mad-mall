@@ -72,6 +72,8 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   return NextResponse.json({
+    name: 'Zaji chat',
+    methods: ['GET', 'POST'],
     message: 'Zaji Chat API',
     version: '1.0.0',
     endpoints: {

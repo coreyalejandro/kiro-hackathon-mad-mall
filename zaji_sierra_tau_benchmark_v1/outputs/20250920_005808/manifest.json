@@ -1,0 +1,23 @@
+{
+  "timestamp": "2025-09-20T00:58:08.883602",
+  "config": {
+    "endpoint": "http://localhost:3001/api/zaji/chat",
+    "temperature": 0.0,
+    "timeout_s": 60,
+    "concurrency": 8,
+    "retries": 2,
+    "suites": {
+      "tau1": {
+        "dataset": "datasets/tau1.jsonl",
+        "description": "Sierra tau 1 - Basic reasoning and cultural sensitivity"
+      },
+      "tau2": {
+        "dataset": "datasets/tau2.jsonl",
+        "description": "Sierra tau 2 - Advanced wellness and community support"
+      }
+    },
+    "output_dir": "outputs"
+  },
+  "endpoint": "http://localhost:3001/api/zaji/chat",
+  "temperature": 0.0
+}

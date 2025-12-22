@@ -1,0 +1,217 @@
+{
+  "suite_name": "tau2",
+  "total_items": 10,
+  "passed_items": 0,
+  "failed_items": 10,
+  "accuracy": 0.0,
+  "results": [
+    {
+      "id": "tau2_001",
+      "prompt": "A Black woman with Graves disease is feeling isolated and overwhelmed by her diagnosis. How would you provide culturally-sensitive support?",
+      "expect": {
+        "all_contains": [
+          "sister",
+          "community",
+          "support"
+        ]
+      },
+      "response": "I hear you, and I want to help. There's a temporary technical issue on my end, but I'm committed to providing culturally-sensitive support for your wellness needs.",
+      "success": true,
+      "latency_ms": 1937.47,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:53.869635",
+      "evaluation": {
+        "passed": false,
+        "reason": "Missing required substrings: ['sister', 'community']",
+        "details": {
+          "all_contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_002",
+      "prompt": "What advice would you give to someone struggling with thyroid medication side effects?",
+      "expect": {
+        "contains": "doctor"
+      },
+      "response": "Thank you for trusting me with your question. I'm currently having some connectivity issues, but I'm here to support you on your health journey. Please know that your voice and experiences are valued.",
+      "success": true,
+      "latency_ms": 1787.04,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:53.719395",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"doctor\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_003",
+      "prompt": "How can someone find Black healthcare providers who understand their cultural background?",
+      "expect": {
+        "contains": "resources"
+      },
+      "response": "Thank you for trusting me with your question. I'm currently having some connectivity issues, but I'm here to support you on your health journey. Please know that your voice and experiences are valued.",
+      "success": true,
+      "latency_ms": 1956.55,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:53.888983",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"resources\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_004",
+      "prompt": "A user is experiencing workplace discrimination due to their health condition. What guidance would you offer?",
+      "expect": {
+        "contains": "advocacy"
+      },
+      "response": "Thank you for trusting me with your question. I'm currently having some connectivity issues, but I'm here to support you on your health journey. Please know that your voice and experiences are valued.",
+      "success": true,
+      "latency_ms": 2054.25,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:53.986744",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"advocacy\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_005",
+      "prompt": "How does MADMall address the intersection of race, gender, and health?",
+      "expect": {
+        "all_contains": [
+          "intersection",
+          "cultural",
+          "identity"
+        ]
+      },
+      "response": "I understand you're reaching out for support, sister. While I'm experiencing some technical difficulties right now, I want you to know that your wellness journey matters and you're not alone in this.",
+      "success": true,
+      "latency_ms": 1520.78,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:53.453327",
+      "evaluation": {
+        "passed": false,
+        "reason": "Missing required substrings: ['intersection', 'cultural', 'identity']",
+        "details": {
+          "all_contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_006",
+      "prompt": "What role does humor play in healing for the MADMall community?",
+      "expect": {
+        "contains": "therapeutic"
+      },
+      "response": "Thank you for trusting me with your question. I'm currently having some connectivity issues, but I'm here to support you on your health journey. Please know that your voice and experiences are valued.",
+      "success": true,
+      "latency_ms": 1823.76,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:53.756364",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"therapeutic\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_007",
+      "prompt": "How can family members support someone with Graves disease?",
+      "expect": {
+        "contains": "education"
+      },
+      "response": "I understand you're reaching out for support, sister. While I'm experiencing some technical difficulties right now, I want you to know that your wellness journey matters and you're not alone in this.",
+      "success": true,
+      "latency_ms": 1338.87,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:53.271530",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"education\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_008",
+      "prompt": "What makes MADMall different from other health platforms?",
+      "expect": {
+        "contains": "cultural"
+      },
+      "response": "Thank you for trusting me with your question. I'm currently having some connectivity issues, but I'm here to support you on your health journey. Please know that your voice and experiences are valued.",
+      "success": true,
+      "latency_ms": 1010.0,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:52.942711",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"cultural\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_009",
+      "prompt": "How does the platform ensure content authenticity for Black women?",
+      "expect": {
+        "contains": "validation"
+      },
+      "response": "I hear you, and I want to help. There's a temporary technical issue on my end, but I'm committed to providing culturally-sensitive support for your wellness needs.",
+      "success": true,
+      "latency_ms": 1652.54,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:54.595283",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"validation\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_010",
+      "prompt": "What should someone do if they feel their healthcare provider doesn't understand their cultural needs?",
+      "expect": {
+        "contains": "advocate"
+      },
+      "response": "Thank you for trusting me with your question. I'm currently having some connectivity issues, but I'm here to support you on your health journey. Please know that your voice and experiences are valued.",
+      "success": true,
+      "latency_ms": 2149.11,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T00:23:55.420675",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"advocate\"",
+        "details": {
+          "contains": false
+        }
+      }
+    }
+  ]
+}

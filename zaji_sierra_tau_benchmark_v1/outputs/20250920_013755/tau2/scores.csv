@@ -1,0 +1,11 @@
+id,prompt,response,passed,reason,latency_ms,status,expect_type,expect_value
+tau2_001,A Black woman with Graves disease is feeling isolated and overwhelmed by her diagnosis. How would yo...,"I can help and support your goals — Graves disease, support.",False,"Missing required substrings: ['sister', 'community']",1318.94,success,all_contains,"['sister', 'community', 'support']"
+tau2_002,What advice would you give to someone struggling with thyroid medication side effects?,I can help and support your goals.,False,"Expected to contain: ""doctor""",1628.35,success,contains,doctor
+tau2_003,How can someone find Black healthcare providers who understand their cultural background?,I can help and support your goals.,False,"Expected to contain: ""resources""",953.58,success,contains,resources
+tau2_004,A user is experiencing workplace discrimination due to their health condition. What guidance would y...,I can help and support your goals.,False,"Expected to contain: ""advocacy""",1863.77,success,contains,advocacy
+tau2_005,"How does MADMall address the intersection of race, gender, and health?","As Zaji, an AI wellness companion for Black women, I understand the importance of addressing the int...",False,Missing required substrings: ['identity'],4503.79,success,all_contains,"['intersection', 'cultural', 'identity']"
+tau2_006,What role does humor play in healing for the MADMall community?,I can help and support your goals — community.,False,"Expected to contain: ""therapeutic""",1109.03,success,contains,therapeutic
+tau2_007,How can family members support someone with Graves disease?,"I can help and support your goals — Graves disease, support.",False,"Expected to contain: ""education""",1105.18,success,contains,education
+tau2_008,What makes MADMall different from other health platforms?,I can help and support your goals.,False,"Expected to contain: ""cultural""",1614.5,success,contains,cultural
+tau2_009,How does the platform ensure content authenticity for Black women?,I can help and support your goals — Black women.,False,"Expected to contain: ""validation""",824.23,success,contains,validation
+tau2_010,What should someone do if they feel their healthcare provider doesn't understand their cultural need...,I can help and support your goals.,False,"Expected to contain: ""advocate""",1686.09,success,contains,advocate

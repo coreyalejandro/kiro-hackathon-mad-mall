@@ -1,0 +1,217 @@
+{
+  "suite_name": "tau2",
+  "total_items": 10,
+  "passed_items": 0,
+  "failed_items": 10,
+  "accuracy": 0.0,
+  "results": [
+    {
+      "id": "tau2_001",
+      "prompt": "A Black woman with Graves disease is feeling isolated and overwhelmed by her diagnosis. How would you provide culturally-sensitive support?",
+      "expect": {
+        "all_contains": [
+          "sister",
+          "community",
+          "support"
+        ]
+      },
+      "response": "I can help and support your goals \u2014 Graves disease, support.",
+      "success": true,
+      "latency_ms": 1318.94,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T01:38:15.740941",
+      "evaluation": {
+        "passed": false,
+        "reason": "Missing required substrings: ['sister', 'community']",
+        "details": {
+          "all_contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_002",
+      "prompt": "What advice would you give to someone struggling with thyroid medication side effects?",
+      "expect": {
+        "contains": "doctor"
+      },
+      "response": "I can help and support your goals.",
+      "success": true,
+      "latency_ms": 1628.35,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T01:38:17.369343",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"doctor\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_003",
+      "prompt": "How can someone find Black healthcare providers who understand their cultural background?",
+      "expect": {
+        "contains": "resources"
+      },
+      "response": "I can help and support your goals.",
+      "success": true,
+      "latency_ms": 953.58,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T01:38:18.322956",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"resources\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_004",
+      "prompt": "A user is experiencing workplace discrimination due to their health condition. What guidance would you offer?",
+      "expect": {
+        "contains": "advocacy"
+      },
+      "response": "I can help and support your goals.",
+      "success": true,
+      "latency_ms": 1863.77,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T01:38:20.186767",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"advocacy\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_005",
+      "prompt": "How does MADMall address the intersection of race, gender, and health?",
+      "expect": {
+        "all_contains": [
+          "intersection",
+          "cultural",
+          "identity"
+        ]
+      },
+      "response": "As Zaji, an AI wellness companion for Black women, I understand the importance of addressing the intersection of race, gender, and health. MADMall recognizes that Black women face unique challenges and disparities when it comes to chronic illnesses like Graves' disease. We provide culturally-sensitive support that empowers our sisters to advocate for themselves and build resilience in the face of these compounded challenges.\n\nOur approach is rooted in uplifting the Black community, fostering sisterhood, and validating the lived experiences of Black women navigating both racism and sexism in healthcare settings. We offer practical advice on managing symptoms, building a support network, and finding culturally competent providers. Most importantly, we create a safe space for our sisters to be heard, understood, and celebrated on their wellness journeys.",
+      "success": true,
+      "latency_ms": 4503.79,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T01:38:24.690602",
+      "evaluation": {
+        "passed": false,
+        "reason": "Missing required substrings: ['identity']",
+        "details": {
+          "all_contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_006",
+      "prompt": "What role does humor play in healing for the MADMall community?",
+      "expect": {
+        "contains": "therapeutic"
+      },
+      "response": "I can help and support your goals \u2014 community.",
+      "success": true,
+      "latency_ms": 1109.03,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T01:38:25.799682",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"therapeutic\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_007",
+      "prompt": "How can family members support someone with Graves disease?",
+      "expect": {
+        "contains": "education"
+      },
+      "response": "I can help and support your goals \u2014 Graves disease, support.",
+      "success": true,
+      "latency_ms": 1105.18,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T01:38:26.904958",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"education\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_008",
+      "prompt": "What makes MADMall different from other health platforms?",
+      "expect": {
+        "contains": "cultural"
+      },
+      "response": "I can help and support your goals.",
+      "success": true,
+      "latency_ms": 1614.5,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T01:38:28.519498",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"cultural\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_009",
+      "prompt": "How does the platform ensure content authenticity for Black women?",
+      "expect": {
+        "contains": "validation"
+      },
+      "response": "I can help and support your goals \u2014 Black women.",
+      "success": true,
+      "latency_ms": 824.23,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T01:38:29.343760",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"validation\"",
+        "details": {
+          "contains": false
+        }
+      }
+    },
+    {
+      "id": "tau2_010",
+      "prompt": "What should someone do if they feel their healthcare provider doesn't understand their cultural needs?",
+      "expect": {
+        "contains": "advocate"
+      },
+      "response": "I can help and support your goals.",
+      "success": true,
+      "latency_ms": 1686.09,
+      "status": "success",
+      "attempt": 1,
+      "timestamp": "2025-09-20T01:38:31.029881",
+      "evaluation": {
+        "passed": false,
+        "reason": "Expected to contain: \"advocate\"",
+        "details": {
+          "contains": false
+        }
+      }
+    }
+  ]
+}

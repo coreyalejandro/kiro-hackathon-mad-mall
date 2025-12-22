@@ -67,3 +67,7 @@ jspm_packages/
 
 # Legacy backup files (not part of active codebase)
 madmall-web-legacy-backup/
+
+# OpenMemory - IDE/Assistant specific rules
+.cursor/rules/openmemory.mdc
+CLAUDE.md
