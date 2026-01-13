@@ -38,7 +38,6 @@
     "localstack:down": "docker compose down",
     "localstack:logs": "docker compose logs -f localstack | cat",
     "env:copy": "[ -f .env ] || cp .env.example .env",
-
     "install:ci": "pnpm exec projen install:ci",
     "synth-workspace": "pnpm exec projen",
     "dev:localstack": "docker compose -f docker-compose.local.yml up -d",
@@ -48,7 +47,7 @@
     "docs:api": "cd packages/api-gateway && pnpm run generate && cp -f generated/openapi.json ../docs/openapi.json || true"
   },
   "dependencies": {
-    "next": "15.1.6",
+    "next": "15.1.11",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
