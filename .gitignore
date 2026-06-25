@@ -71,3 +71,7 @@ madmall-web-legacy-backup/
 # OpenMemory - IDE/Assistant specific rules
 .cursor/rules/openmemory.mdc
 CLAUDE.md
+
+# macOS
+.DS_Store
+.cursor/.DS_Store
